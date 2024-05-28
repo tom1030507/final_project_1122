@@ -14,7 +14,7 @@ public class Main extends Application {
     pane.getChildren().add(text);
     // Create a scene and place it in the stage
     Scene scene = new Scene(pane, 500, 300);
-    primaryStage.setTitle("SliderDemo"); // Set the stage title
+    primaryStage.setTitle("test"); // Set the stage title
     primaryStage.setScene(scene); // Place the scene in the stage
     primaryStage.show(); // Display the stage   
   }
