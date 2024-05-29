@@ -6,6 +6,14 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Character",
+            "request": "launch",
+            "mainClass": "game/game.Character",
+            "projectName": "finalproject",
+            "vmArgs": "--module-path \"C:/Users/ASUS/Desktop/temp/openjfx-22.0.1_windows-x64_bin-sdk/javafx-sdk-22.0.1/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}",
