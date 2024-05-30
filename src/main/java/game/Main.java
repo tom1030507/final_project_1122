@@ -1,29 +1,61 @@
 package game;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
 
 public class Main extends Application {
 
+	boolean moveRight=false, moveLeft=false, moveJump=false,isJumping=false;
+
 	public void start(Stage primaryStage) {
 		Pane pane=new Pane();
-		Character character=new Character(100,100);
-		character.setOnKeyPressed(e ->{
-			if (e.getCode() == KeyCode.D){
-				character.move_right();
-			}
-			if (e.getCode() == KeyCode.A) {
-				character.move_left();
-			}
-		});
+		Character character=new Character(100,300);
+		character.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.RIGHT) {
+                moveRight = true;
+            } else if (e.getCode() == KeyCode.LEFT) {
+                moveLeft = true;
+            } else if (e.getCode() == KeyCode.SPACE) {
+                if (!isJumping) {
+                    moveJump = true;
+                    isJumping = true;
+                }
+            }
+        });
+        character.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.RIGHT) {
+                moveRight = false;
+            } else if (e.getCode() == KeyCode.LEFT) {
+                moveLeft = false;
+            }
+        });
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (moveRight) {
+                    character.move_right();
+                }
+                if (moveLeft) {
+                    character.move_left();
+                }
+                if (moveJump) {
+                    moveJump=character.move_jump(moveJump);
+                    System.out.println("run!");
+                }
+                isJumping=character.applyGravity(isJumping);
+            }
+        };
+        timer.start();
+
+
 
 		pane.getChildren().add(character);
-		
-		Scene scene = new Scene(pane, 500, 300);
+
+		Scene scene = new Scene(pane, 1300, 700);
 		primaryStage.setTitle("test"); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
