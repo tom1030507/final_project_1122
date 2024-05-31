@@ -21,13 +21,18 @@ public class Main extends Application {
                 moveLeft = true;
             } else if (e.getCode() == KeyCode.SPACE) {
                 character.move_jump();
+            } else if (e.getCode() == KeyCode.Z){
+                character.attack();
             }
+            
         });
         character.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.RIGHT) {
                 moveRight = false;
+                character.stop();
             } else if (e.getCode() == KeyCode.LEFT) {
                 moveLeft = false;
+                character.stop();
             }
         });
         AnimationTimer timer = new AnimationTimer() {
