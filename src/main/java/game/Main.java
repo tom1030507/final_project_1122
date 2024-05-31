@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	boolean moveRight=false, moveLeft=false, moveJump=false,isJumping=false;
+	boolean moveRight=false, moveLeft=false;
 
 	public void start(Stage primaryStage) {
 		Pane pane=new Pane();
@@ -20,10 +20,7 @@ public class Main extends Application {
             } else if (e.getCode() == KeyCode.LEFT) {
                 moveLeft = true;
             } else if (e.getCode() == KeyCode.SPACE) {
-                if (!isJumping) {
-                    moveJump = true;
-                    isJumping = true;
-                }
+                character.move_jump();
             }
         });
         character.setOnKeyReleased(e -> {
@@ -42,19 +39,13 @@ public class Main extends Application {
                 if (moveLeft) {
                     character.move_left();
                 }
-                if (moveJump) {
-                    moveJump=character.move_jump(moveJump);
-                    System.out.println("run!");
-                }
-                isJumping=character.applyGravity(isJumping);
+                character.applyGravity();
             }
         };
         timer.start();
-
-
-
 		pane.getChildren().add(character);
 
+        
 		Scene scene = new Scene(pane, 1300, 700);
 		primaryStage.setTitle("test"); 
 		primaryStage.setScene(scene); 

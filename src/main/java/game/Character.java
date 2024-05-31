@@ -11,6 +11,7 @@ public class Character extends Pane{
     double velocityY = 0;
     double gravity = 0.5;
     double jumpStrength = 10;
+    boolean isJumping = false;
 
     public Character(double x,double y){
         this.x=x;
@@ -30,25 +31,22 @@ public class Character extends Pane{
         imageview.setTranslateX(x);
     }
 
-    public boolean move_jump(boolean moveJump) {
-        if (moveJump) {
+    public void move_jump() {
+        if (!isJumping) {
             velocityY = -jumpStrength;
-            return false;
+            isJumping=true;
         }
-        return true;
     }
 
-    public boolean applyGravity(boolean isJumping) {
+    public void applyGravity() {
         if (isJumping) {
             velocityY += gravity;
             imageview.setTranslateY(imageview.getTranslateY() + velocityY);
             if (imageview.getTranslateY() >= y) { // Assuming ground level is at translateY = 0
                 imageview.setTranslateY(y);
                 velocityY = 0;
-                return false;
+                isJumping=false;
             }
-            return true;
         }
-        return false;
     }
 }
