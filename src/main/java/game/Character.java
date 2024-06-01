@@ -21,6 +21,7 @@ public class Character extends Pane {
     int offsetY=0;
     int width=78;
     int height=58;
+    double speed=2;
 
     public Character(double x, double y) {
         imageview.setTranslateX(x);
@@ -32,12 +33,20 @@ public class Character extends Pane {
         walkAnimation.setCycleCount(Animation.INDEFINITE);
     }
 
+    public double getX(){
+        return imageview.getTranslateX();
+    }
+
+    public double getY(){
+        return imageview.getTranslateY();
+    }
+
     public void move_right() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(1);
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() + 3);
+        imageview.setTranslateX(imageview.getTranslateX() + speed);
     }
 
     public void move_left() {
@@ -45,7 +54,7 @@ public class Character extends Pane {
             imageview.setScaleX(-1);
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() - 3);
+        imageview.setTranslateX(imageview.getTranslateX() - speed);
     }
 
     public void stop() {

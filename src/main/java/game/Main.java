@@ -14,7 +14,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		Pane pane=new Pane();
 		Character character=new Character(100,300);
-		character.setOnKeyPressed(e -> {
+        Enemy pig=new Enemy(200, 314, 700, 314);
+		pig.setTargetPlayer(character);
+        character.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.RIGHT) {
                 moveRight = true;
             } else if (e.getCode() == KeyCode.LEFT) {
@@ -48,8 +50,7 @@ public class Main extends Application {
             }
         };
         timer.start();
-		pane.getChildren().add(character);
-
+		pane.getChildren().addAll(character,pig);
         
 		Scene scene = new Scene(pane, 1300, 700);
 		primaryStage.setTitle("test"); 
@@ -58,7 +59,7 @@ public class Main extends Application {
 
 		character.requestFocus();
 	}
-
+    
     public static void main(String[] args) {
       	launch(args);
     }
