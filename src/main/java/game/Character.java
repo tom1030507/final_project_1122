@@ -11,16 +11,10 @@ public class Character extends Pane {
     Image img_attack = new Image(getClass().getResourceAsStream("01-King Human/Attack (78x58).png"));
     ImageView imageview = new ImageView(img_run);
     double velocityY = 0;
-    double gravity = 0.3;
-    double jumpStrength = 10;
+    double gravity = 0.2;
+    double jumpStrength = 7;
     boolean isJumping = false;
     SpriteAnimation walkAnimation,attackAnimation;
-    int count=8;
-    int columns=8;
-    int offsetX=0;
-    int offsetY=0;
-    int width=78;
-    int height=58;
     double speed=2;
 
     public Character(double x, double y) {
@@ -29,7 +23,7 @@ public class Character extends Pane {
         getChildren().add(imageview);
 
         // 初始化动画
-        walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),count,columns,offsetX,offsetY,width,height);
+        walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
     }
 

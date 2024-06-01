@@ -11,18 +11,8 @@ public class Enemy extends Pane {
     Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
     Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
     ImageView imageview = new ImageView(img_run);
-    // double velocityY = 0;
-    // double gravity = 0.3;
-    // double jumpStrength = 10;
-    // boolean isJumping = false;
     double x,y,endx,endy;
     SpriteAnimation walkAnimation,attackAnimation;
-    int count=6;
-    int columns=6;
-    int offsetX=0;
-    int offsetY=0;
-    int width=34;
-    int height=28;
     int sta=0;
     double speed=1;
     long pauseStartTime;
@@ -45,7 +35,7 @@ public class Enemy extends Pane {
         getChildren().add(imageview);
 
         // 初始化动画
-        walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),count,columns,offsetX,offsetY,width,height);
+        walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),6,6,0,0,34,28);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
         timer = new AnimationTimer() {
@@ -59,28 +49,20 @@ public class Enemy extends Pane {
                         return; // Still pausing
                     }
                 }
-                if (imageview.getTranslateX()==x && imageview.getTranslateY()==y) {
-                    sta=0;
-                    pauseStartTime = now;
-                    isPaused = true;
-                }
-                if (imageview.getTranslateX()==endx && imageview.getTranslateY()==endy) {
-                    sta=1;
-                    pauseStartTime = now;
-                    isPaused = true;
-                }
                 if(sta==0){
                     move_right();
                 }
                 else if(sta==1){
                     move_left();
                 }
+                else if(sta==2){
+                    move_stop();
+                }
             }
         };
         timer.start();
 
     }
-
 
     public void move_right() {
         imageview.setScaleX(-1);
@@ -98,18 +80,11 @@ public class Enemy extends Pane {
         imageview.setTranslateX(imageview.getTranslateX() - speed);
     }
 
-    public void stop() {
+    public void move_stop() {
         if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.stop();
         }
     }
-
-    // public void move_jump() {
-    //     if (!isJumping) {
-    //         velocityY = -jumpStrength;
-    //         isJumping = true;
-    //     }
-    // }
     
     public void setTargetPlayer(Character character) {
         this.targetPlayer = character;
@@ -118,33 +93,53 @@ public class Enemy extends Pane {
     public void update(long now) {
         if (now - lastAttackTime >= attackCooldown) {
             if (targetPlayer != null) {
-                double distance = Math.sqrt(Math.pow(targetPlayer.getX() - imageview.getTranslateX(), 2) + Math.pow(targetPlayer.getY() - imageview.getTranslateY(), 2));
+                //double distance = Math.sqrt(Math.pow(targetPlayer.getX() - imageview.getTranslateX(), 2) + Math.pow(targetPlayer.getY() - imageview.getTranslateY(), 2));
+                double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
                 if (distance <= attackRange) {
-                    if((imageview.getTranslateX()==x && imageview.getTranslateY()==y) || (imageview.getTranslateX()==endx && imageview.getTranslateY()==endy)){
-                        sta=2;
+                    if(imageview.getTranslateX()==x && imageview.getTranslateY()==y){
+                        if(targetPlayer.getX() - imageview.getTranslateX()>=0){
+                            imageview.setScaleX(-1);
+                            sta=0;
+                        }
+                        else{
+                            imageview.setScaleX(1);
+                            sta=2;
+                        }
                     }
-                    if(targetPlayer.getX() - imageview.getTranslateX()>=0){
+                    else if(imageview.getTranslateX()==endx && imageview.getTranslateY()==endy){
+                        if(targetPlayer.getX() - imageview.getTranslateX()>=-13){
+                            imageview.setScaleX(-1);
+                            sta=2;
+                        }
+                        else{
+                            imageview.setScaleX(1);
+                            sta=1;
+                        }
+                    }
+                    else if(targetPlayer.getX() - imageview.getTranslateX()>=0){
                         imageview.setScaleX(-1);
-                        //sta=0;
+                        sta=0;
+                    }
+                    else if(targetPlayer.getX() - imageview.getTranslateX()<-45){
+                        imageview.setScaleX(1);
+                        sta=1;
                     }
                     else{
-                        imageview.setScaleX(1);
-                        //sta=1;
+                        sta=2;
                     }
                     attack(now); 
                 }
                 else{
-                    if((imageview.getTranslateX()==x && imageview.getTranslateY()==y)){
+                    if (imageview.getTranslateX()==x && imageview.getTranslateY()==y) {
                         sta=0;
                     }
-                    else if(imageview.getTranslateX()==endx && imageview.getTranslateY()==endy){
+                    if (imageview.getTranslateX()==endx && imageview.getTranslateY()==endy) {
                         sta=1;
                     }
                 }
             }
         }
     }
-
     public void attack(long now) {
         if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
             attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 5, 5, 0, 0, 34, 28);
@@ -154,19 +149,9 @@ public class Enemy extends Pane {
             });
         }
         imageview.setImage(img_attack); // 设置攻击动画的第一帧
+        lastAttackTime=now;
         attackAnimation.play();
+        
     }
-
-    // public void applyGravity() {
-    //     if (isJumping) {
-    //         velocityY += gravity;
-    //         imageview.setTranslateY(imageview.getTranslateY() + velocityY);
-    //         if (imageview.getTranslateY() >= 300) { // Assuming ground level is at translateY = 0
-    //             imageview.setTranslateY(300);
-    //             velocityY = 0;
-    //             isJumping = false;
-    //         }
-    //     }
-    // }
 }
 

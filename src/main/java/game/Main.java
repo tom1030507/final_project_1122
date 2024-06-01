@@ -13,8 +13,8 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) {
 		Pane pane=new Pane();
-		Character character=new Character(100,300);
-        Enemy pig=new Enemy(200, 314, 700, 314);
+		Character character=new Character(50,300);
+        Enemy pig=new Enemy(200, 314, 800, 314);
 		pig.setTargetPlayer(character);
         character.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.RIGHT) {
