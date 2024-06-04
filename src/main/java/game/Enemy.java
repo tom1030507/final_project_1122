@@ -2,6 +2,8 @@ package game;
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -23,7 +25,7 @@ public class Enemy extends Pane {
     long lastAttackTime = 0;
     long attackCooldown = 1000; // 攻击冷却时间，单位为毫秒
     AnimationTimer timer;
-
+    Timeline timeline;
 
     public Enemy(double x, double y,double endx,double endy) {
         this.x=x;
@@ -38,29 +40,51 @@ public class Enemy extends Pane {
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),6,6,0,0,34,28);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                update(now);
-                if (isPaused) {
-                    if (now - pauseStartTime >= PAUSE_DURATION) {
-                        isPaused = false;
-                    } else {
-                        return; // Still pausing
-                    }
-                }
-                if(sta==0){
-                    move_right();
-                }
-                else if(sta==1){
-                    move_left();
-                }
-                else if(sta==2){
-                    move_stop();
+        // timer = new AnimationTimer() {
+        //     @Override
+        //     public void handle(long now) {
+        //         update(now);
+        //         if (isPaused) {
+        //             if (now - pauseStartTime >= PAUSE_DURATION) {
+        //                 isPaused = false;
+        //             } else {
+        //                 return; // Still pausing
+        //             }
+        //         }
+        //         if(sta==0){
+        //             move_right();
+        //         }
+        //         else if(sta==1){
+        //             move_left();
+        //         }
+        //         else if(sta==2){
+        //             move_stop();
+        //         }
+        //     }
+        // };
+        // timer.start();
+        
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+            update(System.nanoTime());
+            if (isPaused) {
+                if (System.nanoTime() - pauseStartTime >= PAUSE_DURATION) {
+                    isPaused = false;
+                } else {
+                    return; // Still pausing
                 }
             }
-        };
-        timer.start();
+            if(sta==0){
+                move_right();
+            }
+            else if(sta==1){
+                move_left();
+            }
+            else if(sta==2){
+                move_stop();
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
     }
 
