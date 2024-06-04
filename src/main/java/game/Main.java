@@ -1,6 +1,8 @@
 package game;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
@@ -9,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Main extends Application {
 
@@ -50,29 +53,44 @@ public class Main extends Application {
             }
         });
        
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (lastFrameTime == 0) {
-                    lastFrameTime = now;
-                    return;
-                }
+        // AnimationTimer timer = new AnimationTimer() {
+        //     @Override
+        //     public void handle(long now) {
+        //         if (lastFrameTime == 0) {
+        //             lastFrameTime = now;
+        //             return;
+        //         }
 
-                double deltaTime = (now - lastFrameTime) * 1e-9;
-                lastFrameTime = now;
+        //         double deltaTime = (now - lastFrameTime) * 1e-9;
+        //         lastFrameTime = now;
 
-                if (moveRight) {
-                    character.move_right(deltaTime);
-                }
-                if (moveLeft) {
-                    character.move_left(deltaTime);
-                }
-                character.applyGravity();
-                character.imageview.setTranslateX(character.getX()+1);
-                character.imageview.setTranslateX(character.getX()-1);
+        //         if (moveRight) {
+        //             character.move_right(deltaTime);
+        //         }
+        //         if (moveLeft) {
+        //             character.move_left(deltaTime);
+        //         }
+        //         character.applyGravity();
+        //         character.imageview.setTranslateX(character.getX()+1);
+        //         character.imageview.setTranslateX(character.getX()-1);
+        //     }
+        // };
+        // timer.start();
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+            if (moveRight) {
+                character.move_right(1.0/60);
             }
-        };
-        timer.start();
+            if (moveLeft) {
+                character.move_left(1.0/60);
+            }
+            character.applyGravity();
+            character.imageview.setTranslateX(character.getX()+1);
+            character.imageview.setTranslateX(character.getX()-1);
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
 		pane.getChildren().addAll(test, character, pig);
 
         Scene scene = new Scene(pane, 1300, 700);
@@ -94,5 +112,6 @@ public class Main extends Application {
     public static void main(String[] args) {
       	launch(args);
     }
+
 
 }
