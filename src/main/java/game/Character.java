@@ -15,7 +15,7 @@ public class Character extends Pane {
     double jumpStrength = 7;
     boolean isJumping = false;
     SpriteAnimation walkAnimation,attackAnimation;
-    double speed = 200;
+    double speed = 3;
 
     public Character(double x, double y) {
         imageview.setTranslateX(x);
@@ -40,7 +40,7 @@ public class Character extends Pane {
             imageview.setScaleX(1);
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() + speed * deltaTime);
+        imageview.setTranslateX(imageview.getTranslateX() + speed);
     }
 
     public void move_left(double deltaTime) {
@@ -48,7 +48,7 @@ public class Character extends Pane {
             imageview.setScaleX(-1);
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() - speed * deltaTime);
+        imageview.setTranslateX(imageview.getTranslateX() - speed);
     }
 
     public void stop() {
