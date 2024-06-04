@@ -14,6 +14,8 @@ public class Main extends Application {
 
     boolean moveRight=false, moveLeft=false;
 
+    private double lastFrameTime;
+
 	public void start(Stage primaryStage) {
         ImageView test = new ImageView(new Image(getClass().getResourceAsStream("ttt.jpg")));
         test.setFitWidth(1300);
@@ -21,9 +23,9 @@ public class Main extends Application {
         test.setTranslateX(-250);
         test.setTranslateY(-300);
 
-        Pane pane=new Pane();
-		Character character=new Character(50,300);
-        Enemy pig=new Enemy(200, 314, 800, 314);
+        Pane pane = new Pane();
+		Character character = new Character(50,300);
+        Enemy pig = new Enemy(200, 314, 800, 314);
 		pig.setTargetPlayer(character);
 
         character.setOnKeyPressed(e -> {
@@ -51,11 +53,19 @@ public class Main extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (lastFrameTime == 0) {
+                    lastFrameTime = now;
+                    return;
+                }
+
+                double deltaTime = (now - lastFrameTime) * 1e-9;
+                lastFrameTime = now;
+
                 if (moveRight) {
-                    character.move_right();
+                    character.move_right(deltaTime);
                 }
                 if (moveLeft) {
-                    character.move_left();
+                    character.move_left(deltaTime);
                 }
                 character.applyGravity();
                 character.imageview.setTranslateX(character.getX()+1);
@@ -63,7 +73,7 @@ public class Main extends Application {
             }
         };
         timer.start();
-		pane.getChildren().addAll(test,character,pig);
+		pane.getChildren().addAll(test, character, pig);
 
         Scene scene = new Scene(pane, 1300, 700);
 
@@ -84,4 +94,5 @@ public class Main extends Application {
     public static void main(String[] args) {
       	launch(args);
     }
+
 }
