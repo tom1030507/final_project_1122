@@ -1,6 +1,5 @@
 package game;
 
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,18 +16,17 @@ public class Main extends Application {
 
     boolean moveRight=false, moveLeft=false;
 
-    private double lastFrameTime;
-
 	public void start(Stage primaryStage) {
-        ImageView test = new ImageView(new Image(getClass().getResourceAsStream("ttt.jpg")));
-        test.setFitWidth(1300);
-        test.setFitHeight(700);
-        test.setTranslateX(-250);
-        test.setTranslateY(-300);
+        int backgroundWidth=1300,backgroundHeight=700;
+        double scope=0.5;
+
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("background.png")));
+        background.setFitWidth(backgroundWidth);
+        background.setFitHeight(backgroundHeight);
 
         Pane pane = new Pane();
-		Character character = new Character(50,300);
-        Enemy pig = new Enemy(200, 314, 800, 314);
+		Character character = new Character(50,600);
+        Enemy pig = new Enemy(200, 600, 300, 600);
 		pig.setTargetPlayer(character);
 
         character.setOnKeyPressed(e -> {
@@ -52,58 +50,45 @@ public class Main extends Application {
                 character.stop();
             }
         });
-       
-        // AnimationTimer timer = new AnimationTimer() {
-        //     @Override
-        //     public void handle(long now) {
-        //         if (lastFrameTime == 0) {
-        //             lastFrameTime = now;
-        //             return;
-        //         }
 
-        //         double deltaTime = (now - lastFrameTime) * 1e-9;
-        //         lastFrameTime = now;
+		pane.getChildren().addAll(background, character, pig);
 
-        //         if (moveRight) {
-        //             character.move_right(deltaTime);
-        //         }
-        //         if (moveLeft) {
-        //             character.move_left(deltaTime);
-        //         }
-        //         character.applyGravity();
-        //         character.imageview.setTranslateX(character.getX()+1);
-        //         character.imageview.setTranslateX(character.getX()-1);
-        //     }
-        // };
-        // timer.start();
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
-            if (moveRight) {
-                character.move_right(1.0/60);
-            }
-            if (moveLeft) {
-                character.move_left(1.0/60);
-            }
-            character.applyGravity();
-            character.imageview.setTranslateX(character.getX()+1);
-            character.imageview.setTranslateX(character.getX()-1);
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-
-		pane.getChildren().addAll(test, character, pig);
-
-        Scene scene = new Scene(pane, 1300, 700);
+        Scene scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
         ParallelCamera camera = new ParallelCamera();
         scene.setCamera(camera);
-        // //绑定摄像机的位置到玩家的位置
-        camera.translateXProperty().bind(character.imageview.translateXProperty().subtract(scene.getWidth() / 2-100));
-        camera.translateYProperty().bind(character.imageview.translateYProperty().subtract(scene.getHeight() / 2+100));
+        camera.setScaleX(scope);
+        camera.setScaleY(scope);
 
-		primaryStage.setTitle("test"); 
+		primaryStage.setTitle("game"); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+            if (moveRight) {
+                character.move_right();
+            }
+            if (moveLeft) {
+                character.move_left();
+            }
+            character.applyGravity();
+            pig.update();
+            double newCameraX = character.imageview.getTranslateX() - (scene.getWidth()/2*scope);
+            double newCameraY = character.imageview.getTranslateY() - (scene.getHeight()/2*scope);
+            // 限制摄像机X轴范围
+            newCameraX = Math.max(newCameraX, 0);
+            newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
+
+            // 限制摄像机Y轴范围
+            newCameraY = Math.max(newCameraY, 0);
+            newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
+
+            camera.setTranslateX(newCameraX);
+            camera.setTranslateY(newCameraY-1);
+            camera.setTranslateY(newCameraY);
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
 		character.requestFocus();
         character.setFocusTraversable(true);

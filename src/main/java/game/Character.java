@@ -35,7 +35,7 @@ public class Character extends Pane {
         return imageview.getTranslateY();
     }
 
-    public void move_right(double deltaTime) {
+    public void move_right() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(1);
             walkAnimation.play();
@@ -43,7 +43,7 @@ public class Character extends Pane {
         imageview.setTranslateX(imageview.getTranslateX() + speed);
     }
 
-    public void move_left(double deltaTime) {
+    public void move_left() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(-1);
             walkAnimation.play();
@@ -80,8 +80,8 @@ public class Character extends Pane {
         if (isJumping) {
             velocityY += gravity;
             imageview.setTranslateY(imageview.getTranslateY() + velocityY);
-            if (imageview.getTranslateY() >= 300) { // Assuming ground level is at translateY = 0
-                imageview.setTranslateY(300);
+            if (imageview.getTranslateY() >= 600) { // Assuming ground level is at translateY = 0
+                imageview.setTranslateY(600);
                 velocityY = 0;
                 isJumping = false;
             }
