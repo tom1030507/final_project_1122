@@ -17,7 +17,7 @@ public class Enemy extends Pane {
     Character targetPlayer;
     double attackRange = 300; // 攻击范围
 
-    public Enemy(double x, double y,double endx,double endy) {
+    public Enemy(double x, double y, double endx, double endy) {
         this.x=x;
         this.y=y;
         this.endx=endx;

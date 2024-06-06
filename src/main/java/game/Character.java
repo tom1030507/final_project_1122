@@ -1,9 +1,12 @@
 package game;
 
 import javafx.animation.Animation;
+import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Character extends Pane {
@@ -17,6 +20,9 @@ public class Character extends Pane {
     SpriteAnimation walkAnimation,attackAnimation;
     double speed = 3;
 
+    Rectangle imageBoundary, realBoundary;
+    BoundingBox boundingBox;
+
     public Character(double x, double y) {
         imageview.setTranslateX(x);
         imageview.setTranslateY(y);
@@ -25,6 +31,18 @@ public class Character extends Pane {
         // 初始化动画
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
+
+        realBoundary = new Rectangle(x + 10, y + 18, 40, 25);
+        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
+        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
+
+        boundingBox = new BoundingBox(x + 10, y + 18, 40, 25);
+
+        imageBoundary = new Rectangle(x, y, 78, 58);
+        imageBoundary.setStroke(Color.RED); // 邊界線顏色
+        imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
+        getChildren().addAll(imageBoundary, realBoundary);
+
     }
 
     public double getX(){
@@ -35,12 +53,29 @@ public class Character extends Pane {
         return imageview.getTranslateY();
     }
 
+    public void playWalkAnimation() {
+        walkAnimation.play();
+    }
+
+    boolean lastMoveLeft = false;
+    boolean lastMoveRight = true;
+
     public void move_right() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(1);
             walkAnimation.play();
         }
         imageview.setTranslateX(imageview.getTranslateX() + speed);
+
+        lastMoveRight = true;
+        if (lastMoveLeft) { 
+            imageview.setTranslateX(imageview.getTranslateX() + 20);
+            lastMoveLeft = false;
+        }
+
+        imageBoundary.setX(imageview.getTranslateX());
+        realBoundary.setX(imageview.getTranslateX() + 10);
+        boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 40, 25);
     }
 
     public void move_left() {
@@ -49,6 +84,16 @@ public class Character extends Pane {
             walkAnimation.play();
         }
         imageview.setTranslateX(imageview.getTranslateX() - speed);
+
+        lastMoveLeft = true;
+        if (lastMoveRight) {
+            imageview.setTranslateX(imageview.getTranslateX() - 20);
+            lastMoveRight = false;
+        }
+
+        imageBoundary.setX(imageview.getTranslateX());
+        realBoundary.setX(imageview.getTranslateX() + 30);
+        boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 40, 25);
     }
 
     public void stop() {
@@ -80,12 +125,19 @@ public class Character extends Pane {
         if (isJumping) {
             velocityY += gravity;
             imageview.setTranslateY(imageview.getTranslateY() + velocityY);
-            if (imageview.getTranslateY() >= 600) { // Assuming ground level is at translateY = 0
-                imageview.setTranslateY(600);
+            if (imageview.getTranslateY() >= 596) { // Assuming ground level is at translateY = 0
+                imageview.setTranslateY(596);
                 velocityY = 0;
                 isJumping = false;
             }
+            imageBoundary.setY(imageview.getTranslateY());
+            realBoundary.setY(imageview.getTranslateY() + 18);
+            boundingBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() + 18, 40, 25);
         }
+    }
+    
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 }
 
