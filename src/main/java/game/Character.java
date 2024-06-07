@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -19,14 +20,16 @@ public class Character extends Pane {
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
-    int health=3 , power=1;
+    double full=5,health=5,power=1;
     boolean isJumping = false;
     boolean isattcking = false;
     SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
-    double speed = 1;
+    double speed = 3;
+    Line blood;
+    double blong=30;
 
     Rectangle imageBoundary, realBoundary;
-    BoundingBox boundingBox;
+    BoundingBox boundingBox,attackBox;
 
     public Character(double x, double y) {
         imageview.setTranslateX(x);
@@ -37,16 +40,21 @@ public class Character extends Pane {
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
-        realBoundary = new Rectangle(x + 10, y + 18, 30, 25);
+        blood=new Line(x+10,y+15,x+10+blong,y+15);
+        blood.setStrokeWidth(3);
+        blood.setStroke(Color.RED);
+
+        realBoundary = new Rectangle(x + 10,y + 18, 30, 25);
         realBoundary.setStroke(Color.BLUE); // 邊界線顏色
         realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
 
         boundingBox = new BoundingBox(x + 10, y + 18, 40, 25);
+        attackBox = new BoundingBox(x, y , 78, 58);
 
         imageBoundary = new Rectangle(x, y, 78, 58);
         imageBoundary.setStroke(Color.RED); // 邊界線顏色
         imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-        getChildren().addAll(imageBoundary, realBoundary);
+        getChildren().addAll(blood,imageBoundary, realBoundary);
 
     }
 
@@ -81,6 +89,12 @@ public class Character extends Pane {
         imageBoundary.setX(imageview.getTranslateX());
         realBoundary.setX(imageview.getTranslateX() + 10);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
+        attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
+
+        blood.setStartX(imageview.getTranslateX() + 10);
+        blood.setStartY(imageview.getTranslateY() + 13);
+        blood.setEndX(imageview.getTranslateX() + 10 + blong);
+        blood.setEndY(imageview.getTranslateY() + 13);
     }
 
     public void move_left() {
@@ -99,6 +113,12 @@ public class Character extends Pane {
         imageBoundary.setX(imageview.getTranslateX());
         realBoundary.setX(imageview.getTranslateX() + 30);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
+        attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
+
+        blood.setStartX(imageview.getTranslateX() + 30);
+        blood.setStartY(imageview.getTranslateY() + 13);
+        blood.setEndX(imageview.getTranslateX() + 30 + blong);
+        blood.setEndY(imageview.getTranslateY() + 13);
     }
 
     public void stop() {
@@ -131,9 +151,10 @@ public class Character extends Pane {
         return isattcking;
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(Double damage) {
         System.out.println("att");
         health -= damage;
+        blong = (health/full)*30.0;
         if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 78, 58);
             hitAnimation.setCycleCount(1); // 攻击动画只播放一次
@@ -145,6 +166,7 @@ public class Character extends Pane {
         hitAnimation.play();
         if (health <= 0) {
             // 敌人被击败，执行相应操作
+            blood.setOpacity(0);
             defeat();
         }
     }
@@ -183,10 +205,20 @@ public class Character extends Pane {
             imageBoundary.setX(imageview.getTranslateX());
             realBoundary.setX(imageview.getTranslateX() + 10);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
+            attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
+            blood.setStartX(imageview.getTranslateX() + 10);
+            blood.setStartY(imageview.getTranslateY() + 13);
+            blood.setEndX(imageview.getTranslateX() + 10 + blong);
+            blood.setEndY(imageview.getTranslateY() + 13);
         } else {
             imageBoundary.setX(imageview.getTranslateX());
             realBoundary.setX(imageview.getTranslateX() + 30);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
+            attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
+            blood.setStartX(imageview.getTranslateX() + 30);
+            blood.setStartY(imageview.getTranslateY() + 13);
+            blood.setEndX(imageview.getTranslateX() + 30 + blong);
+            blood.setEndY(imageview.getTranslateY() + 13);
         }
     }
     

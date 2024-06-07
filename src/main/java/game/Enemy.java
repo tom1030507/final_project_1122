@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -18,12 +19,13 @@ public class Enemy extends Pane {
     double x,y,endx,endy;
     SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
     int sta=0;
-    int health=3;
-    int power=1;
+    double full=3,health=3,power=1;
     boolean isattcking=false;
     double speed=1;
     Character targetPlayer;
     double attackRange = 100; // 攻击范围
+    Line blood;
+    double blong=20;
 
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox,attackBox;
@@ -41,6 +43,10 @@ public class Enemy extends Pane {
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),6,6,0,0,34,28);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
+        blood=new Line(x+9,y+7,x+9+blong,y+7);
+        blood.setStrokeWidth(3);
+        blood.setStroke(Color.RED);
+
         realBoundary = new Rectangle(x + 9, y + 10, 20, 17);
         realBoundary.setStroke(Color.BLUE); // 邊界線顏色
         realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
@@ -51,7 +57,7 @@ public class Enemy extends Pane {
         imageBoundary = new Rectangle(x, y, 34, 28);
         imageBoundary.setStroke(Color.RED); // 邊界線顏色
         imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-        getChildren().addAll(imageBoundary, realBoundary);
+        getChildren().addAll(blood,imageBoundary, realBoundary);
     }
 
     boolean lastMoveLeft = true;
@@ -74,6 +80,11 @@ public class Enemy extends Pane {
         realBoundary.setX(imageview.getTranslateX() + 5);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 5, imageview.getTranslateY() + 10, 20, 17);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
+        
+        blood.setStartX(imageview.getTranslateX() + 5);
+        blood.setStartY(imageview.getTranslateY() + 7);
+        blood.setEndX(imageview.getTranslateX() + 5 + blong);
+        blood.setEndY(imageview.getTranslateY() + 7);
     }
 
     public void move_left() {
@@ -93,6 +104,11 @@ public class Enemy extends Pane {
         realBoundary.setX(imageview.getTranslateX() + 9);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 9, imageview.getTranslateY() + 10, 20, 17);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
+        
+        blood.setStartX(imageview.getTranslateX() + 9);
+        blood.setStartY(imageview.getTranslateY() + 7);
+        blood.setEndX(imageview.getTranslateX() + 9 + blong);
+        blood.setEndY(imageview.getTranslateY() + 7);
     }
 
     public void move_stop() {
@@ -105,8 +121,21 @@ public class Enemy extends Pane {
         this.targetPlayer = character;
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(Double damage) {
         health -= damage;
+        blong = (health/full)*20.0;
+        if(lastMoveLeft){
+            blood.setStartX(imageview.getTranslateX() + 9);
+            blood.setStartY(imageview.getTranslateY() + 7);
+            blood.setEndX(imageview.getTranslateX() + 9 + blong);
+            blood.setEndY(imageview.getTranslateY() + 7);
+        }
+        else{
+            blood.setStartX(imageview.getTranslateX() + 5);
+            blood.setStartY(imageview.getTranslateY() + 7);
+            blood.setEndX(imageview.getTranslateX() + 5 + blong);
+            blood.setEndY(imageview.getTranslateY() + 7);
+        }
         if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 34, 28);
             hitAnimation.setCycleCount(1); // 攻击动画只播放一次
@@ -118,6 +147,7 @@ public class Enemy extends Pane {
         hitAnimation.play();
         if (health <= 0) {
             // 敌人被击败，执行相应操作
+            blood.setOpacity(0);
             defeat();
         }
     }
@@ -141,7 +171,7 @@ public class Enemy extends Pane {
         }
         if(targetPlayer.attackstate()){
             targetPlayer.isattcking=false;
-            if(targetPlayer.imageBoundary.intersects(boundingBox)){
+            if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
             }
         }
