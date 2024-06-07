@@ -8,6 +8,7 @@ public class CharacterController {
     private Boundary boundary = new Boundary();
     private boolean moveRight = false;
     private boolean moveLeft = false;
+    private boolean attacking = false;
 
     public CharacterController(Character character) {
         this.character = character;
@@ -21,7 +22,10 @@ public class CharacterController {
         } else if (code == KeyCode.SPACE) {
             character.move_jump();
         } else if (code == KeyCode.Z){
-            character.attack();
+            if(!attacking){
+                character.attack();
+            }
+            attacking=true;
         }
     }
 
@@ -32,6 +36,8 @@ public class CharacterController {
         } else if (code == KeyCode.LEFT) {
             moveLeft = false;
             character.stop();
+        } else if (code == KeyCode.Z) {
+            attacking = false;
         }
     }
 

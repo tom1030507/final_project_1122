@@ -29,7 +29,7 @@ public class Main extends Application {
 
         Boundary boundary = new Boundary();
 
-        Enemy pig = new Enemy(200, 590, 300, 596);
+        Enemy pig = new Enemy(200, 596, 300, 596);
 		pig.setTargetPlayer(character);
 
         character.setOnKeyPressed(e -> {

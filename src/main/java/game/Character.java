@@ -13,13 +13,17 @@ import javafx.util.Duration;
 public class Character extends Pane {
     Image img_run = new Image(getClass().getResourceAsStream("01-King Human/Run (78x58).png"));
     Image img_attack = new Image(getClass().getResourceAsStream("01-King Human/Attack (78x58).png"));
+    Image img_hit = new Image(getClass().getResourceAsStream("01-King Human/Hit (78x58).png"));
+    Image img_dead = new Image(getClass().getResourceAsStream("01-King Human/Dead (78x58).png"));
     ImageView imageview = new ImageView(img_run);
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
+    int health=3 , power=1;
     boolean isJumping = false;
-    SpriteAnimation walkAnimation,attackAnimation;
-    double speed = 3;
+    boolean isattcking = false;
+    SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
+    double speed = 1;
 
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox;
@@ -118,8 +122,42 @@ public class Character extends Pane {
                 imageview.setImage(img_run);
             });
         }
+        isattcking=true;
         imageview.setImage(img_attack); // 设置攻击动画的第一帧
         attackAnimation.play();
+    }
+    
+    public boolean attackstate(){
+        return isattcking;
+    }
+
+    public void takeDamage(int damage) {
+        System.out.println("att");
+        health -= damage;
+        if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
+            hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 78, 58);
+            hitAnimation.setCycleCount(1); // 攻击动画只播放一次
+            hitAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+                imageview.setImage(img_run);
+            });
+        }
+        imageview.setImage(img_hit); // 设置攻击动画的第一帧
+        hitAnimation.play();
+        if (health <= 0) {
+            // 敌人被击败，执行相应操作
+            defeat();
+        }
+    }
+
+    public void defeat(){
+        deadAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,78,58);
+        deadAnimation.setCycleCount(1);
+        deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            //getChildren().clear();
+            System.out.println("gg");
+        });
+        imageview.setImage(img_dead);
+        deadAnimation.play();
     }
 
     Boundary boundary = new Boundary();
