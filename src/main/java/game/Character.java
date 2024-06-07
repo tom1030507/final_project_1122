@@ -2,6 +2,7 @@ package game;
 
 import javafx.animation.Animation;
 import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -32,7 +33,7 @@ public class Character extends Pane {
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
-        realBoundary = new Rectangle(x + 10, y + 18, 40, 25);
+        realBoundary = new Rectangle(x + 10, y + 18, 30, 25);
         realBoundary.setStroke(Color.BLUE); // 邊界線顏色
         realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
 
@@ -75,7 +76,7 @@ public class Character extends Pane {
 
         imageBoundary.setX(imageview.getTranslateX());
         realBoundary.setX(imageview.getTranslateX() + 10);
-        boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 40, 25);
+        boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
     }
 
     public void move_left() {
@@ -93,7 +94,7 @@ public class Character extends Pane {
 
         imageBoundary.setX(imageview.getTranslateX());
         realBoundary.setX(imageview.getTranslateX() + 30);
-        boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 40, 25);
+        boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
     }
 
     public void stop() {
@@ -121,18 +122,33 @@ public class Character extends Pane {
         attackAnimation.play();
     }
 
+    Boundary boundary = new Boundary();
+    Rectangle rect;
     public void applyGravity() {
-        if (isJumping) {
-            velocityY += gravity;
-            imageview.setTranslateY(imageview.getTranslateY() + velocityY);
-            if (imageview.getTranslateY() >= 596) { // Assuming ground level is at translateY = 0
-                imageview.setTranslateY(596);
-                velocityY = 0;
-                isJumping = false;
-            }
-            imageBoundary.setY(imageview.getTranslateY());
-            realBoundary.setY(imageview.getTranslateY() + 18);
-            boundingBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() + 18, 40, 25);
+        velocityY += gravity;
+        double newY = imageview.getTranslateY() + velocityY;
+        Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
+        // rect = new Rectangle(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
+        // rect.setStroke(Color.YELLOW);
+        // rect.setFill(Color.TRANSPARENT);
+        // getChildren().add(rect);
+        if (!boundary.isWithinBounds(bounds)) {
+            imageview.setTranslateY(newY);
+        } else {
+            velocityY = 0;
+            isJumping = false;
+        }
+
+        imageBoundary.setY(imageview.getTranslateY());
+        realBoundary.setY(imageview.getTranslateY() + 18);
+        if (lastMoveRight) {
+            imageBoundary.setX(imageview.getTranslateX());
+            realBoundary.setX(imageview.getTranslateX() + 10);
+            boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
+        } else {
+            imageBoundary.setX(imageview.getTranslateX());
+            realBoundary.setX(imageview.getTranslateX() + 30);
+            boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
         }
     }
     

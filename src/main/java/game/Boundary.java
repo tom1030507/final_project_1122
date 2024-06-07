@@ -2,6 +2,7 @@ package game;
 
 import javafx.scene.shape.Line;
 import javafx.scene.Group;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -29,7 +30,7 @@ public class Boundary {
                                 { 348, 155, 433, 155 } };
         for (double[] data : lineData) {
             Line line = new Line(data[0], data[1], data[2], data[3]);
-            line.setStrokeWidth(3);
+            line.setStrokeWidth(1);
             line.setStroke(Color.WHITE);
             boundaryGroup.getChildren().add(line);
         } 
@@ -42,10 +43,11 @@ public class Boundary {
     public boolean isWithinBounds(Bounds otherBounds) { // 判斷是否在邊界內
         for (Node node : boundaryGroup.getChildren()) {
             Line line = (Line) node;
-            System.out.println(line.getBoundsInParent());
-            System.out.println(otherBounds);
-            if (line.getBoundsInParent().intersects(otherBounds)) { // 如果有交集
-                System.out.println("collision");
+            BoundingBox newBounds = new BoundingBox(otherBounds.getMinX() - 8, otherBounds.getMinY() - 4, otherBounds.getWidth() + 16, otherBounds.getHeight() + 8);
+            if (line.getBoundsInParent().intersects(newBounds)) { // 如果有交集
+                // System.out.println(line.getBoundsInParent());
+                // System.out.println(newBounds);
+                // System.out.println("collision");
                 return true;
             }
         }

@@ -24,12 +24,12 @@ public class Main extends Application {
         background.setFitHeight(backgroundHeight);
 
         Pane pane = new Pane();
-		Character character = new Character(100, 596);
+		Character character = new Character(100, 590);
         CharacterController controller = new CharacterController(character);
 
         Boundary boundary = new Boundary();
 
-        Enemy pig = new Enemy(200, 596, 300, 596);
+        Enemy pig = new Enemy(200, 590, 300, 596);
 		pig.setTargetPlayer(character);
 
         character.setOnKeyPressed(e -> {
@@ -44,10 +44,10 @@ public class Main extends Application {
 
         Scene scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
-        // ParallelCamera camera = new ParallelCamera();
-        // scene.setCamera(camera);
-        // camera.setScaleX(scope);
-        // camera.setScaleY(scope);
+        ParallelCamera camera = new ParallelCamera();
+        scene.setCamera(camera);
+        camera.setScaleX(scope);
+        camera.setScaleY(scope);
 
 		primaryStage.setTitle("game"); 
 		primaryStage.setScene(scene); 
@@ -67,9 +67,9 @@ public class Main extends Application {
             newCameraY = Math.max(newCameraY, 0);
             newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
 
-            // camera.setTranslateX(newCameraX);
-            // camera.setTranslateY(newCameraY-1);
-            // camera.setTranslateY(newCameraY);
+            camera.setTranslateX(newCameraX);
+            camera.setTranslateY(newCameraY-1);
+            camera.setTranslateY(newCameraY);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();

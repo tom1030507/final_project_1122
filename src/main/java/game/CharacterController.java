@@ -40,12 +40,12 @@ public class CharacterController {
 
     public void update() {
         if (moveRight && (!boundary.isWithinBounds(character.getBoundingBox()) || lastMoveLeft)) {
-            System.out.println("move right");
+            // System.out.println("move right");
             lastMoveRight = true;
             lastMoveLeft = false;
             character.move_right();
         } else if (moveLeft && (!boundary.isWithinBounds(character.getBoundingBox()) || lastMoveRight)) {
-            System.out.println("move left");
+            // System.out.println("move left");
             lastMoveRight = false;
             lastMoveLeft = true;
             character.move_left();
