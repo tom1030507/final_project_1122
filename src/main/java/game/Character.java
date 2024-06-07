@@ -20,21 +20,24 @@ public class Character extends Pane {
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
-    double full=5,health=5,power=1;
+    double full = 5,health = 5,power = 1;
     boolean isJumping = false;
     boolean isattcking = false;
-    SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
+    SpriteAnimation walkAnimation, attackAnimation, hitAnimation, deadAnimation;
     double speed = 3;
     Line blood;
-    double blong=30;
-
+    double blong = 30;
+    int level;
+    
+    Boundary boundary;
     Rectangle imageBoundary, realBoundary;
-    BoundingBox boundingBox,attackBox;
+    BoundingBox boundingBox, attackBox;
 
-    public Character(double x, double y) {
+    public Character(double x, double y, int level) {
         imageview.setTranslateX(x);
         imageview.setTranslateY(y);
         getChildren().add(imageview);
+        boundary = new Boundary(level);
 
         // 初始化动画
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
@@ -182,16 +185,11 @@ public class Character extends Pane {
         deadAnimation.play();
     }
 
-    Boundary boundary = new Boundary();
-    Rectangle rect;
     public void applyGravity() {
         velocityY += gravity;
         double newY = imageview.getTranslateY() + velocityY;
         Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
-        // rect = new Rectangle(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
-        // rect.setStroke(Color.YELLOW);
-        // rect.setFill(Color.TRANSPARENT);
-        // getChildren().add(rect);
+
         if (!boundary.isWithinBounds(bounds)) {
             imageview.setTranslateY(newY);
         } else {

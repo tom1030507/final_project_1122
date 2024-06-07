@@ -5,13 +5,14 @@ import javafx.scene.input.KeyCode;
 public class CharacterController {
 
     private Character character;
-    private Boundary boundary = new Boundary();
+    private Boundary boundary;
     private boolean moveRight = false;
     private boolean moveLeft = false;
     private boolean attacking = false;
 
-    public CharacterController(Character character) {
+    public CharacterController(Character character, int level) {
         this.character = character;
+        this.boundary = new Boundary(level);
     }
 
     public void handleKeyPressed(KeyCode code) {

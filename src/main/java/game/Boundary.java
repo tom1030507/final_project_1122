@@ -9,25 +9,10 @@ import javafx.scene.paint.Color;
 
 public class Boundary {
     private Group boundaryGroup = new Group();
+    private LevelBoundaryData lbd = new LevelBoundaryData();
 
-    public Boundary() {
-        double[][] lineData = { { 72.5, 0, 72.5, 700 },
-                                { 0, 641, 1300, 641 },
-                                { 0, 50, 1300, 50 },
-                                { 0, 405, 453, 405 },
-                                { 0, 487, 453, 487 },
-                                { 453, 405, 453, 487 },
-                                { 1220, 0, 1210, 700 },
-                                { 918, 550, 918, 700 },
-                                { 918, 550, 1300, 550 },
-                                { 1059, 457, 1300, 457 },
-                                { 1059, 457, 1059, 700 },
-                                { 940, 195, 1300, 195 },
-                                { 940, 273, 1300, 273 },
-                                { 940, 195, 940, 273 },
-                                { 348, 0, 348, 155 },
-                                { 433, 0, 433, 155 },
-                                { 348, 155, 433, 155 } };
+    public Boundary(int level) {
+        double[][] lineData = lbd.getLineData(level);
         for (double[] data : lineData) {
             Line line = new Line(data[0], data[1], data[2], data[3]);
             line.setStrokeWidth(1);
