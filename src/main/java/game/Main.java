@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static int level = 1;
+    private static int level = 2;
 
 	public void start(Stage primaryStage) {
         switch (level) {
@@ -22,6 +22,13 @@ public class Main extends Application {
                 Scene scene1 = level1.createScene(primaryStage);
                 primaryStage.setTitle("Level 1");
                 primaryStage.setScene(scene1);
+                primaryStage.show();
+                break;
+            case 2:
+                Background level2 = new Level2();
+                Scene scene2 = level2.createScene(primaryStage);
+                primaryStage.setTitle("Level 2");
+                primaryStage.setScene(scene2);
                 primaryStage.show();
                 break;
         }

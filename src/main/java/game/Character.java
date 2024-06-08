@@ -231,7 +231,7 @@ public class Character extends Pane {
         velocityY += gravity;
         double newY = imageview.getTranslateY() + velocityY;
         Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
-        
+        isJumping = false;
         if (!boundary.isWithinBounds(bounds)) {
             imageview.setTranslateY(newY);
         } else {
