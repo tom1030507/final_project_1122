@@ -12,23 +12,25 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Character extends Pane {
+    Image img_idle = new Image(getClass().getResourceAsStream("01-King Human/Idle (78x58).png"));
     Image img_run = new Image(getClass().getResourceAsStream("01-King Human/Run (78x58).png"));
     Image img_attack = new Image(getClass().getResourceAsStream("01-King Human/Attack (78x58).png"));
     Image img_hit = new Image(getClass().getResourceAsStream("01-King Human/Hit (78x58).png"));
     Image img_dead = new Image(getClass().getResourceAsStream("01-King Human/Dead (78x58).png"));
-    ImageView imageview = new ImageView(img_run);
+    ImageView imageview = new ImageView(img_idle);
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
     double full = 5,health = 5,power = 1;
     boolean isJumping = false;
     boolean isattcking = false;
-    SpriteAnimation walkAnimation, attackAnimation, hitAnimation, deadAnimation;
+    SpriteAnimation idleAnimation,walkAnimation, attackAnimation, hitAnimation, deadAnimation;
     double speed = 3;
     Line blood;
     double blong = 30;
     int level;
-    
+    boolean coldtime=false;
+
     Boundary boundary;
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox, attackBox;
@@ -40,8 +42,11 @@ public class Character extends Pane {
         boundary = new Boundary(level);
 
         // 初始化动画
+        idleAnimation = new SpriteAnimation(imageview,Duration.millis(500),11,11,0,0,78,58);
+        idleAnimation.setCycleCount(Animation.INDEFINITE);
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
+        idleAnimation.play();
 
         blood=new Line(x+10,y+15,x+10+blong,y+15);
         blood.setStrokeWidth(3);
@@ -69,9 +74,9 @@ public class Character extends Pane {
         return imageview.getTranslateY();
     }
 
-    public void playWalkAnimation() {
-        walkAnimation.play();
-    }
+    // public void playWalkAnimation() {
+    //     walkAnimation.play();
+    // }
 
     boolean lastMoveLeft = false;
     boolean lastMoveRight = true;
@@ -79,6 +84,8 @@ public class Character extends Pane {
     public void move_right() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(1);
+            imageview.setImage(img_run);
+            idleAnimation.stop();
             walkAnimation.play();
         }
         imageview.setTranslateX(imageview.getTranslateX() + speed);
@@ -103,6 +110,8 @@ public class Character extends Pane {
     public void move_left() {
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(-1);
+            imageview.setImage(img_run);
+            idleAnimation.stop();
             walkAnimation.play();
         }
         imageview.setTranslateX(imageview.getTranslateX() - speed);
@@ -128,6 +137,10 @@ public class Character extends Pane {
         if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.stop();
         }
+        if (!idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            imageview.setImage(img_idle);
+            idleAnimation.play();
+        }
     }
 
     public void move_jump() {
@@ -138,18 +151,32 @@ public class Character extends Pane {
     }
 
     public void attack() {
+        if(coldtime){
+            return;
+        }
         if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
             attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 3, 3, 0, 0, 78, 58);
             attackAnimation.setCycleCount(1); // 攻击动画只播放一次
             attackAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
-                imageview.setImage(img_run);
+                coldtime=false;
+                if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                    imageview.setImage(img_run);
+                }
+                if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                    imageview.setImage(img_idle);
+                }
             });
         }
         isattcking=true;
+        coldtime=true;
         imageview.setImage(img_attack); // 设置攻击动画的第一帧
         attackAnimation.play();
     }
     
+    public void attackstateupdate(){
+        isattcking=false;
+    }
+
     public boolean attackstate(){
         return isattcking;
     }
@@ -162,7 +189,16 @@ public class Character extends Pane {
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 78, 58);
             hitAnimation.setCycleCount(1); // 攻击动画只播放一次
             hitAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
-                imageview.setImage(img_run);
+                if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                    walkAnimation.stop();
+                }
+                if (!idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                    imageview.setImage(img_idle);
+                    idleAnimation.play();
+                }
+                else if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                    imageview.setImage(img_idle);
+                }
             });
         }
         imageview.setImage(img_hit); // 设置攻击动画的第一帧
@@ -175,11 +211,17 @@ public class Character extends Pane {
     }
 
     public void defeat(){
-        deadAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,78,58);
+        deadAnimation = new SpriteAnimation(imageview,Duration.millis(1000),4,4,0,0,78,58);
         deadAnimation.setCycleCount(1);
         deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
             //getChildren().clear();
             System.out.println("gg");
+            if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                imageview.setImage(img_run);
+            }
+            if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                imageview.setImage(img_idle);
+            }
         });
         imageview.setImage(img_dead);
         deadAnimation.play();

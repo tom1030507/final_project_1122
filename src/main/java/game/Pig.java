@@ -10,7 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Enemy extends Pane {
+public class Pig extends Pane {
     Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
     Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
     Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
@@ -27,10 +27,11 @@ public class Enemy extends Pane {
     Line blood;
     double blong=20;
 
+
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox,attackBox;
 
-    public Enemy(double x, double y, double endx, double endy) {
+    public Pig(double x, double y, double endx, double endy) {
         this.x=x;
         this.y=y;
         this.endx=endx;
@@ -122,6 +123,7 @@ public class Enemy extends Pane {
     }
 
     public void takeDamage(Double damage) {
+        System.out.println("enatt");
         health -= damage;
         blong = (health/full)*20.0;
         if(lastMoveLeft){
@@ -170,11 +172,12 @@ public class Enemy extends Pane {
             return;
         }
         if(targetPlayer.attackstate()){
-            targetPlayer.isattcking=false;
+            // targetPlayer.isattcking=false;
             if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
             }
         }
+        
         if(sta==0){
             move_right();
         }
@@ -248,7 +251,7 @@ public class Enemy extends Pane {
         }
         imageview.setImage(img_attack); // 设置攻击动画的第一帧
         attackAnimation.play();
-        if(targetPlayer.realBoundary.intersects(attackBox)){
+        if(targetPlayer.boundingBox.intersects(attackBox)){
             targetPlayer.takeDamage(power);
         }
     }

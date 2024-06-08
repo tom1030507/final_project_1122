@@ -25,15 +25,19 @@ public class Level1 {
         CharacterController controller = new CharacterController(character, 1);
 
         Boundary boundary = new Boundary(1);
-
-        Enemy pig1 = new Enemy(200, 612, 300, 612);
-        Enemy pig2 = new Enemy(430, 220, 700, 220);
-        Enemy pig3 = new Enemy(75, 270, 245, 270);
+        
+        Pig pig1 = new Pig(200, 612, 300, 612);
+        Pig pig2 = new Pig(430, 220, 700, 220);
+        Pig pig3 = new Pig(75, 270, 245, 270);
 		pig1.setTargetPlayer(character);
         pig2.setTargetPlayer(character);
         pig3.setTargetPlayer(character);
         Pane pig = new Pane();
         pig.getChildren().addAll(pig1, pig2, pig3);        
+
+        Cannon cannon=new Cannon(75,377,1100,377);
+        cannon.setTargetPlayer(character);
+        
         character.setOnKeyPressed(e -> {
             controller.handleKeyPressed(e.getCode());
         });
@@ -54,7 +58,7 @@ public class Level1 {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, character, pig, platform, boundary.getBoundary());
+        pane.getChildren().addAll(background, character, pig, cannon, platform, boundary.getBoundary());
 
         Scene scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
@@ -68,6 +72,10 @@ public class Level1 {
             pig1.update();
             pig2.update();
             pig3.update();
+            cannon.update();
+            if(character.attackstate()){
+                character.attackstateupdate();
+            }
 
             double newCameraX = character.boundingBox.getCenterX() - (scene.getWidth()/2*scope);
             double newCameraY = character.boundingBox.getCenterY() - (scene.getHeight()/2*scope);
