@@ -151,7 +151,7 @@ public class Character extends Pane {
     }
 
     public void attack() {
-        if(coldtime){
+        if (coldtime){
             return;
         }
         if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
@@ -231,12 +231,14 @@ public class Character extends Pane {
         velocityY += gravity;
         double newY = imageview.getTranslateY() + velocityY;
         Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
-
+        
         if (!boundary.isWithinBounds(bounds)) {
             imageview.setTranslateY(newY);
         } else {
+            if (velocityY >= 0.2) {
+                isJumping = false;
+            }
             velocityY = 0;
-            isJumping = false;
         }
 
         imageBoundary.setY(imageview.getTranslateY());
