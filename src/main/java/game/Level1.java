@@ -10,7 +10,7 @@ import javafx.scene.ParallelCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 
-public class Level1 {
+public class Level1 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
     private double scope = 0.5; // 摄像机缩放比例
     private ImageView background;
