@@ -183,7 +183,6 @@ public class Character extends Pane {
     }
 
     public void takeDamage(Double damage) {
-        System.out.println("att");
         health -= damage;
         blong = (health/full)*30.0;
         if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
