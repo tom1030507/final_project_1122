@@ -15,7 +15,7 @@ public class Door extends Pane{
     ImageView imageview = new ImageView(img_idle);
     SpriteAnimation openAnimation,closeAnimation;
     Character targetPlayer;
-    boolean used=true;
+    boolean used=true, nextlevel = false;
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
@@ -51,6 +51,9 @@ public class Door extends Pane{
         openAnimation.setOnFinished(e -> { 
             imageview.setImage(img_close);
             closeAnimation.play();
+            closeAnimation.setOnFinished(e2 -> {
+                nextlevel = true;
+            });
         });
     }
 

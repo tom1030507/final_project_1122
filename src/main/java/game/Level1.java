@@ -9,12 +9,15 @@ import javafx.animation.Timeline;
 import javafx.scene.ParallelCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 public class Level1 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
     private double scope = 0.5; // 摄像机缩放比例
     private ImageView background;
     private Pane pane = new Pane();
+    private Scene scene;
+    private Timeline timeline;
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level1_background.png")));
@@ -38,11 +41,11 @@ public class Level1 implements Background {
         Cannon cannon=new Cannon(75,377,1170,377,-1);
         cannon.setTargetPlayer(character);
 
-        Door door=new Door(100,585);
+        Door door=new Door(100,584);
         door.setTargetPlayer(character);
         door.used=false;
 
-        Door door2=new Door(1140,140);
+        Door door2=new Door(1140,139);
         door2.setTargetPlayer(character);
 
         Key key=new Key(80,167);
@@ -56,28 +59,28 @@ public class Level1 implements Background {
             controller.handleKeyReleased(e.getCode());
         });
 
-        Platform shortPlatform1 = new Platform(1, 600, 400);
-        Platform shortPlatform2 = new Platform(1, 800, 450);
-        Platform shortPlatform3 = new Platform(1, 810, 210);
-        Platform longPlatform1 = new Platform(2, 75, 300);
-        Platform longPlatform2 = new Platform(2, 175, 300);
-        Platform longPlatform3 = new Platform(2, 75, 200);
-        Platform longPlatform4 = new Platform(2, 430, 250);
-        Platform longPlatform5 = new Platform(2, 530, 250);
-        Platform longPlatform6 = new Platform(2, 630, 250);
+        woodPlatform shortPlatform1 = new woodPlatform(1, 600, 400);
+        woodPlatform shortPlatform2 = new woodPlatform(1, 800, 450);
+        woodPlatform shortPlatform3 = new woodPlatform(1, 810, 210);
+        woodPlatform longPlatform1 = new woodPlatform(2, 75, 300);
+        woodPlatform longPlatform2 = new woodPlatform(2, 175, 300);
+        woodPlatform longPlatform3 = new woodPlatform(2, 75, 200);
+        woodPlatform longPlatform4 = new woodPlatform(2, 430, 250);
+        woodPlatform longPlatform5 = new woodPlatform(2, 530, 250);
+        woodPlatform longPlatform6 = new woodPlatform(2, 630, 250);
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
         pane.getChildren().addAll(background, door, door2, key, character, pig, cannon, platform, boundary.getBoundary());
 
-        Scene scene = new Scene(pane, backgroundWidth, backgroundHeight);
+        scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
         ParallelCamera camera = new ParallelCamera();
         scene.setCamera(camera);
         camera.setScaleX(scope);
         camera.setScaleY(scope);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             pig1.update();
             pig2.update();
@@ -86,7 +89,12 @@ public class Level1 implements Background {
             door.update();
             door2.update();
             key.update();
-            if(character.attackstate()){
+
+            if (door2.nextlevel) {
+                nextlevel();
+            }
+
+            if (character.attackstate()){
                 character.attackstateupdate();
             }
 
@@ -106,10 +114,18 @@ public class Level1 implements Background {
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
+        if (door2.nextlevel) {
+            timeline.stop();
+            Platform.runLater(() -> Main.setLevel(2));
+        }
 		character.requestFocus();
         character.setFocusTraversable(true);
 
         return scene;
+    }
+
+    public void nextlevel() {
+        timeline.stop();
+        Platform.runLater(() -> Main.setLevel(2));
     }
 }

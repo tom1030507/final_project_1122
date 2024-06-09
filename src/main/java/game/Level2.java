@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.ParallelCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
@@ -17,7 +18,8 @@ public class Level2 implements Background {
     private double scale = 0.5; // 畫面缩放比例
     private ImageView background;
     private Pane pane = new Pane();
-
+    private Timeline timeline;
+    
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level2_background.png")));
         background.setFitWidth(backgroundWidth);
@@ -48,7 +50,7 @@ public class Level2 implements Background {
         door.setTargetPlayer(character);
         door.used=false;
 
-        Door door2=new Door(100,187);
+        Door door2=new Door(100,186);
         door2.setTargetPlayer(character);
 
         Key key=new Key(2435,350);
@@ -77,21 +79,21 @@ public class Level2 implements Background {
             controller.handleKeyReleased(e.getCode());
         });
 
-        Platform shortPlatform1 = new Platform(1, 1280, 1060);
-        Platform shortPlatform2 = new Platform(1, 1440, 970);
-        Platform shortPlatform3 = new Platform(1, 1120, 950);
-        Platform shortPlatform4 = new Platform(1, 970, 860);
-        Platform shortPlatform5 = new Platform(1, 450, 720);
-        Platform shortPlatform6 = new Platform(1, 540, 610);
-        Platform shortPlatform7 = new Platform(1, 1340, 340);
-        Platform shortPlatform8 = new Platform(1, 2120, 830);
-        Platform shortPlatform9 = new Platform(1, 2170, 320);
-        Platform longPlatform1 = new Platform(2, 75, 1250);
-        Platform longPlatform2 = new Platform(2, 175, 1250);
-        Platform longPlatform3 = new Platform(2, 75, 1150);
-        Platform longPlatform4 = new Platform(2, 1160, 1240);
-        Platform longPlatform5 = new Platform(2, 600, 500);
-        Platform longPlatform6 = new Platform(2, 425, 350);
+        woodPlatform shortPlatform1 = new woodPlatform(1, 1280, 1060);
+        woodPlatform shortPlatform2 = new woodPlatform(1, 1440, 970);
+        woodPlatform shortPlatform3 = new woodPlatform(1, 1120, 950);
+        woodPlatform shortPlatform4 = new woodPlatform(1, 970, 860);
+        woodPlatform shortPlatform5 = new woodPlatform(1, 450, 720);
+        woodPlatform shortPlatform6 = new woodPlatform(1, 540, 610);
+        woodPlatform shortPlatform7 = new woodPlatform(1, 1340, 340);
+        woodPlatform shortPlatform8 = new woodPlatform(1, 2120, 830);
+        woodPlatform shortPlatform9 = new woodPlatform(1, 2170, 320);
+        woodPlatform longPlatform1 = new woodPlatform(2, 75, 1250);
+        woodPlatform longPlatform2 = new woodPlatform(2, 175, 1250);
+        woodPlatform longPlatform3 = new woodPlatform(2, 75, 1150);
+        woodPlatform longPlatform4 = new woodPlatform(2, 1160, 1240);
+        woodPlatform longPlatform5 = new woodPlatform(2, 600, 500);
+        woodPlatform longPlatform6 = new woodPlatform(2, 425, 350);
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, shortPlatform9, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
@@ -106,7 +108,7 @@ public class Level2 implements Background {
         camera.setScaleX(scope);
         camera.setScaleY(scope);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             pig1.update();
             pig2.update();
@@ -123,6 +125,11 @@ public class Level2 implements Background {
             fire4.update();
             fire5.update();
             fire6.update();
+
+            if (door2.nextlevel) {
+                nextlevel();
+            }
+            System.out.println(character.boundingBox.getCenterX() + " " +  character.boundingBox.getCenterY());
             if(character.attackstate()){
                 character.attackstateupdate();
             }
@@ -160,5 +167,10 @@ public class Level2 implements Background {
         // 设置Pane的偏移量，以确保缩放后Scene的左上角是原点
         pane.setLayoutX(-offsetX);
         pane.setLayoutY(-offsetY);
+    }
+
+    public void nextlevel() {
+        timeline.stop();
+        Platform.runLater(() -> Main.setLevel(3));
     }
 }
