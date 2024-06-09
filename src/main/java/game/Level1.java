@@ -17,16 +17,16 @@ public class Level1 implements Background {
     private Pane pane = new Pane();
 
     public Scene createScene(Stage primaryStage) {
-        background = new ImageView(new Image(getClass().getResourceAsStream("background.png")));
+        background = new ImageView(new Image(getClass().getResourceAsStream("level1_background.png")));
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
-		Character character = new Character(100, 590, 1);
+		Character character = new Character(95, 590, 1);
         CharacterController controller = new CharacterController(character, 1);
 
         Boundary boundary = new Boundary(1);
         
-        Pig pig1 = new Pig(200, 612, 300, 612);
+        Pig pig1 = new Pig(450, 612, 877, 612);
         Pig pig2 = new Pig(430, 220, 700, 220);
         Pig pig3 = new Pig(75, 270, 245, 270);
 		pig1.setTargetPlayer(character);
@@ -35,9 +35,19 @@ public class Level1 implements Background {
         Pane pig = new Pane();
         pig.getChildren().addAll(pig1, pig2, pig3);        
 
-        Cannon cannon=new Cannon(75,377,1100,377);
+        Cannon cannon=new Cannon(75,377,1170,377,-1);
         cannon.setTargetPlayer(character);
-        
+
+        Door door=new Door(100,585);
+        door.setTargetPlayer(character);
+        door.used=false;
+
+        Door door2=new Door(1140,140);
+        door2.setTargetPlayer(character);
+
+        Key key=new Key(80,167);
+        key.setTargetPlayer(character);
+
         character.setOnKeyPressed(e -> {
             controller.handleKeyPressed(e.getCode());
         });
@@ -58,7 +68,7 @@ public class Level1 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, character, pig, cannon, platform, boundary.getBoundary());
+        pane.getChildren().addAll(background, door, door2, key, character, pig, cannon, platform, boundary.getBoundary());
 
         Scene scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
@@ -73,6 +83,9 @@ public class Level1 implements Background {
             pig2.update();
             pig3.update();
             cannon.update();
+            door.update();
+            door2.update();
+            key.update();
             if(character.attackstate()){
                 character.attackstateupdate();
             }

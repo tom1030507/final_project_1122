@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class Level2 implements Background {
     private int backgroundWidth = 2600, backgroundHeight = 1400;
-    private double scope = 1; // 摄像机缩放比例
+    private double scope = 0.25; // 摄像机缩放比例
     private double scale = 0.5; // 畫面缩放比例
     private ImageView background;
     private Pane pane = new Pane();
@@ -23,16 +23,16 @@ public class Level2 implements Background {
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
-		Character character = new Character(150, 200, 2);
+		Character character = new Character(2435, 1300, 2);
         CharacterController controller = new CharacterController(character, 2);
 
         Boundary boundary = new Boundary(2);
         
-        Pig pig1 = new Pig(400, 1320, 660, 1320);
-        Pig pig2 = new Pig(600, 787, 940, 787);
-        Pig pig3 = new Pig(700, 360, 1100, 360);
-        Pig pig4 = new Pig(1600, 245, 2000, 245);
-        Pig pig5 = new Pig(1500, 1320, 2000, 1320);
+        Pig pig1 = new Pig(80, 1320, 660, 1320);
+        Pig pig2 = new Pig(590, 787, 940, 787);
+        Pig pig3 = new Pig(700, 360, 1135, 360);
+        Pig pig4 = new Pig(1550, 245, 2050, 245);
+        Pig pig5 = new Pig(1150, 1320, 2100, 1320);
 		pig1.setTargetPlayer(character);
         pig2.setTargetPlayer(character);
         pig3.setTargetPlayer(character);
@@ -41,8 +41,33 @@ public class Level2 implements Background {
         Pane pig = new Pane();
         pig.getChildren().addAll(pig1, pig2, pig3, pig4, pig5);        
 
-        Cannon cannon=new Cannon(75,377,1100,377);
+        Cannon cannon=new Cannon(2480,777,300,777,1);
         cannon.setTargetPlayer(character);
+
+        Door door=new Door(2435,1291);
+        door.setTargetPlayer(character);
+        door.used=false;
+
+        Door door2=new Door(100,187);
+        door2.setTargetPlayer(character);
+
+        Key key=new Key(2435,350);
+        key.setTargetPlayer(character);
+
+        Fire fire1=new Fire(2083, 410);
+        Fire fire2=new Fire(2116, 410);
+        Fire fire3=new Fire(2149, 410);
+        Fire fire4=new Fire(2182, 410);
+        Fire fire5=new Fire(2215, 410);
+        Fire fire6=new Fire(2248, 410);
+        fire1.setTargetPlayer(character);
+        fire2.setTargetPlayer(character);
+        fire3.setTargetPlayer(character);
+        fire4.setTargetPlayer(character);
+        fire5.setTargetPlayer(character);
+        fire6.setTargetPlayer(character);
+        Pane fire = new Pane();
+        fire.getChildren().addAll(fire1, fire2, fire3, fire4, fire5, fire6); 
         
         character.setOnKeyPressed(e -> {
             controller.handleKeyPressed(e.getCode());
@@ -69,7 +94,7 @@ public class Level2 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, character, pig, cannon, platform, boundary.getBoundary());
+        pane.getChildren().addAll(background, door, door2, key, fire, character, pig, cannon, platform, boundary.getBoundary());
         
         scalePane(pane, scale, backgroundWidth, backgroundHeight);
 
@@ -88,6 +113,15 @@ public class Level2 implements Background {
             pig4.update();
             pig5.update();
             cannon.update();
+            door.update();
+            door2.update();
+            key.update();
+            fire1.update();
+            fire2.update();
+            fire3.update();
+            fire4.update();
+            fire5.update();
+            fire6.update();
             if(character.attackstate()){
                 character.attackstateupdate();
             }

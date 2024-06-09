@@ -21,9 +21,9 @@ public class Pig extends Pane {
     int sta=0;
     double full=3,health=3,power=1;
     boolean isattcking=false;
-    double speed=1;
+    double speed=2;
     Character targetPlayer;
-    double attackRange = 100; // 攻击范围
+    double attackRange = 150; // 攻击范围
     Line blood;
     double blong=20;
 
@@ -189,34 +189,27 @@ public class Pig extends Pane {
         }
         //double distance = Math.sqrt(Math.pow(targetPlayer.getX() - imageview.getTranslateX(), 2) + Math.pow(targetPlayer.getY() - imageview.getTranslateY(), 2));
         double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
-        //System.out.println(distance+" "+targetPlayer.getX() - imageview.getTranslateX());
-        if (distance <= attackRange) {
-            if(imageview.getTranslateX()==x && imageview.getTranslateY()==y){
+        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50) {
+            if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
                 if(targetPlayer.getX() - imageview.getTranslateX()>=0){
-                    //imageview.setScaleX(-1);
                     sta=0;
                 }
                 else{
-                    //imageview.setScaleX(1);
                     sta=2;
                 }
             }
-            else if(imageview.getTranslateX()==endx && imageview.getTranslateY()==endy){
+            else if(imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy){
                 if(targetPlayer.getX() - imageview.getTranslateX()>=0){
-                    //imageview.setScaleX(-1);
                     sta=2;
                 }
                 else{
-                    //imageview.setScaleX(1);
                     sta=1;
                 }
             }
             else if(targetPlayer.getX() - imageview.getTranslateX()>=0){
-                //imageview.setScaleX(-1);
                 sta=0;
             }
             else if(targetPlayer.getX() - imageview.getTranslateX()<0){
-                //imageview.setScaleX(1);
                 sta=1;
             }
             else{
@@ -228,10 +221,10 @@ public class Pig extends Pane {
             }
         }
         else{
-            if (imageview.getTranslateX()==x && imageview.getTranslateY()==y) {
+            if (imageview.getTranslateX()<=x && imageview.getTranslateY()==y) {
                 sta=0;
             }
-            if (imageview.getTranslateX()==endx && imageview.getTranslateY()==endy) {
+            if (imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy) {
                 sta=1;
             }
         }

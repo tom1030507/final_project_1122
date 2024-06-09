@@ -17,6 +17,7 @@ public class Character extends Pane {
     Image img_attack = new Image(getClass().getResourceAsStream("01-King Human/Attack (78x58).png"));
     Image img_hit = new Image(getClass().getResourceAsStream("01-King Human/Hit (78x58).png"));
     Image img_dead = new Image(getClass().getResourceAsStream("01-King Human/Dead (78x58).png"));
+    Image img_in = new Image(getClass().getResourceAsStream("01-King Human/Door in (78x58).png"));
     ImageView imageview = new ImageView(img_idle);
     double velocityY = 0;
     double gravity = 0.2;
@@ -24,12 +25,16 @@ public class Character extends Pane {
     double full = 5,health = 5,power = 1;
     boolean isJumping = false;
     boolean isattcking = false;
-    SpriteAnimation idleAnimation,walkAnimation, attackAnimation, hitAnimation, deadAnimation;
+    SpriteAnimation idleAnimation,walkAnimation, attackAnimation, hitAnimation, deadAnimation,doorinAnimation;
     double speed = 3;
     Line blood;
     double blong = 30;
     int level;
     boolean coldtime=false;
+    boolean firetime=true;
+    boolean keyexist=false;
+    boolean press=false;
+    boolean attach=false;
 
     Boundary boundary;
     Rectangle imageBoundary, realBoundary;
@@ -73,10 +78,6 @@ public class Character extends Pane {
     public double getY(){
         return imageview.getTranslateY();
     }
-
-    // public void playWalkAnimation() {
-    //     walkAnimation.play();
-    // }
 
     boolean lastMoveLeft = false;
     boolean lastMoveRight = true;
@@ -225,6 +226,21 @@ public class Character extends Pane {
         });
         imageview.setImage(img_dead);
         deadAnimation.play();
+    }
+
+    public void action(){
+        if(keyexist && press && attach){
+            doorinAnimation = new SpriteAnimation(imageview,Duration.millis(1000),8,8,0,0,78,58);
+            doorinAnimation.setCycleCount(1);
+            imageview.setImage(img_in);
+            if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                walkAnimation.stop();
+            }
+            if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+                idleAnimation.stop();
+            }
+            doorinAnimation.play();
+        }
     }
 
     public void applyGravity() {

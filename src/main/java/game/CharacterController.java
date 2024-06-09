@@ -27,6 +27,9 @@ public class CharacterController {
                 character.attack();
             }
             attacking=true;
+        } else if (code == KeyCode.F){
+            character.press=true;
+            character.action();
         }
     }
 
@@ -39,6 +42,8 @@ public class CharacterController {
             character.stop();
         } else if (code == KeyCode.Z) {
             attacking = false;
+        }  else if (code == KeyCode.F){
+            character.press=false;
         }
     }
 
