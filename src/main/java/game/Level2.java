@@ -85,14 +85,15 @@ public class Level2 implements Background {
         Platform shortPlatform6 = new Platform(1, 540, 610);
         Platform shortPlatform7 = new Platform(1, 1340, 340);
         Platform shortPlatform8 = new Platform(1, 2120, 830);
+        Platform shortPlatform9 = new Platform(1, 2170, 320);
         Platform longPlatform1 = new Platform(2, 75, 1250);
         Platform longPlatform2 = new Platform(2, 175, 1250);
         Platform longPlatform3 = new Platform(2, 75, 1150);
         Platform longPlatform4 = new Platform(2, 1160, 1240);
         Platform longPlatform5 = new Platform(2, 600, 500);
-        Platform longPlatform6 = new Platform(2, 460, 350);
+        Platform longPlatform6 = new Platform(2, 425, 350);
         Pane platform = new Pane();
-        platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
+        platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, shortPlatform9, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
         pane.getChildren().addAll(background, door, door2, key, fire, character, pig, cannon, platform, boundary.getBoundary());
         
