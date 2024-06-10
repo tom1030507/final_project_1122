@@ -18,6 +18,7 @@ public class Fire extends Pane{
     SpriteAnimation fireAnimation;
     Character targetPlayer;
     double power=1;
+    boolean used=true;
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
@@ -46,16 +47,25 @@ public class Fire extends Pane{
     }
 
     public void update(){
-        if(targetPlayer.firetime){
-            if(targetPlayer.boundingBox.intersects(boundingBox)){
-                targetPlayer.firetime=false;
-                targetPlayer.takeDamage(power);
-                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                    targetPlayer.firetime=true;
-                }));
-                timeline.setCycleCount(1);
-                timeline.play();
+        if(used){
+            imageview.setOpacity(1);
+            realBoundary.setOpacity(1);
+            if(targetPlayer.firetime){
+                if(targetPlayer.boundingBox.intersects(boundingBox)){
+                    targetPlayer.firetime=false;
+                    targetPlayer.takeDamage(power);
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                        targetPlayer.firetime=true;
+                    }));
+                    timeline.setCycleCount(1);
+                    timeline.play();
+                }
             }
         }
+        else{
+            imageview.setOpacity(0);
+            realBoundary.setOpacity(0);
+        }
+        
     }
 }
