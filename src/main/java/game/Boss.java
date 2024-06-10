@@ -20,7 +20,7 @@ public class Boss extends Pane{
     Image img_note1 = new Image(getClass().getResourceAsStream("level3/note1.png"));
     Image img_note2 = new Image(getClass().getResourceAsStream("level3/note2.png"));
     Image img_note3 = new Image(getClass().getResourceAsStream("level3/note3.png"));
-    Image img_boom = new Image(getClass().getResourceAsStream("09-Bomb/Boooooom (52x56).png"));
+    Image img_boom = new Image(getClass().getResourceAsStream("level3/Boom.png"));
     ImageView imageview = new ImageView(img_idle);
     ArrayList<ImageView> bullet=new ArrayList<ImageView>();
     ArrayList<Rectangle> bullet_Rec=new ArrayList<Rectangle>();
@@ -31,7 +31,7 @@ public class Boss extends Pane{
     double x,y;
     double left=70,right=1190,up=160,down=270;
     SpriteAnimation bossAnimation,boomAnimation;
-    double full=1,health=1,power=1;
+    double full=10,health=10,power=1;
     boolean isattcking=false;
     double speed;
     Character targetPlayer;
@@ -159,7 +159,7 @@ public class Boss extends Pane{
                 bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 37));
                 if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                     targetPlayer.takeDamage(power);
-                    boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                    boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                     bullet.get(i).setImage(img_boom);
                     boomAnimation.setCycleCount(1);
                     boomAnimation.play();
@@ -172,7 +172,7 @@ public class Boss extends Pane{
                 }
                 if(bullet_dir.get(i)==1){
                     if(bullet.get(i).getTranslateX()<=left){
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -186,7 +186,7 @@ public class Boss extends Pane{
                 }
                 else{
                     if(bullet.get(i).getTranslateX()>=right){
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -207,7 +207,7 @@ public class Boss extends Pane{
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -235,7 +235,7 @@ public class Boss extends Pane{
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -263,7 +263,7 @@ public class Boss extends Pane{
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -276,7 +276,7 @@ public class Boss extends Pane{
                     }
                     if(bullet_dir.get(i)==1){
                         if(bullet.get(i).getTranslateX()<=left){
-                            boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                            boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                             bullet.get(i).setImage(img_boom);
                             boomAnimation.setCycleCount(1);
                             boomAnimation.play();
@@ -290,7 +290,7 @@ public class Boss extends Pane{
                     }
                     else{
                         if(bullet.get(i).getTranslateX()>=right){
-                            boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                            boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                             bullet.get(i).setImage(img_boom);
                             boomAnimation.setCycleCount(1);
                             boomAnimation.play();
@@ -321,7 +321,7 @@ public class Boss extends Pane{
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -352,7 +352,7 @@ public class Boss extends Pane{
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
@@ -364,7 +364,7 @@ public class Boss extends Pane{
                         });
                     }
                     if(bullet.get(i).getTranslateY()>=390){
-                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
