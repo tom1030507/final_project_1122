@@ -1,17 +1,20 @@
 package game;
 
+import javafx.animation.Animation;
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class Key extends Pane{
     Image img_key = new Image(getClass().getResourceAsStream("key.png"));
     ImageView imageview = new ImageView(img_key);
     Character targetPlayer;
     boolean used=true;
+    SpriteAnimation idleAnimation;
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
@@ -21,11 +24,15 @@ public class Key extends Pane{
         imageview.setTranslateY(y);
         getChildren().add(imageview);
 
-        realBoundary = new Rectangle(x, y, 30, 30);
+        idleAnimation = new SpriteAnimation(imageview,Duration.millis(1000),8,8,0,0,24,24);
+        idleAnimation.setCycleCount(Animation.INDEFINITE);
+        idleAnimation.play();
+
+        realBoundary = new Rectangle(x, y, 24, 24);
         realBoundary.setStroke(Color.BLUE); // 邊界線顏色
         realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
 
-        boundingBox = new BoundingBox(x, y, 30, 30);
+        boundingBox = new BoundingBox(x, y, 24, 24);
         getChildren().add(realBoundary);
     }
 
