@@ -40,6 +40,27 @@ public class Character extends Pane {
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox, attackBox;
 
+    public void stopanimation(){
+        if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            idleAnimation.stop();
+        }
+        if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            walkAnimation.stop();
+        }
+        if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            attackAnimation.stop();
+        }
+        if (hitAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            hitAnimation.stop();
+        }
+        if (deadAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            deadAnimation.stop();
+        }
+        if (doorinAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            doorinAnimation.stop();
+        }
+    }
+
     public Character(double x, double y, int level) {
         imageview.setTranslateX(x);
         imageview.setTranslateY(y);

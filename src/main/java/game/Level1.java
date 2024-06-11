@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.ParallelCamera;
+import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -75,7 +75,7 @@ public class Level1 implements Background {
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
-        ParallelCamera camera = new ParallelCamera();
+        PerspectiveCamera  camera = new PerspectiveCamera();
         scene.setCamera(camera);
         camera.setScaleX(scope);
         camera.setScaleY(scope);
@@ -94,6 +94,10 @@ public class Level1 implements Background {
                 nextlevel();
             }
 
+            if (controller.stop) {
+                gamestop();
+            }
+
             if (character.attackstate()){
                 character.attackstateupdate();
             }
@@ -109,19 +113,19 @@ public class Level1 implements Background {
             newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
 
             camera.setTranslateX(newCameraX);
-            camera.setTranslateY(newCameraY-1);
             camera.setTranslateY(newCameraY);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        if (door2.nextlevel) {
-            timeline.stop();
-            Platform.runLater(() -> Main.setLevel(2));
-        }
+    
 		character.requestFocus();
         character.setFocusTraversable(true);
 
         return scene;
+    }
+
+    public void gamestop(){
+        timeline.stop();
     }
 
     public void nextlevel() {

@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.BoundingBox;
@@ -39,6 +40,15 @@ public class Cannon extends Pane{
 
     Rectangle imageBoundary,realBoundary;
     BoundingBox boundingBox;
+
+    public void stopanimation(){
+        if (shootAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            shootAnimation.stop();
+        }
+        if (boomAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            boomAnimation.stop();
+        }
+    }
 
     public Cannon(double x, double y, double endx, double endy , int dirction) {
         this.x=x;

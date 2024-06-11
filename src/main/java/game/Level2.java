@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.scene.ParallelCamera;
+import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 
@@ -103,7 +103,7 @@ public class Level2 implements Background {
 
         Scene scene = new Scene(pane, 1300, 700);
 
-        ParallelCamera camera = new ParallelCamera();
+        PerspectiveCamera  camera = new PerspectiveCamera();
         scene.setCamera(camera);
         camera.setScaleX(scope);
         camera.setScaleY(scope);
@@ -129,10 +129,13 @@ public class Level2 implements Background {
             if (door2.nextlevel) {
                 nextlevel();
             }
-            System.out.println(character.boundingBox.getCenterX() + " " +  character.boundingBox.getCenterY());
             if(character.attackstate()){
                 character.attackstateupdate();
             }
+            if (controller.stop) {
+                gamestop();
+            }
+
             double newCameraX = (character.boundingBox.getCenterX() * scale - (scene.getWidth()/2*scope));
             double newCameraY = (character.boundingBox.getCenterY() * scale - (scene.getHeight()/2*scope));
             // 限制摄像机X轴范围
@@ -143,7 +146,6 @@ public class Level2 implements Background {
             newCameraY = Math.max(newCameraY, 0);
             newCameraY = Math.min(newCameraY, (backgroundHeight * scale - scene.getHeight() * scope));
             camera.setTranslateX(newCameraX);
-            camera.setTranslateY(newCameraY-1);
             camera.setTranslateY(newCameraY);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -169,6 +171,10 @@ public class Level2 implements Background {
         pane.setLayoutY(-offsetY);
     }
 
+    public void gamestop(){
+        timeline.stop();
+    }
+    
     public void nextlevel() {
         timeline.stop();
         Platform.runLater(() -> Main.setLevel(3));

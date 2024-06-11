@@ -23,6 +23,12 @@ public class Fire extends Pane{
     Rectangle realBoundary;
     BoundingBox boundingBox;
 
+    public void stopanimation(){
+        if (fireAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            fireAnimation.stop();
+        }
+    }
+
     public Fire(double x,double y){
         imageview.setTranslateX(x);
         imageview.setTranslateY(y);

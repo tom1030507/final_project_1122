@@ -19,6 +19,12 @@ public class Key extends Pane{
     Rectangle realBoundary;
     BoundingBox boundingBox;
 
+    public void stopanimation(){
+        if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            idleAnimation.stop();
+        }
+    }
+
     public Key(double x,double y){
         imageview.setTranslateX(x);
         imageview.setTranslateY(y);

@@ -41,9 +41,17 @@ public class Boss extends Pane{
     int modx;
     Fire fire1,fire2;
 
-
     Rectangle realBoundary;
     BoundingBox boundingBox;
+
+    public void stopanimation(){
+        if (bossAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            bossAnimation.stop();
+        }
+        if (boomAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            boomAnimation.stop();
+        }
+    }
 
     public Boss(double x, double y, Character targetPlayer) {
         this.x=x;

@@ -9,6 +9,7 @@ public class CharacterController {
     private boolean moveRight = false;
     private boolean moveLeft = false;
     private boolean attacking = false;
+    boolean stop=false;
 
     public CharacterController(Character character, int level) {
         this.character = character;
@@ -16,7 +17,13 @@ public class CharacterController {
     }
 
     public void handleKeyPressed(KeyCode code) {
-        if (code == KeyCode.RIGHT) {
+        if(code == KeyCode.ESCAPE){
+            stop=true;
+        }
+        else if(code == KeyCode.ENTER){
+            stop=false;
+        }
+        else if (code == KeyCode.RIGHT) {
             moveRight = true;
         } else if (code == KeyCode.LEFT) {
             moveLeft = true;

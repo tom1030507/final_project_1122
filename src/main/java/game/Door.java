@@ -1,5 +1,6 @@
 package game;
 
+import javafx.animation.Animation;
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +20,15 @@ public class Door extends Pane{
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
+
+    public void stopanimation(){
+        if (openAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            openAnimation.stop();
+        }
+        if (closeAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            closeAnimation.stop();
+        }
+    }
 
     public Door(double x,double y){
         imageview.setTranslateX(x);

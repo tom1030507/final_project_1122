@@ -27,9 +27,23 @@ public class Pig extends Pane {
     Line blood;
     double blong=20;
 
-
     Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox,attackBox;
+
+    public void stopanimation(){
+        if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            walkAnimation.stop();
+        }
+        if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            attackAnimation.stop();
+        }
+        if (hitAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            hitAnimation.stop();
+        }
+        if (deadAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            deadAnimation.stop();
+        }
+    }
 
     public Pig(double x, double y, double endx, double endy) {
         this.x=x;

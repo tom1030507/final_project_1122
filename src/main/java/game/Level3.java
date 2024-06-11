@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.ParallelCamera;
+import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 
@@ -19,6 +19,7 @@ public class Level3 implements Background {
     private ImageView background;
     private Pane pane = new Pane();
     private Scene scene;
+    Timeline timeline;
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level3/level3_background.jpg")));
@@ -96,13 +97,13 @@ public class Level3 implements Background {
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
-        ParallelCamera camera = new ParallelCamera();
+        PerspectiveCamera  camera = new PerspectiveCamera();
         scene.setCamera(camera);
         camera.setScaleX(scope);
         camera.setScaleY(scope);
 
         int[] count={0,1,1};
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             if(!boss.exist){
                 door2.imageview.setOpacity(1);
                 door2.realBoundary.setOpacity(1);
@@ -166,6 +167,10 @@ public class Level3 implements Background {
                 character.attackstateupdate();
             }
 
+            if (controller.stop) {
+                gamestop();
+            }
+
             double newCameraX = character.boundingBox.getCenterX() - (scene.getWidth()/2*scope);
             double newCameraY = character.boundingBox.getCenterY() - (scene.getHeight()/2*scope);
             // 限制摄像机X轴范围
@@ -177,7 +182,6 @@ public class Level3 implements Background {
             newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
 
             camera.setTranslateX(newCameraX);
-            camera.setTranslateY(newCameraY-1);
             camera.setTranslateY(newCameraY);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -187,6 +191,10 @@ public class Level3 implements Background {
         character.setFocusTraversable(true);
 
         return scene;
+    }
+
+    public void gamestop(){
+        timeline.stop();
     }
 
     public void setScope() {
