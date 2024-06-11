@@ -17,7 +17,6 @@ public class Main extends Application {
 	}
 
     public static void launchLevel() {
-
         switch (level) {
             case 0:
                 background = new Menu();

@@ -4,12 +4,17 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.File;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Level1 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
@@ -18,6 +23,8 @@ public class Level1 implements Background {
     private Pane pane = new Pane();
     private Scene scene;
     private Timeline timeline;
+    private MediaPlayer mediaPlayer;
+
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level1_background.png")));
@@ -75,6 +82,8 @@ public class Level1 implements Background {
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
+        playMusic();
+
         PerspectiveCamera  camera = new PerspectiveCamera();
         scene.setCamera(camera);
         camera.setScaleX(scope);
@@ -97,9 +106,9 @@ public class Level1 implements Background {
                 nextlevel();
             }
 
-            if (controller.stop) {
-                gamestop();
-            }
+            // if (controller.stop) {
+            //     gamestop();
+            // }
 
             if (character.attackstate()){
                 character.attackstateupdate();
@@ -134,5 +143,14 @@ public class Level1 implements Background {
     public void nextlevel() {
         timeline.stop();
         Platform.runLater(() -> Main.setLevel(2));
+    }
+
+    public void playMusic() {
+        String audioUriPath = new File("src/main/resources/game/level1_music.mp3").toURI().toString();
+        Media level1Audio = new Media(audioUriPath);
+    	mediaPlayer = new MediaPlayer(level1Audio);
+        mediaPlayer.setVolume(1);
+        mediaPlayer.play();
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 }

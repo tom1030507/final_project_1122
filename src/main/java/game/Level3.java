@@ -6,16 +6,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Level3 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
-    private double scope = 0.5; // 摄像机缩放比例
+    private double scope = 1; // 摄像机缩放比例
     private ImageView background;
     private Pane pane = new Pane();
     private Scene scene;

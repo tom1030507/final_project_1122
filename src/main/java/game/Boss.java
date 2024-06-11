@@ -38,6 +38,7 @@ public class Boss extends Pane{
     int dirction=1;
     int modx;
     Fire fire1,fire2;
+    double lastDamageTime = 0, currentTime = 0;
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
@@ -446,6 +447,13 @@ public class Boss extends Pane{
         if(targetPlayer.attackstate()){
             if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
+            }
+        }
+        currentTime = System.currentTimeMillis();
+        if (targetPlayer.getBoundingBox().intersects(boundingBox)) {
+            if (currentTime - lastDamageTime > 1000) {
+                lastDamageTime = currentTime;
+                targetPlayer.takeDamage(power);
             }
         }
     }
