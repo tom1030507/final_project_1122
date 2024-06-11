@@ -203,7 +203,7 @@ public class Pig extends Pane {
         }
         //double distance = Math.sqrt(Math.pow(targetPlayer.getX() - imageview.getTranslateX(), 2) + Math.pow(targetPlayer.getY() - imageview.getTranslateY(), 2));
         double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
-        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50) {
+        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.health>0) {
             if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
                 if(targetPlayer.getX() - imageview.getTranslateX()>=0){
                     sta=0;

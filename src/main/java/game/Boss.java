@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -35,8 +34,7 @@ public class Boss extends Pane{
     boolean isattcking=false;
     double speed;
     Character targetPlayer;
-    Line blood;
-    double blong=247;
+    double blong=206;
     int dirction=1;
     int modx;
     Fire fire1,fire2;
@@ -67,9 +65,9 @@ public class Boss extends Pane{
         imageview.setImage(img_attack);
         bossAnimation.play();
 
-        blood=new Line(x,y+270,x+blong,y+270);
-        blood.setStrokeWidth(6);
-        blood.setStroke(Color.RED);
+        // blood=new Line(x,y+270,x+blong,y+270);
+        // blood.setStrokeWidth(6);
+        // blood.setStroke(Color.RED);
 
         realBoundary = new Rectangle(x, y, 247, 250);
         realBoundary.setStroke(Color.BLUE); // 邊界線顏色
@@ -84,7 +82,7 @@ public class Boss extends Pane{
         fire2.setTargetPlayer(targetPlayer);
         fire2.used=false;
 
-        getChildren().addAll(fire1,fire2,blood,realBoundary);
+        getChildren().addAll(fire1,fire2,realBoundary);
     }
 
 
@@ -389,12 +387,11 @@ public class Boss extends Pane{
     }
 
     public void takeDamage(Double damage) {
+        isattcking=true;
         health -= damage;
-        blong = (health/full)*247.0;
-        blood.setEndX(x+blong);
+        blong = (health/full)*206.0;
         if (health <= 0) {
             // 敌人被击败，执行相应操作
-            blood.setOpacity(0);
             defeat();
         }
         else{
@@ -432,9 +429,7 @@ public class Boss extends Pane{
         if(count%180==0){
             if(exist){
                 double random = Math.random();
-                //System.out.println((int)(random*1000%3)+1 + " "+ (random*1000%110));
                 shoot((int)(random*1000%3)+1, (random*1000%110));
-                //shoot(3, (random*1000%110));
             }
             if(count%1800==0){
                 dirction*=-1;

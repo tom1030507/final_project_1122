@@ -81,7 +81,10 @@ public class Level1 implements Background {
         camera.setScaleY(scope);
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
-            controller.update();
+            character.applyGravity();
+            if(character.health>0){
+                controller.update();
+            }
             pig1.update();
             pig2.update();
             pig3.update();

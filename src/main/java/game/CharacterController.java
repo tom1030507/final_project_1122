@@ -17,6 +17,7 @@ public class CharacterController {
     }
 
     public void handleKeyPressed(KeyCode code) {
+        if(character.health<=0) return;
         if(code == KeyCode.ESCAPE){
             stop=true;
         }
@@ -41,6 +42,7 @@ public class CharacterController {
     }
 
     public void handleKeyReleased(KeyCode code) {
+        if(character.health<=0) return;
         if (code == KeyCode.RIGHT) {
             moveRight = false;
             character.stop();
@@ -67,7 +69,6 @@ public class CharacterController {
             lastMoveLeft = true;
             character.move_left();
         }
-
-        character.applyGravity();
+        //character.applyGravity();
     }
 }

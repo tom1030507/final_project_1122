@@ -47,18 +47,20 @@ public class Character extends Pane {
         if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.stop();
         }
-        if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            attackAnimation.stop();
-        }
         if (hitAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             hitAnimation.stop();
         }
         if (deadAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             deadAnimation.stop();
         }
-        if (doorinAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            doorinAnimation.stop();
+        if (attackAnimation == null) return;
+        if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+            attackAnimation.stop();
         }
+
+        // if (doorinAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+        //     doorinAnimation.stop();
+        // }
     }
 
     public Character(double x, double y, int level) {
@@ -204,6 +206,7 @@ public class Character extends Pane {
     }
 
     public void takeDamage(Double damage) {
+        if(health <= 0) return;
         health -= damage;
         blong = (health/full)*30.0;
         if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
@@ -222,28 +225,32 @@ public class Character extends Pane {
                 }
             });
         }
-        imageview.setImage(img_hit); // 设置攻击动画的第一帧
-        hitAnimation.play();
+        
         if (health <= 0) {
             // 敌人被击败，执行相应操作
             blood.setOpacity(0);
             defeat();
+        }
+        else{
+            imageview.setImage(img_hit); // 设置攻击动画的第一帧
+            hitAnimation.play();
         }
     }
 
     public void defeat(){
         deadAnimation = new SpriteAnimation(imageview,Duration.millis(1000),4,4,0,0,78,58);
         deadAnimation.setCycleCount(1);
-        deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
-            //getChildren().clear();
-            System.out.println("gg");
-            if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-                imageview.setImage(img_run);
-            }
-            if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-                imageview.setImage(img_idle);
-            }
-        });
+        // deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+        //     getChildren().clear();
+        //     System.out.println("gg");
+        //     if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+        //         imageview.setImage(img_run);
+        //     }
+        //     if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
+        //         imageview.setImage(img_idle);
+        //     }
+        // });
+        stopanimation();
         imageview.setImage(img_dead);
         deadAnimation.play();
     }
