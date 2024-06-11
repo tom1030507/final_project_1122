@@ -5,16 +5,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class Level2 implements Background {
     private int backgroundWidth = 2600, backgroundHeight = 1400;
@@ -23,7 +19,6 @@ public class Level2 implements Background {
     private ImageView background;
     private Pane pane = new Pane();
     private Timeline timeline;
-    private MediaPlayer mediaPlayer;
     
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level2_background.png")));
@@ -106,7 +101,7 @@ public class Level2 implements Background {
         
         scalePane(pane, scale, backgroundWidth, backgroundHeight);
 
-        playMusic();
+        VolumeController.playMusic("level2");
 
         Scene scene = new Scene(pane, 1300, 700);
 
@@ -187,14 +182,7 @@ public class Level2 implements Background {
 
     public void nextlevel() {
         timeline.stop();
+        VolumeController.stopMusic("level2");
         Platform.runLater(() -> Main.setLevel(3));
-    }
-
-    public void playMusic() {
-        String audioUriPath = new File("src/main/resources/game/level2_music.mp3").toURI().toString();
-        Media level1Audio = new Media(audioUriPath);
-    	mediaPlayer = new MediaPlayer(level1Audio);
-        mediaPlayer.play();
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 }

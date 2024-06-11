@@ -11,8 +11,6 @@ import javafx.animation.Timeline;
 import javafx.scene.PerspectiveCamera;
 import javafx.util.Duration;
 import javafx.stage.Stage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class Level3 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;

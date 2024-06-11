@@ -1,7 +1,5 @@
 package game;
 
-import java.io.File;
-
 import javafx.animation.Animation;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
@@ -12,9 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 public class Character extends Pane {
     Image img_idle = new Image(getClass().getResourceAsStream("01-King Human/Idle (78x58).png"));
     Image img_run = new Image(getClass().getResourceAsStream("01-King Human/Run (78x58).png"));
@@ -39,7 +34,6 @@ public class Character extends Pane {
     boolean keyexist=false;
     boolean press=false;
     boolean attach=false;
-    MediaPlayer mediaPlayer;
 
     Boundary boundary;
     Rectangle imageBoundary, realBoundary;
@@ -200,7 +194,7 @@ public class Character extends Pane {
         coldtime=true;
         imageview.setImage(img_attack); // 设置攻击动画的第一帧
         attackAnimation.play();
-        playAttackAudio();
+        VolumeController.playSound("attack");
     }
     
     public void attackstateupdate(){
@@ -315,13 +309,6 @@ public class Character extends Pane {
     
     public BoundingBox getBoundingBox() {
         return boundingBox;
-    }
-
-    public void playAttackAudio() {
-        String audioUriPath = new File("src/main/resources/game/swing2.mp3").toURI().toString();
-        Media attackAudio = new Media(audioUriPath);
-    	mediaPlayer = new MediaPlayer(attackAudio);
-        mediaPlayer.play();
     }
 }
 
