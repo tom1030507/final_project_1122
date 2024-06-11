@@ -16,6 +16,7 @@ public class Menu implements Background {
     private Image originButtonsImage = new Image(getClass().getResourceAsStream("button_origin.png"));
     private Image pressedButtonsImage = new Image(getClass().getResourceAsStream("button_pressed.png"));
     private Image titleImage = new Image(getClass().getResourceAsStream("title.png"));
+    private Image background = new Image(getClass().getResourceAsStream("menu.jpg"));
     private ImageView imageView;
     public Scene createScene(Stage primaryStage) {
         pane = new Pane();
@@ -24,6 +25,11 @@ public class Menu implements Background {
         double buttonWidth = originButtonsImage.getWidth();
         double buttonHeight = originButtonsImage.getHeight() / 3;
         
+        imageView = new ImageView(background);
+        imageView.setFitWidth(backgroundWidth);
+        imageView.setFitHeight(backgroundHeight);
+        pane.getChildren().add(imageView);
+
         ImageView title = new ImageView(titleImage);
         title.setLayoutX(170);
         title.setLayoutY(80);
