@@ -16,7 +16,7 @@ public class Boundary {
         for (double[] data : lineData) {
             Line line = new Line(data[0], data[1], data[2], data[3]);
             line.setStrokeWidth(2);
-            line.setStroke(Color.WHITE);
+            line.setStroke(Color.TRANSPARENT);
             boundaryGroup.getChildren().add(line);
         } 
     }

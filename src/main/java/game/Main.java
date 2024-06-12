@@ -6,17 +6,17 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static int level = 0;
+    private static int level = 1;
     private static String[] title = {"Menu", "Level 1", "Level 2", "Level 3"};
     private static Stage primaryStage;
     private static Background background;
 
 	public void start(Stage stage) {
         primaryStage = stage;
-        launchLevel();
+        launchLevel(0);
 	}
 
-    public static void launchLevel() {
+    public static void launchLevel(int level) {
         switch (level) {
             case 0:
                 background = new Menu();
@@ -43,7 +43,15 @@ public class Main extends Application {
     
     public static void setLevel(int newLevel) {
         level = newLevel;
-        launchLevel();
+        launchLevel(level);
+    }
+
+    public static void backToMenu() {
+        launchLevel(0);
+    }
+
+    public static void continueLevel() {
+        launchLevel(level);
     }
 
     public static void main(String[] args) {

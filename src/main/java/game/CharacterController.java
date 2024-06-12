@@ -17,14 +17,13 @@ public class CharacterController {
     }
 
     public void handleKeyPressed(KeyCode code) {
-        if(character.health<=0) return;
-        if(code == KeyCode.ESCAPE){
-            stop=true;
-        }
-        else if(code == KeyCode.ENTER){
-            stop=false;
-        }
-        else if (code == KeyCode.RIGHT) {
+        System.out.println(code);
+        if (character.health<=0) return;
+        if (code == KeyCode.ESCAPE){
+            stop = !stop;
+        } else if(code == KeyCode.ENTER){
+            stop = false;
+        } else if (code == KeyCode.RIGHT) {
             moveRight = true;
         } else if (code == KeyCode.LEFT) {
             moveLeft = true;
@@ -60,6 +59,9 @@ public class CharacterController {
     private boolean lastMoveLeft = false;
 
     public void update() {
+        if (stop) {
+            return;
+        }
         if (moveRight && (!boundary.isWithinBounds(character.getBoundingBox()) || lastMoveLeft)) {
             lastMoveRight = true;
             lastMoveLeft = false;
@@ -69,6 +71,9 @@ public class CharacterController {
             lastMoveLeft = true;
             character.move_left();
         }
-        //character.applyGravity();
+    }
+
+    public void setStopStatus(boolean status){
+        stop = status;
     }
 }

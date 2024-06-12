@@ -50,7 +50,16 @@ public class VolumeController {
     }
 
     public static void setTotalVolume(double volume) {
-        totalVolume = volume;
+        System.out.println(volume);
+        if (volume <= 0) {
+            totalVolume = 0;
+        } else if (volume >= 1) {
+            totalVolume = 1;
+        } else {
+            totalVolume = volume;
+        }
+        System.out.println(totalVolume);
+
         for (MediaPlayer mediaPlayer : musicMap.values()) {
             mediaPlayer.setMute(musicMute);
             mediaPlayer.setVolume(totalVolume);
@@ -72,18 +81,6 @@ public class VolumeController {
         soundMute = mute;
         for (MediaPlayer mediaPlayer : soundMap.values()) {
             mediaPlayer.setMute(mute);
-        }
-    }
-
-    public static void setVolume(double volume) {
-        totalVolume = volume;
-        for (MediaPlayer mediaPlayer : musicMap.values()) {
-            mediaPlayer.setMute(musicMute);
-            mediaPlayer.setVolume(totalVolume);
-        }
-        for (MediaPlayer mediaPlayer : soundMap.values()) {
-            mediaPlayer.setMute(soundMute);
-            mediaPlayer.setVolume(totalVolume);
         }
     }
 }

@@ -39,6 +39,7 @@ public class Boss extends Pane{
     int modx;
     Fire fire1,fire2;
     double lastDamageTime = 0, currentTime = 0;
+    Timeline timeline, timeline1, timeline2;
 
     Rectangle realBoundary;
     BoundingBox boundingBox;
@@ -88,7 +89,7 @@ public class Boss extends Pane{
 
 
     public void shoot(int type, double site) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.07), e -> {
+        timeline2 = new Timeline(new KeyFrame(Duration.seconds(0.07), e -> {
             if(exist){
                 if(type==1){
                     ImageView note = new ImageView(img_note1);
@@ -144,8 +145,8 @@ public class Boss extends Pane{
                 
             }
         }));
-        timeline.setCycleCount(1);
-        timeline.play();
+        timeline2.setCycleCount(1);
+        timeline2.play();
     }
 
     public void move(){
@@ -396,7 +397,7 @@ public class Boss extends Pane{
             defeat();
         }
         else{
-            Timeline timeline1 = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
+            timeline1 = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
                 if(dirction==1){
                     fire1.used=true;
                     fire2.used=false;
@@ -408,7 +409,7 @@ public class Boss extends Pane{
             }));
             timeline1.setCycleCount(1);
             timeline1.play();
-            Timeline timeline2 = new Timeline(new KeyFrame(Duration.seconds(1.5), e -> {
+            timeline2 = new Timeline(new KeyFrame(Duration.seconds(1.5), e -> {
                 fire1.used=false;
                 fire2.used=false;
             }));

@@ -54,7 +54,7 @@ public class Menu implements Background {
 
         startButton.setOnAction(e -> {
             timeline.stop();
-            Main.setLevel(1);
+            Main.continueLevel();
         });
 
         Button optionsButton = createMenuButton(1);
@@ -107,14 +107,9 @@ public class Menu implements Background {
         Button volumeButton = createVolumeButton();
         optionsPane.getChildren().addAll(volumnBar, volumeButton, musicSoundsButton, soundEffectsButton);
 
+        addPig();
 
-        Pig pig=new Pig(70,620,1185,620);
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
-            pig.walk(); 
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-        rootPane.getChildren().addAll(menuPane, optionsPane,pig);
+        rootPane.getChildren().addAll(menuPane, optionsPane);
 
         scene = new Scene(rootPane, backgroundWidth, backgroundHeight);
         return scene;
@@ -208,7 +203,7 @@ public class Menu implements Background {
 
         imageView.setViewport(new Rectangle2D(0, 0, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
-        button.setLayoutX(620);
+        button.setLayoutX(VolumeController.totalVolume * (endX - startX) + startX);
         button.setLayoutY(416);
 
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
@@ -226,7 +221,7 @@ public class Menu implements Background {
                 button.setLayoutX(newLayoutX);
                 button.setUserData(dragX);
             }
-            VolumeController.setVolume((newLayoutX - startX) / (endX - startX));
+            VolumeController.setTotalVolume((newLayoutX - startX) / (endX - startX));
         });
 
         button.setOnMouseReleased(e -> {
@@ -237,4 +232,13 @@ public class Menu implements Background {
         return button;
     }
 
+    private void addPig() {
+        Pig pig=new Pig(70,620,1185,620);
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+            pig.walk(); 
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        rootPane.getChildren().add(pig);
+    }
 }
