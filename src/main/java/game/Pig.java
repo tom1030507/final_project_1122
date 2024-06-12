@@ -137,7 +137,6 @@ public class Pig extends Pane {
     }
 
     public void takeDamage(Double damage) {
-        System.out.println("enatt");
         health -= damage;
         blong = (health/full)*20.0;
         if(lastMoveLeft){
@@ -187,9 +186,13 @@ public class Pig extends Pane {
         }
         if(targetPlayer.attackstate()){
             // targetPlayer.isattcking=false;
-            if(targetPlayer.attackBox.intersects(boundingBox)){
+            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
+                takeDamage(targetPlayer.power*3);
+            }
+            else if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
             }
+            
         }
         
         if(sta==0){
@@ -213,7 +216,7 @@ public class Pig extends Pane {
                 }
             }
             else if(imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy){
-                if(targetPlayer.getX() - imageview.getTranslateX()>=0){
+                if(targetPlayer.getX() - imageview.getTranslateX()>=-5){
                     sta=2;
                 }
                 else{

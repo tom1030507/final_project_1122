@@ -201,7 +201,10 @@ public class Cannon extends Pane{
         }
         move();
         if(targetPlayer.attackstate()){
-            if(targetPlayer.attackBox.intersects(boundingBox)){
+            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
+                takeDamage(targetPlayer.power*3);
+            }
+            else if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
             }
         }

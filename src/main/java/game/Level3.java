@@ -61,6 +61,9 @@ public class Level3 implements Background {
         door2.imageview.setOpacity(0);
         door2.realBoundary.setOpacity(0);
 
+        Box box=new Box(73,627,1);
+        box.setTargetPlayer(character);
+
         Boss boss=new Boss(501, 60, character);
 
         Pane fire = new Pane();
@@ -114,7 +117,7 @@ public class Level3 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, longPlatform1, longPlatform2);
 
-        pane.getChildren().addAll(background, door, door2, fire, character, boss, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane);
+        pane.getChildren().addAll(background, door, door2, fire, box, boss, character, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane);
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
@@ -150,6 +153,7 @@ public class Level3 implements Background {
                 count[0]++;
                 door.update();
                 door2.update();
+                box.update();
                 boss.update(count[0]);
                 if(boss.isattcking){
                     if(boss.health<=0){

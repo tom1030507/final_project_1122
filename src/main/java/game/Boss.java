@@ -19,6 +19,7 @@ public class Boss extends Pane{
     Image img_note1 = new Image(getClass().getResourceAsStream("level3/note1.png"));
     Image img_note2 = new Image(getClass().getResourceAsStream("level3/note2.png"));
     Image img_note3 = new Image(getClass().getResourceAsStream("level3/note3.png"));
+    Image img_red = new Image(getClass().getResourceAsStream("level3/red.png"));
     Image img_boom = new Image(getClass().getResourceAsStream("level3/Boom.png"));
     ImageView imageview = new ImageView(img_idle);
     ArrayList<ImageView> bullet=new ArrayList<ImageView>();
@@ -41,7 +42,6 @@ public class Boss extends Pane{
     double lastDamageTime = 0, currentTime = 0;
     Timeline timeline, timeline1, timeline2;
 
-    Rectangle realBoundary;
     BoundingBox boundingBox;
 
     public void stopanimation(){
@@ -67,14 +67,6 @@ public class Boss extends Pane{
         imageview.setImage(img_attack);
         bossAnimation.play();
 
-        // blood=new Line(x,y+270,x+blong,y+270);
-        // blood.setStrokeWidth(6);
-        // blood.setStroke(Color.RED);
-
-        realBoundary = new Rectangle(x, y, 247, 250);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x, y, 247, 250);
 
         fire1=new Fire(467, 243);
@@ -84,7 +76,7 @@ public class Boss extends Pane{
         fire2.setTargetPlayer(targetPlayer);
         fire2.used=false;
 
-        getChildren().addAll(fire1,fire2,realBoundary);
+        getChildren().addAll(fire1,fire2);
     }
 
 
@@ -142,7 +134,23 @@ public class Boss extends Pane{
                     bullet_ver.add(1);
                     bullet_dir.add(dirction);
                 }
-                
+                else if(type==4){
+                    ImageView note = new ImageView(img_red);
+                    note.setTranslateX(x+modx);
+                    note.setTranslateY(y+site+100);
+                    Rectangle note_rec = new Rectangle(x+modx, y + site + 100, 33, 33);
+                    note_rec.setStroke(Color.BLUE); // 邊界線顏色
+                    note_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
+                    BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 33, 33);
+                    
+                    getChildren().addAll(note,note_rec);
+                    bullet.add(note);
+                    bullet_Rec.add(note_rec);
+                    bullet_Box.add(note_box);
+                    bullet_type.add(41);
+                    bullet_ver.add(1);
+                    bullet_dir.add(dirction);
+                }
             }
         }));
         timeline2.setCycleCount(1);
@@ -385,6 +393,78 @@ public class Boss extends Pane{
                     }
                 }
             }
+            else if(bullet_type.get(i)==41 || bullet_type.get(i)==42){
+                if(bullet_type.get(i)==41){
+                    speed=2;
+                    if(bullet.get(i).getTranslateY()<=up){
+                        bullet_ver.set(i,1);
+                    }
+                    else if(bullet.get(i).getTranslateY()>=down){
+                        bullet_ver.set(i,-1);
+                    }
+                    bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
+                    bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
+                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
+                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
+                    bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
+                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                        targetPlayer.takeDamage(power);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
+                        bullet.get(i).setImage(img_boom);
+                        boomAnimation.setCycleCount(1);
+                        boomAnimation.play();
+                        bullet_type.set(i,0);
+                        getChildren().remove(bullet_Rec.get(i));
+                        int[] tmp={i};
+                        boomAnimation.setOnFinished(e -> { 
+                            getChildren().remove(bullet.get(tmp[0]));
+                        });
+                    }
+                    if(bullet_dir.get(i)==1){
+                        if(bullet.get(i).getTranslateX()<=left){
+                            bullet_type.set(i,42);
+                            bullet_ver.set(i,1);
+                        }
+                    }
+                    else{
+                        if(bullet.get(i).getTranslateX()>=right){
+                            bullet_type.set(i,42);
+                            bullet_ver.set(i,1);
+                        }
+                    }
+                }
+                else if(bullet_type.get(i)==42){
+                    speed=5;
+                    bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
+                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
+                    bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
+                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                        targetPlayer.takeDamage(power);
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
+                        bullet.get(i).setImage(img_boom);
+                        boomAnimation.setCycleCount(1);
+                        boomAnimation.play();
+                        bullet_type.set(i,0);
+                        getChildren().remove(bullet_Rec.get(i));
+                        int[] tmp={i};
+                        boomAnimation.setOnFinished(e -> { 
+                            getChildren().remove(bullet.get(tmp[0]));
+                        });
+                    }
+                    if(bullet.get(i).getTranslateY()>=390){
+                        boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
+                        bullet.get(i).setImage(img_boom);
+                        boomAnimation.setCycleCount(1);
+                        boomAnimation.play();
+                        bullet_type.set(i,0);
+                        getChildren().remove(bullet_Rec.get(i));
+                        int[] tmp={i};
+                        boomAnimation.setOnFinished(e -> { 
+                            getChildren().remove(bullet.get(tmp[0]));
+                        });
+                    }
+                }
+            }
         }
     }
 
@@ -431,7 +511,12 @@ public class Boss extends Pane{
         if(count%180==0){
             if(exist){
                 double random = Math.random();
-                shoot((int)(random*1000%3)+1, (random*1000%110));
+                if(count==180*9){
+                    shoot(4, (random*1000%110));
+                }
+                else{
+                    shoot((int)(random*1000%3)+1, (random*1000%110));
+                }
             }
             if(count%1800==0){
                 dirction*=-1;
@@ -446,7 +531,10 @@ public class Boss extends Pane{
         }
         move();
         if(targetPlayer.attackstate()){
-            if(targetPlayer.attackBox.intersects(boundingBox)){
+            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
+                takeDamage(targetPlayer.power*3);
+            }
+            else if(targetPlayer.attackBox.intersects(boundingBox)){
                 takeDamage(targetPlayer.power);
             }
         }

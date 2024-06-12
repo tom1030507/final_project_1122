@@ -66,6 +66,11 @@ public class Level2 implements Background {
         Key key=new Key(2435,350);
         key.setTargetPlayer(character);
 
+        Box box=new Box(75,722,1);
+        box.setTargetPlayer(character);
+        Box box2=new Box(75,1130,1);
+        box2.setTargetPlayer(character);
+
         Fire fire1=new Fire(2083, 410);
         Fire fire2=new Fire(2116, 410);
         Fire fire3=new Fire(2149, 410);
@@ -110,7 +115,7 @@ public class Level2 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, shortPlatform9, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, door, door2, key, fire, character, pig, cannon, platform, boundary.getBoundary(), blackScreen, pauseMenu, diedPane);
+        pane.getChildren().addAll(background, door, door2, key, fire, box, box2, character, pig, cannon, platform, boundary.getBoundary(), blackScreen, pauseMenu, diedPane);
 
         scalePane(pane, scale, backgroundWidth, backgroundHeight);
 
@@ -148,6 +153,8 @@ public class Level2 implements Background {
                 door.update();
                 door2.update();
                 key.update();
+                box.update();
+                box2.update();
                 fire1.update();
                 fire2.update();
                 fire3.update();

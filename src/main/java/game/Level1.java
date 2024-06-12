@@ -58,6 +58,9 @@ public class Level1 implements Background {
         Key key=new Key(80,167);
         key.setTargetPlayer(character);
 
+        Box box=new Box(1185,435,1);
+        box.setTargetPlayer(character);
+
         character.setOnKeyPressed(e -> {
             controller.handleKeyPressed(e.getCode());
         });
@@ -78,7 +81,7 @@ public class Level1 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        rootPane.getChildren().addAll(background, door, door2, key, character, pig, cannon, platform, boundary.getBoundary(), pauseMenu, diedPane);
+        rootPane.getChildren().addAll(background, door, door2, key, box, character, pig, cannon, platform, boundary.getBoundary(), pauseMenu, diedPane);
 
         scene = new Scene(rootPane, backgroundWidth, backgroundHeight);
 
@@ -112,6 +115,7 @@ public class Level1 implements Background {
                 door.update();
                 door2.update();
                 key.update();
+                box.update();
     
                 if (door2.nextlevel) {
                     nextlevel();
