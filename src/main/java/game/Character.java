@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 public class Character extends Pane {
     Image img_idle = new Image(getClass().getResourceAsStream("01-King Human/Idle (78x58).png"));
@@ -40,7 +39,6 @@ public class Character extends Pane {
     boolean isutl=false;
 
     Boundary boundary;
-    Rectangle imageBoundary, realBoundary,llreaRectangle;
     BoundingBox boundingBox, attackBox,llbox;
 
     public void stopAnimation(){
@@ -61,9 +59,6 @@ public class Character extends Pane {
             attackAnimation.stop();
         }
 
-        // if (doorinAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-        //     doorinAnimation.stop();
-        // }
     }
 
     public Character(double x, double y, int level) {
@@ -83,27 +78,16 @@ public class Character extends Pane {
         blood.setStrokeWidth(3);
         blood.setStroke(Color.RED);
 
-        realBoundary = new Rectangle(x + 10,y + 18, 30, 25);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x + 10, y + 18, 40, 25);
         attackBox = new BoundingBox(x, y , 78, 58);
-
-        imageBoundary = new Rectangle(x, y, 78, 58);
-        imageBoundary.setStroke(Color.RED); // 邊界線顏色
-        imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
 
         ll.setTranslateX(x+30);
         ll.setTranslateY(y-10);
         ll.setOpacity(0);
 
-        llreaRectangle = new Rectangle(x+50,y+5, 260, 55);
-        llreaRectangle.setStroke(Color.BLUE); // 邊界線顏色
-        llreaRectangle.setFill(Color.TRANSPARENT); // 內部填充顏色
         llbox = new BoundingBox(x+50, y+5 , 260, 55);
 
-        getChildren().addAll(blood,imageBoundary, realBoundary,ll,llreaRectangle);
+        getChildren().addAll(blood,ll);
 
     }
 
@@ -134,10 +118,7 @@ public class Character extends Pane {
             lastMoveLeft = false;
         }
 
-        imageBoundary.setX(imageview.getTranslateX());
         ll.setTranslateX(imageview.getTranslateX()+30);
-        realBoundary.setX(imageview.getTranslateX() + 10);
-        llreaRectangle.setX(imageview.getTranslateX() + 50);
         llbox = new BoundingBox(imageview.getTranslateX() + 50, imageview.getTranslateY() + 5, 260, 55);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
@@ -164,10 +145,7 @@ public class Character extends Pane {
             lastMoveRight = false;
         }
 
-        imageBoundary.setX(imageview.getTranslateX());
         ll.setTranslateX(imageview.getTranslateX()-250);
-        realBoundary.setX(imageview.getTranslateX() + 30);
-        llreaRectangle.setX(imageview.getTranslateX()-240);
         llbox = new BoundingBox(imageview.getTranslateX()-240, imageview.getTranslateY() + 5, 260, 55);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
@@ -334,16 +312,9 @@ public class Character extends Pane {
             }
             velocityY = 0;
         }
-
-        imageBoundary.setY(imageview.getTranslateY());
-        realBoundary.setY(imageview.getTranslateY() + 18);
         if (lastMoveRight) {
-            imageBoundary.setX(imageview.getTranslateX());
-            realBoundary.setX(imageview.getTranslateX() + 10);
             ll.setTranslateX(imageview.getTranslateX()+30);
             ll.setTranslateY(imageview.getTranslateY()-10);
-            llreaRectangle.setX(imageview.getTranslateX() + 50);
-            llreaRectangle.setY(imageview.getTranslateY() + 5);
             llbox = new BoundingBox(imageview.getTranslateX() + 50, imageview.getTranslateY() + 5, 260, 55);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
             attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
@@ -352,12 +323,8 @@ public class Character extends Pane {
             blood.setEndX(imageview.getTranslateX() + 10 + blong);
             blood.setEndY(imageview.getTranslateY() + 13);
         } else {
-            imageBoundary.setX(imageview.getTranslateX());
-            realBoundary.setX(imageview.getTranslateX() + 30);
             ll.setTranslateX(imageview.getTranslateX()-250);
             ll.setTranslateY(imageview.getTranslateY()-10);
-            llreaRectangle.setX(imageview.getTranslateX() - 240);
-            llreaRectangle.setY(imageview.getTranslateY() + 5);
             llbox = new BoundingBox(imageview.getTranslateX() - 240, imageview.getTranslateY() + 5, 260, 55);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
             attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);

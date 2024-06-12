@@ -5,8 +5,6 @@ import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Door extends Pane{
@@ -18,17 +16,7 @@ public class Door extends Pane{
     Character targetPlayer;
     boolean used=true, nextlevel = false;
 
-    Rectangle realBoundary;
     BoundingBox boundingBox;
-
-    public void stopanimation(){
-        if (openAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            openAnimation.stop();
-        }
-        if (closeAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            closeAnimation.stop();
-        }
-    }
 
     public Door(double x,double y){
         imageview.setTranslateX(x);
@@ -41,12 +29,7 @@ public class Door extends Pane{
         closeAnimation = new SpriteAnimation(imageview,Duration.millis(500),3,3,0,0,46,56);
         closeAnimation.setCycleCount(1);
 
-        realBoundary = new Rectangle(x, y, 46, 56);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x, y, 46, 56);
-        getChildren().add(realBoundary);
     }
 
     public void setTargetPlayer(Character character) {

@@ -9,8 +9,6 @@ import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Boss extends Pane{
@@ -23,7 +21,6 @@ public class Boss extends Pane{
     Image img_boom = new Image(getClass().getResourceAsStream("level3/Boom.png"));
     ImageView imageview = new ImageView(img_idle);
     ArrayList<ImageView> bullet=new ArrayList<ImageView>();
-    ArrayList<Rectangle> bullet_Rec=new ArrayList<Rectangle>();
     ArrayList<BoundingBox> bullet_Box=new ArrayList<BoundingBox>();
     ArrayList<Integer> bullet_type=new ArrayList<Integer>();
     ArrayList<Integer> bullet_ver=new ArrayList<Integer>();
@@ -43,15 +40,6 @@ public class Boss extends Pane{
     Timeline timeline, timeline1, timeline2;
 
     BoundingBox boundingBox;
-
-    public void stopanimation(){
-        if (bossAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            bossAnimation.stop();
-        }
-        if (boomAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            boomAnimation.stop();
-        }
-    }
 
     public Boss(double x, double y, Character targetPlayer) {
         this.x=x;
@@ -87,14 +75,10 @@ public class Boss extends Pane{
                     ImageView note = new ImageView(img_note1);
                     note.setTranslateX(x+modx);
                     note.setTranslateY(y+site+100);
-                    Rectangle note_rec = new Rectangle(x+modx, y + site + 100, 30, 37);
-                    note_rec.setStroke(Color.BLUE); // 邊界線顏色
-                    note_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
                     BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 30, 37);
                     
-                    getChildren().addAll(note,note_rec);
+                    getChildren().addAll(note);
                     bullet.add(note);
-                    bullet_Rec.add(note_rec);
                     bullet_Box.add(note_box);
                     bullet_type.add(1);
                     bullet_ver.add(1);
@@ -104,14 +88,10 @@ public class Boss extends Pane{
                     ImageView note = new ImageView(img_note2);
                     note.setTranslateX(x+modx);
                     note.setTranslateY(y+site+100);
-                    Rectangle note_rec = new Rectangle(x+modx, y + site + 100, 30, 48);
-                    note_rec.setStroke(Color.BLUE); // 邊界線顏色
-                    note_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
                     BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 30, 48);
                     
-                    getChildren().addAll(note,note_rec);
+                    getChildren().addAll(note);
                     bullet.add(note);
-                    bullet_Rec.add(note_rec);
                     bullet_Box.add(note_box);
                     bullet_type.add(21);
                     bullet_ver.add(1);
@@ -121,14 +101,10 @@ public class Boss extends Pane{
                     ImageView note = new ImageView(img_note3);
                     note.setTranslateX(x+modx);
                     note.setTranslateY(y+site+100);
-                    Rectangle note_rec = new Rectangle(x+modx, y + site + 100, 30, 39);
-                    note_rec.setStroke(Color.BLUE); // 邊界線顏色
-                    note_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
                     BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 30, 39);
                     
-                    getChildren().addAll(note,note_rec);
+                    getChildren().addAll(note);
                     bullet.add(note);
-                    bullet_Rec.add(note_rec);
                     bullet_Box.add(note_box);
                     bullet_type.add(31);
                     bullet_ver.add(1);
@@ -138,14 +114,10 @@ public class Boss extends Pane{
                     ImageView note = new ImageView(img_red);
                     note.setTranslateX(x+modx);
                     note.setTranslateY(y+site+100);
-                    Rectangle note_rec = new Rectangle(x+modx, y + site + 100, 33, 33);
-                    note_rec.setStroke(Color.BLUE); // 邊界線顏色
-                    note_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
                     BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 33, 33);
                     
-                    getChildren().addAll(note,note_rec);
+                    getChildren().addAll(note);
                     bullet.add(note);
-                    bullet_Rec.add(note_rec);
                     bullet_Box.add(note_box);
                     bullet_type.add(41);
                     bullet_ver.add(1);
@@ -170,8 +142,6 @@ public class Boss extends Pane{
                 }
                 bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                 bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
-                bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
-                bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                 bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 37));
                 if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                     targetPlayer.takeDamage(power);
@@ -180,7 +150,6 @@ public class Boss extends Pane{
                     boomAnimation.setCycleCount(1);
                     boomAnimation.play();
                     bullet_type.set(i,0);
-                    getChildren().remove(bullet_Rec.get(i));
                     int[] tmp={i};
                     boomAnimation.setOnFinished(e -> { 
                         getChildren().remove(bullet.get(tmp[0]));
@@ -193,7 +162,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -207,7 +175,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -219,7 +186,6 @@ public class Boss extends Pane{
                 speed=3;
                 if(bullet_type.get(i)==21){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
-                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -228,7 +194,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -247,7 +212,6 @@ public class Boss extends Pane{
                 }
                 else if(bullet_type.get(i)==22){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i));
-                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -256,7 +220,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -275,7 +238,6 @@ public class Boss extends Pane{
                 }
                 else if(bullet_type.get(i)==23){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
-                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -284,7 +246,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -297,7 +258,6 @@ public class Boss extends Pane{
                             boomAnimation.setCycleCount(1);
                             boomAnimation.play();
                             bullet_type.set(i,0);
-                            getChildren().remove(bullet_Rec.get(i));
                             int[] tmp={i};
                             boomAnimation.setOnFinished(e -> { 
                                 getChildren().remove(bullet.get(tmp[0]));
@@ -311,7 +271,6 @@ public class Boss extends Pane{
                             boomAnimation.setCycleCount(1);
                             boomAnimation.play();
                             bullet_type.set(i,0);
-                            getChildren().remove(bullet_Rec.get(i));
                             int[] tmp={i};
                             boomAnimation.setOnFinished(e -> { 
                                 getChildren().remove(bullet.get(tmp[0]));
@@ -332,8 +291,6 @@ public class Boss extends Pane{
                     }
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
-                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
-                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -342,7 +299,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -364,7 +320,6 @@ public class Boss extends Pane{
                 else if(bullet_type.get(i)==32){
                     speed=5;
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
-                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -373,7 +328,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -385,7 +339,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -404,8 +357,6 @@ public class Boss extends Pane{
                     }
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
-                    bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
-                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -414,7 +365,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -436,7 +386,6 @@ public class Boss extends Pane{
                 else if(bullet_type.get(i)==42){
                     speed=5;
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
-                    bullet_Rec.get(i).setY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
                     if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
@@ -445,7 +394,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));
@@ -457,7 +405,6 @@ public class Boss extends Pane{
                         boomAnimation.setCycleCount(1);
                         boomAnimation.play();
                         bullet_type.set(i,0);
-                        getChildren().remove(bullet_Rec.get(i));
                         int[] tmp={i};
                         boomAnimation.setOnFinished(e -> { 
                             getChildren().remove(bullet.get(tmp[0]));

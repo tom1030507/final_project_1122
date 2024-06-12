@@ -7,8 +7,6 @@ import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Fire extends Pane{
@@ -20,14 +18,7 @@ public class Fire extends Pane{
     double power=1;
     boolean used=true;
 
-    Rectangle realBoundary;
     BoundingBox boundingBox;
-
-    public void stopanimation(){
-        if (fireAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            fireAnimation.stop();
-        }
-    }
 
     public Fire(double x,double y){
         imageview.setTranslateX(x);
@@ -40,12 +31,7 @@ public class Fire extends Pane{
         imageview.setImage(img_run);
         fireAnimation.play();
 
-        realBoundary = new Rectangle(x, y+10, 33, 60);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x, y+10, 33, 69);
-        getChildren().add(realBoundary);
     }
 
     public void setTargetPlayer(Character character) {
@@ -55,7 +41,6 @@ public class Fire extends Pane{
     public void update(){
         if(used){
             imageview.setOpacity(1);
-            realBoundary.setOpacity(1);
             if(targetPlayer.firetime){
                 if(targetPlayer.boundingBox.intersects(boundingBox)){
                     targetPlayer.firetime=false;
@@ -70,7 +55,6 @@ public class Fire extends Pane{
         }
         else{
             imageview.setOpacity(0);
-            realBoundary.setOpacity(0);
         }
         
     }

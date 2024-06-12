@@ -5,8 +5,6 @@ import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Key extends Pane{
@@ -16,7 +14,6 @@ public class Key extends Pane{
     boolean used=true;
     SpriteAnimation idleAnimation;
 
-    Rectangle realBoundary;
     BoundingBox boundingBox;
 
     public void stopanimation(){
@@ -34,12 +31,7 @@ public class Key extends Pane{
         idleAnimation.setCycleCount(Animation.INDEFINITE);
         idleAnimation.play();
 
-        realBoundary = new Rectangle(x, y, 24, 24);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x, y, 24, 24);
-        getChildren().add(realBoundary);
     }
 
     public void setTargetPlayer(Character character) {

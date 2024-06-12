@@ -7,8 +7,6 @@ import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Box extends Pane{
@@ -23,9 +21,7 @@ public class Box extends Pane{
     Boolean exist=true;
     Boolean end=false;
 
-    Rectangle imageBoundary;
     BoundingBox boundingBox;
-
 
     public Box(double x, double y, int t) {
         this.x=x;
@@ -42,11 +38,6 @@ public class Box extends Pane{
         boomAnimation.setCycleCount(1);
 
         boundingBox = new BoundingBox(x, y, 28, 22);
-
-        imageBoundary = new Rectangle(x, y, 28, 22);
-        imageBoundary.setStroke(Color.RED); // 邊界線顏色
-        imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-        getChildren().addAll(imageBoundary);
     }
     
     public void setTargetPlayer(Character character) {

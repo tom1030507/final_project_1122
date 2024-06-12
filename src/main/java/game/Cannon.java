@@ -21,7 +21,6 @@ public class Cannon extends Pane{
     Image img_boom = new Image(getClass().getResourceAsStream("09-Bomb/Boooooom (52x56).png"));
     ImageView imageview = new ImageView(img_idle);
     ArrayList<ImageView> bullet=new ArrayList<ImageView>();
-    ArrayList<Rectangle> bullet_Rec=new ArrayList<Rectangle>();
     ArrayList<BoundingBox> bullet_Box=new ArrayList<BoundingBox>();
     ArrayList<Integer> bullet_avail=new ArrayList<Integer>();
     int pointer=0;
@@ -37,18 +36,7 @@ public class Cannon extends Pane{
     int dirction=1;
     int modx,modx2,modx3;
 
-
-    Rectangle imageBoundary,realBoundary;
     BoundingBox boundingBox;
-
-    public void stopanimation(){
-        if (shootAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            shootAnimation.stop();
-        }
-        if (boomAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            boomAnimation.stop();
-        }
-    }
 
     public Cannon(double x, double y, double endx, double endy , int dirction) {
         this.x=x;
@@ -80,16 +68,8 @@ public class Cannon extends Pane{
         blood.setStrokeWidth(3);
         blood.setStroke(Color.RED);
 
-        realBoundary = new Rectangle(x + modx, y + 6, 24, 19);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x + modx, y + 6, 24, 19);
-
-        imageBoundary = new Rectangle(x, y, 44, 28);
-        imageBoundary.setStroke(Color.RED); // 邊界線顏色
-        imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-        getChildren().addAll(blood,imageBoundary, realBoundary);
+        getChildren().addAll(blood);
     }
 
 
@@ -109,7 +89,6 @@ public class Cannon extends Pane{
                 
                 getChildren().addAll(ball,ball_rec);
                 bullet.add(ball);
-                bullet_Rec.add(ball_rec);
                 bullet_Box.add(ball_box);
                 bullet_avail.add(1);
             }
@@ -122,7 +101,6 @@ public class Cannon extends Pane{
         for(int i=pointer;i<bullet.size();i++){
             if(bullet_avail.get(i)==0) continue;
             bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*dirction);
-            bullet_Rec.get(i).setX(bullet.get(i).getTranslateX() + modx2-modx3 - speed*dirction);
             bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + modx2-modx3 - speed*dirction, bullet.get(i).getTranslateY()+ 7 , 13, 13));
             if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
                 targetPlayer.takeDamage(power);
@@ -131,7 +109,6 @@ public class Cannon extends Pane{
                 boomAnimation.setCycleCount(1);
                 boomAnimation.play();
                 bullet_avail.set(i,0);
-                getChildren().remove(bullet_Rec.get(i));
                 int[] tmp={i};
                 boomAnimation.setOnFinished(e -> { 
                     getChildren().remove(bullet.get(tmp[0]));
@@ -145,7 +122,6 @@ public class Cannon extends Pane{
                     boomAnimation.setCycleCount(1);
                     boomAnimation.play();
                     bullet_avail.set(i,0);
-                    getChildren().remove(bullet_Rec.get(i));
                     int[] tmp={i};
                     boomAnimation.setOnFinished(e -> { 
                         getChildren().remove(bullet.get(tmp[0]));
@@ -160,7 +136,6 @@ public class Cannon extends Pane{
                     boomAnimation.setCycleCount(1);
                     boomAnimation.play();
                     bullet_avail.set(i,0);
-                    getChildren().remove(bullet_Rec.get(i));
                     int[] tmp={i};
                     boomAnimation.setOnFinished(e -> { 
                         getChildren().remove(bullet.get(tmp[0]));

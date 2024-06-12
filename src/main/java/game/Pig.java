@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Pig extends Pane {
@@ -27,23 +26,7 @@ public class Pig extends Pane {
     Line blood;
     double blong=20;
 
-    Rectangle imageBoundary, realBoundary;
     BoundingBox boundingBox,attackBox;
-
-    public void stopanimation(){
-        if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            walkAnimation.stop();
-        }
-        if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            attackAnimation.stop();
-        }
-        if (hitAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            hitAnimation.stop();
-        }
-        if (deadAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-            deadAnimation.stop();
-        }
-    }
 
     public Pig(double x, double y, double endx, double endy) {
         this.x=x;
@@ -62,17 +45,10 @@ public class Pig extends Pane {
         blood.setStrokeWidth(3);
         blood.setStroke(Color.RED);
 
-        realBoundary = new Rectangle(x + 9, y + 10, 20, 17);
-        realBoundary.setStroke(Color.BLUE); // 邊界線顏色
-        realBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-
         boundingBox = new BoundingBox(x + 9, y + 10, 20, 17);
         attackBox = new BoundingBox(x , y , 34, 28);
 
-        imageBoundary = new Rectangle(x, y, 34, 28);
-        imageBoundary.setStroke(Color.RED); // 邊界線顏色
-        imageBoundary.setFill(Color.TRANSPARENT); // 內部填充顏色
-        getChildren().addAll(blood,imageBoundary, realBoundary);
+        getChildren().add(blood);
     }
 
     boolean lastMoveLeft = true;
@@ -91,8 +67,6 @@ public class Pig extends Pane {
             lastMoveLeft = false;
         }
 
-        imageBoundary.setX(imageview.getTranslateX());
-        realBoundary.setX(imageview.getTranslateX() + 5);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 5, imageview.getTranslateY() + 10, 20, 17);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
         
@@ -115,8 +89,6 @@ public class Pig extends Pane {
             lastMoveRight = false;
         }
 
-        imageBoundary.setX(imageview.getTranslateX());
-        realBoundary.setX(imageview.getTranslateX() + 9);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 9, imageview.getTranslateY() + 10, 20, 17);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
         

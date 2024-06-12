@@ -59,7 +59,6 @@ public class Level3 implements Background {
         Door door2=new Door(604,253);
         door2.setTargetPlayer(character);
         door2.imageview.setOpacity(0);
-        door2.realBoundary.setOpacity(0);
 
         Box box=new Box(73,627,1);
         box.setTargetPlayer(character);
@@ -147,7 +146,6 @@ public class Level3 implements Background {
             if (!controller.stop || character.health <= 0) {
                 if(!boss.exist){
                     door2.imageview.setOpacity(1);
-                    door2.realBoundary.setOpacity(1);
                     character.keyexist=true;
                 }
                 count[0]++;
