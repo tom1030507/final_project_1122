@@ -244,6 +244,25 @@ public class Pig extends Pane {
         }
     }
 
+    public void walk(){
+        blood.setOpacity(0);
+        if(sta==0){
+            move_right();
+        }
+        else if(sta==1){
+            move_left();
+        }
+        else if(sta==2){
+            move_stop();
+        }
+        if (imageview.getTranslateX()<=x && imageview.getTranslateY()==y) {
+            sta=0;
+        }
+        if (imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy) {
+            sta=1;
+        }
+    }
+
     public void attack() {
         if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
             attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 5, 5, 0, 0, 34, 28);

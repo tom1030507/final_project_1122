@@ -1,9 +1,12 @@
 package game;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +25,8 @@ public class Menu implements Background {
     private Image volumeBarImage = new Image(getClass().getResourceAsStream("volume_bar.png"));
     private Image volumeButtonImage = new Image(getClass().getResourceAsStream("volume_buttons.png"));
     private ImageView imageView;
+    Timeline timeline;
+
     public Scene createScene(Stage primaryStage) {
         VolumeController.playMusic("level1");
         imageView = new ImageView(backgroundImage);
@@ -48,6 +53,7 @@ public class Menu implements Background {
         startButton.setLayoutY(255);
 
         startButton.setOnAction(e -> {
+            timeline.stop();
             Main.setLevel(1);
         });
 
@@ -101,7 +107,14 @@ public class Menu implements Background {
         Button volumeButton = createVolumeButton();
         optionsPane.getChildren().addAll(volumnBar, volumeButton, musicSoundsButton, soundEffectsButton);
 
-        rootPane.getChildren().addAll(menuPane, optionsPane);
+
+        Pig pig=new Pig(70,620,1185,620);
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+            pig.walk(); 
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        rootPane.getChildren().addAll(menuPane, optionsPane,pig);
 
         scene = new Scene(rootPane, backgroundWidth, backgroundHeight);
         return scene;

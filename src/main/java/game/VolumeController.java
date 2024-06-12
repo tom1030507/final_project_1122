@@ -1,10 +1,11 @@
 package game;
 
+
 import java.util.HashMap;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
+import javafx.util.Duration;
 public class VolumeController {
     public static double totalVolume = 0.5;
     public static boolean musicMute = false;
@@ -33,6 +34,8 @@ public class VolumeController {
     public static void playSound(String soundName) {
         MediaPlayer mediaPlayer = soundMap.get(soundName);
         mediaPlayer.setVolume(totalVolume);
+        mediaPlayer.setCycleCount(1);
+        mediaPlayer.seek(Duration.ZERO);
         mediaPlayer.play();
     }
 
