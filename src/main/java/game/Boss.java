@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class Boss extends Pane{
     Image img_idle = new Image(getClass().getResourceAsStream("level3/boss1.png"));
@@ -51,7 +49,6 @@ public class Boss extends Pane{
         imageview.setTranslateY(y);
         getChildren().add(imageview);
 
-        // 初始化动画
         bossAnimation = new SpriteAnimation(imageview,Duration.millis(2000),5,5,0,0,247,250);
         bossAnimation.setCycleCount(Animation.INDEFINITE);
         imageview.setImage(img_attack);
@@ -455,6 +452,9 @@ public class Boss extends Pane{
     boolean exist=true;
 
     public void update(int count) {
+        if (!exist){
+            return;
+        }
         fire1.update();
         fire2.update();
         if(count%180==0){

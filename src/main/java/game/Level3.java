@@ -19,13 +19,13 @@ import javafx.stage.Stage;
 
 public class Level3 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
-    private double scope = 1; // 摄像机缩放比例
+    private double scope = 0.5; 
     private ImageView background;
-    private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
+    private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane(), victoryPane = new Pane();
     private Scene scene;
     Timeline timeline;
     CharacterController controller;
-    private boolean isPaused = false;
+    private boolean isPaused = false, isVictory = false;
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level3/level3_background.jpg")));
@@ -57,10 +57,6 @@ public class Level3 implements Background {
         door.setTargetPlayer(character);
         door.used=false;
 
-        Door door2=new Door(604,253);
-        door2.setTargetPlayer(character);
-        door2.imageview.setOpacity(0);
-
         Box box=new Box(73,627,1);
         box.setTargetPlayer(character);
 
@@ -81,7 +77,6 @@ public class Level3 implements Background {
             boss_right.add(fire2);
             fire.getChildren().addAll(fire1,fire2);
         }
-
         int[] x1={133,73,106,139,1186};
         int[] x2={1083,1120,1153,1186,73};
         int[] y={285,485,485,485,385};
@@ -119,7 +114,7 @@ public class Level3 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, longPlatform1, longPlatform2);
 
-        pane.getChildren().addAll(background, door, door2, fire, box, boss, character, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane);
+        pane.getChildren().addAll(background, door, fire, box, boss, character, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane, victoryPane);
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
@@ -130,6 +125,7 @@ public class Level3 implements Background {
 
         initPauseOverlay();
         initDiedLayout();
+        initVictoryLayout();
 
         int[] count={0,1,1};
         //boolean exist=true;
@@ -147,14 +143,13 @@ public class Level3 implements Background {
                 pause.play();
             }
             
+            if (!boss.exist && !isVictory) {
+                showVictory();
+            }
+
             if (!controller.stop || character.health <= 0) {
-                if(!boss.exist){
-                    door2.imageview.setOpacity(1);
-                    character.keyexist=true;
-                }
                 count[0]++;
                 door.update();
-                door2.update();
                 box.update();
                 boss.update(count[0]);
                 if(boss.isattcking){
@@ -220,11 +215,10 @@ public class Level3 implements Background {
     
                 double newCameraX = character.boundingBox.getCenterX() - (scene.getWidth()/2*scope);
                 double newCameraY = character.boundingBox.getCenterY() - (scene.getHeight()/2*scope);
-                // 限制摄像机X轴范围
+
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
-    
-                // 限制摄像机Y轴范围
+
                 newCameraY = Math.max(newCameraY, 0);
                 newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
     
@@ -239,7 +233,6 @@ public class Level3 implements Background {
 
 		character.requestFocus();
         character.setFocusTraversable(true);
-
         return scene;
     }
 
@@ -468,5 +461,52 @@ public class Level3 implements Background {
         });
         
         return button;
+    }
+
+    private void initVictoryLayout() {
+        ImageView victoryImage = new ImageView(new Image(getClass().getResourceAsStream("game_completed.png")));
+        victoryImage.setLayoutX(200);
+        victoryImage.setLayoutY(40);
+        Rectangle victoryScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
+        Button homeButton = createUrmButton(2);
+        homeButton.setLayoutX(240);
+        homeButton.setLayoutY(180);
+        homeButton.setScaleX(1);
+        homeButton.setScaleY(1);
+        homeButton.setOnAction(e -> {
+            timeline.stop();
+            VolumeController.stopMusic("level3");
+            Main.initializeLevel();
+            Main.backToMenu();
+        });
+
+        Button restartButton = createUrmButton(1);
+        restartButton.setLayoutX(347);
+        restartButton.setLayoutY(180);
+        restartButton.setScaleX(1);
+        restartButton.setScaleY(1);
+
+        restartButton.setOnAction(e -> {
+            timeline.stop();
+            VolumeController.stopMusic("level3");
+            Main.setLevel(3);
+        });
+
+        victoryPane.getChildren().addAll(victoryScreen, victoryImage, homeButton, restartButton);
+        victoryPane.setVisible(false);
+    }
+
+    private void showVictory() {
+        if (scene != null) {
+            PerspectiveCamera camera = (PerspectiveCamera) scene.getCamera();
+            double cameraX = camera.getTranslateX();
+            double cameraY = camera.getTranslateY();
+            victoryPane.setLayoutX(cameraX + (scene.getWidth() - victoryPane.getWidth()) / 2);
+            victoryPane.setLayoutY(cameraY + (scene.getHeight() - victoryPane.getHeight()) / 2);
+        }
+        isVictory = true;
+        victoryPane.setVisible(true);
+        timeline.stop();
+        VolumeController.playMusic("victory");
     }
 }

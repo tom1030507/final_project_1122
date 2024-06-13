@@ -1,6 +1,5 @@
 package game;
 
-import javafx.animation.Animation;
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

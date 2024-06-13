@@ -22,7 +22,7 @@ public class Character extends Pane {
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
-    double full = 5,health = 5,power = 1;
+    double full = 5,health = 5,power = 10;
     boolean isJumping = false;
     boolean isattcking = false;
     SpriteAnimation idleAnimation,walkAnimation, attackAnimation, lightAnimation, hitAnimation, deadAnimation,doorinAnimation;

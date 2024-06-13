@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.BoundingBox;
@@ -60,7 +59,6 @@ public class Cannon extends Pane{
             modx3=-5;
         }
 
-        // 初始化动画
         shootAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,44,28);
         shootAnimation.setCycleCount(1);
 

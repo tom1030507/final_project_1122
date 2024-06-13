@@ -54,6 +54,10 @@ public class Main extends Application {
         launchLevel(level);
     }
 
+    public static void initializeLevel() {
+        level = 1;
+    }
+
     public static void main(String[] args) {
       	launch(args);
     }

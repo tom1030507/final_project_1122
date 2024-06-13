@@ -20,8 +20,6 @@ public class CharacterController {
         if (character.health<=0) return;
         if (code == KeyCode.ESCAPE){
             stop = !stop;
-        } else if(code == KeyCode.ENTER){
-            stop = false;
         } else if (code == KeyCode.RIGHT) {
             moveRight = true;
         } else if (code == KeyCode.LEFT) {

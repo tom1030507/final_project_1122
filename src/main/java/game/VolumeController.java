@@ -17,6 +17,7 @@ public class VolumeController {
             put("level1", new MediaPlayer(new Media(getClass().getResource("level1_music.mp3").toString())));
             put("level2", new MediaPlayer(new Media(getClass().getResource("level2_music.mp3").toString())));
             put("level3", new MediaPlayer(new Media(getClass().getResource("level3_music.mp3").toString())));
+            put("victory", new MediaPlayer(new Media(getClass().getResource("victory.mp3").toString())));
         }
     };
 
@@ -26,14 +27,12 @@ public class VolumeController {
             put("jump", new MediaPlayer(new Media(getClass().getResource("jump.mp3").toString())));
             put("lightning", new MediaPlayer(new Media(getClass().getResource("lightning.mp3").toString())));
             put("die", new MediaPlayer(new Media(getClass().getResource("die.mp3").toString())));
-            put("victory", new MediaPlayer(new Media(getClass().getResource("victory.mp3").toString())));
             put("mouse_click", new MediaPlayer(new Media(getClass().getResource("mouse_click.mp3").toString())));
             put("get_box", new MediaPlayer(new Media(getClass().getResource("getbox_music.mp3").toString())));
         }
     };
 
     public static void playMusic(String musicName) {
-        System.out.println(musicName + " " + totalVolume);
         MediaPlayer mediaPlayer = musicMap.get(musicName);
         mediaPlayer.setVolume(totalVolume);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
