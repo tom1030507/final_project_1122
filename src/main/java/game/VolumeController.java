@@ -7,9 +7,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 public class VolumeController {
-    public static double totalVolume = 0.5;
-    public static boolean musicMute = false;
-    public static boolean soundMute = false;
+    private static double totalVolume = 0.5;
+    private static boolean musicMute = false;
+    private static boolean soundMute = false;
 
     private static HashMap<String, MediaPlayer> musicMap = new HashMap<>() {
         {
@@ -92,5 +92,17 @@ public class VolumeController {
         for (MediaPlayer mediaPlayer : soundMap.values()) {
             mediaPlayer.setMute(mute);
         }
+    }
+
+    public static double getTotalVolume() {
+        return totalVolume;
+    }
+
+    public static boolean getMusicMute() {
+        return musicMute;
+    }
+
+    public static boolean getSoundMute() {
+        return soundMute;
     }
 }

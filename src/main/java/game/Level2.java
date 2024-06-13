@@ -24,9 +24,9 @@ public class Level2 implements Background {
     private double scale = 0.5;
     private ImageView background;
     private Scene scene;
-    private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
+    private Pane rootPane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
     private CharacterController controller;
-    private Timeline timeline;
+    private Timeline timeLine;
     private Rectangle blackScreen;
     private boolean isPaused = false;
     
@@ -35,7 +35,7 @@ public class Level2 implements Background {
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
-        Pane bloodpane = new Pane();
+        Pane bloodPane = new Pane();
         ImageView blood1= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/1.png")));
         ImageView newblood4= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/4.png")));
         ImageView newblood= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/blood.png")));
@@ -47,9 +47,9 @@ public class Level2 implements Background {
         for(int i=1;i<4;i++){
             ImageView blood3= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/3.png")));
             blood3.setTranslateX(32*i);
-            bloodpane.getChildren().add(blood3);
+            bloodPane.getChildren().add(blood3);
         }
-        bloodpane.getChildren().addAll(blood1,newblood4,newblood);
+        bloodPane.getChildren().addAll(blood1,newblood4,newblood);
 
 		Character character = new Character(2435, 1300, 2);
         controller = new CharacterController(character, 2);
@@ -74,7 +74,7 @@ public class Level2 implements Background {
 
         Door door=new Door(2435,1291);
         door.setTargetPlayer(character);
-        door.setused(false);
+        door.setUsed(false);
 
         Door door2=new Door(100,186);
         door2.setTargetPlayer(character);
@@ -138,13 +138,13 @@ public class Level2 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, shortPlatform9, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, door, door2, key, fire, box, box2, box3, box4, character, pig, cannon, platform, boundary.getBoundary(), bloodpane, blackScreen, pauseMenu, diedPane);
+        rootPane.getChildren().addAll(background, door, door2, key, fire, box, box2, box3, box4, character, pig, cannon, platform, boundary.getBoundary(), bloodPane, blackScreen, pauseMenu, diedPane);
 
-        scalePane(pane, scale, backgroundWidth, backgroundHeight);
+        scalePane(rootPane, scale, backgroundWidth, backgroundHeight);
 
         VolumeController.playMusic("level2");
 
-        scene = new Scene(pane, 1300, 700);
+        scene = new Scene(rootPane, 1300, 700);
 
         initPauseOverlay();
         initDiedLayout();
@@ -154,7 +154,7 @@ public class Level2 implements Background {
         camera.setScaleX(scope);
         camera.setScaleY(scope);
 
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+        timeLine = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             togglePause();
             if (character.getHealth() <= 0 && !isPaused) {
@@ -189,24 +189,24 @@ public class Level2 implements Background {
                 fire6.update();
                 if(character.getIsAttacked()){
                     if(character.getHealth()<=0){
-                        pane.getChildren().remove(bloodpane);
+                        rootPane.getChildren().remove(bloodPane);
                     }
                     newblood.setFitWidth(character.getHealthBarLength());
                     character.setIsAttacked(false);
                 }
     
-                if (door2.getnextlevel()) {
-                    nextlevel();
+                if (door2.getNextLevel()) {
+                    nextLevel();
                 }
-                if(character.attackstate()){
-                    character.attackstateupdate();
+                if(character.attackState()){
+                    character.attackStateUpdate();
                 }
                 if (controller.isStopped) {
-                    gamestop();
+                    gameStop();
                 }
     
-                double newCameraX = (character.getcharacterBoundingBox().getCenterX() * scale - (scene.getWidth()/2*scope));
-                double newCameraY = (character.getcharacterBoundingBox().getCenterY() * scale - (scene.getHeight()/2*scope));
+                double newCameraX = (character.getCharacterBoundingBox().getCenterX() * scale - (scene.getWidth()/2*scope));
+                double newCameraY = (character.getCharacterBoundingBox().getCenterY() * scale - (scene.getHeight()/2*scope));
             
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, (backgroundWidth * scale - scene.getWidth() * scope));
@@ -215,12 +215,12 @@ public class Level2 implements Background {
                 newCameraY = Math.min(newCameraY, (backgroundHeight * scale - scene.getHeight() * scope));
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
-                bloodpane.setTranslateX(newCameraX * 2);
-                bloodpane.setTranslateY(newCameraY * 2);
+                bloodPane.setTranslateX(newCameraX * 2);
+                bloodPane.setTranslateY(newCameraY * 2);
             }
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        timeLine.setCycleCount(Timeline.INDEFINITE);
+        timeLine.play();
 
 		character.requestFocus();
         character.setFocusTraversable(true);
@@ -239,12 +239,12 @@ public class Level2 implements Background {
         pane.setLayoutY(-offsetY);
     }
 
-    public void gamestop(){
-        timeline.stop();
+    public void gameStop(){
+        timeLine.stop();
     }
 
-    public void nextlevel() {
-        timeline.stop();
+    public void nextLevel() {
+        timeLine.stop();
         VolumeController.stopMusic("level2");
         Platform.runLater(() -> Main.setLevel(3));
     }
@@ -255,25 +255,25 @@ public class Level2 implements Background {
         diedImage.setLayoutX(200);
         diedImage.setLayoutY(60);
         Rectangle diedScreen = new Rectangle(scene.getWidth() * scale, scene.getHeight() * scale, Color.rgb(0, 0, 0, 0.7));
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(225);
         homeButton.setLayoutY(160);
         homeButton.setScaleX(0.7);
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level2");
             Main.backToMenu();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(330);
         restartButton.setLayoutY(160);
         restartButton.setScaleX(0.7);
         restartButton.setScaleY(0.7);
 
         restartButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level2");
             VolumeController.stopSound("die");
             Main.setLevel(2);
@@ -301,12 +301,12 @@ public class Level2 implements Background {
         pauseMenuImage.setLayoutX(0);
         pauseMenuImage.setLayoutY(-10);
         Rectangle pauseScreen = new Rectangle(scene.getWidth() * scope, scene.getHeight() * scope, Color.rgb(0, 0, 0, 0));
-        Button musicButton = createSoundsButton(0, VolumeController.musicMute);
+        Button musicButton = createSoundsButton(0, VolumeController.getMusicMute());
         musicButton.setLayoutX(125);
         musicButton.setLayoutY(75);
         musicButton.setScaleX(0.7);
         musicButton.setScaleY(0.7);
-        Button soundButton = createSoundsButton(1, VolumeController.soundMute);
+        Button soundButton = createSoundsButton(1, VolumeController.getSoundMute());
         soundButton.setLayoutX(125);
         soundButton.setLayoutY(110);
         soundButton.setScaleX(0.7);
@@ -320,18 +320,18 @@ public class Level2 implements Background {
         Button volumeButton = createVolumeButton();
         volumeButton.setScaleX(0.7);
         volumeButton.setScaleY(0.7);
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(12);
         homeButton.setLayoutY(223);
         homeButton.setScaleX(0.7);
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level2");
             Main.backToMenu();
         });
 
-        Button playButton = createUrmButton(0);
+        Button playButton = createTypeButton(0);
         playButton.setLayoutX(66);
         playButton.setLayoutY(223);
         playButton.setScaleX(0.7);
@@ -342,19 +342,19 @@ public class Level2 implements Background {
             togglePause();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(120);
         restartButton.setLayoutY(223);
         restartButton.setScaleX(0.7);
         restartButton.setScaleY(0.7);
 
         restartButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level2");
             Main.setLevel(2);
         });
 
-        Button invisibleButton = createUrmButton(1);
+        Button invisibleButton = createTypeButton(1);
         invisibleButton.setLayoutX(340);
         invisibleButton.setLayoutY(253);
         invisibleButton.setScaleX(0.7);
@@ -428,7 +428,7 @@ public class Level2 implements Background {
 
         imageView.setViewport(new Rectangle2D(0, 0, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
-        button.setLayoutX(VolumeController.totalVolume * (endX - startX) + startX);
+        button.setLayoutX(VolumeController.getTotalVolume() * (endX - startX) + startX);
         button.setLayoutY(186);
 
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
@@ -457,12 +457,12 @@ public class Level2 implements Background {
         return button;
     }
 
-    private Button createUrmButton(int type) {
-        Image urmButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
+    private Button createTypeButton(int type) {
+        Image typeButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
         Button button = new Button();
-        double buttonWidth = urmButtonsImage.getWidth() / 3;
-        double buttonHeight = urmButtonsImage.getHeight() / 3;
-        ImageView imageView = new ImageView(urmButtonsImage);
+        double buttonWidth = typeButtonsImage.getWidth() / 3;
+        double buttonHeight = typeButtonsImage.getHeight() / 3;
+        ImageView imageView = new ImageView(typeButtonsImage);
         imageView.setViewport(new Rectangle2D(0, type * buttonHeight, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
 

@@ -21,9 +21,9 @@ public class Level3 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
     private double scope = 0.5; 
     private ImageView background;
-    private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane(), victoryPane = new Pane();
+    private Pane rootPane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane(), victoryPane = new Pane();
     private Scene scene;
-    private Timeline timeline;
+    private Timeline timeLine;
     private CharacterController controller;
     private boolean isPaused = false, isVictory = false;
 
@@ -71,7 +71,7 @@ public class Level3 implements Background {
         
         Door door=new Door(604,591);
         door.setTargetPlayer(character);
-        door.setused(false);
+        door.setUsed(false);
 
         Box box=new Box(73,627,2);
         box.setTargetPlayer(character);
@@ -88,11 +88,11 @@ public class Level3 implements Background {
         for(int i=0;i<10;i++){
             Fire fire1=new Fire(170+33*i, 243);
             fire1.setTargetPlayer(character);
-            fire1.setused(false);
+            fire1.setUsed(false);
             boss_left.add(fire1);
             Fire fire2=new Fire(750+33*i, 243);
             fire2.setTargetPlayer(character);
-            fire2.setused(true);
+            fire2.setUsed(true);
             boss_right.add(fire2);
             fire.getChildren().addAll(fire1,fire2);
         }
@@ -108,7 +108,7 @@ public class Level3 implements Background {
             stair1.add(fire1);
             Fire fire2=new Fire(x2[i], y[i]);
             fire2.setTargetPlayer(character);
-            fire2.setused(false);
+            fire2.setUsed(false);
             stair2.add(fire2);
             fire.getChildren().addAll(fire1,fire2);
         }
@@ -133,9 +133,9 @@ public class Level3 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, longPlatform1, longPlatform2);
 
-        pane.getChildren().addAll(background, door, fire, box, box2, boss, character, platform, boundary.getBoundary(), bossbloodpane, bloodpane, pauseMenu, diedPane, victoryPane);
+        rootPane.getChildren().addAll(background, door, fire, box, box2, boss, character, platform, boundary.getBoundary(), bossbloodpane, bloodpane, pauseMenu, diedPane, victoryPane);
 
-        scene = new Scene(pane, backgroundWidth, backgroundHeight);
+        scene = new Scene(rootPane, backgroundWidth, backgroundHeight);
 
         PerspectiveCamera camera = new PerspectiveCamera();
         scene.setCamera(camera);
@@ -147,7 +147,7 @@ public class Level3 implements Background {
         initVictoryLayout();
 
         int[] count={0,1,1};
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
+        timeLine = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             character.applyGravity();
             controller.update();
             togglePause();
@@ -161,7 +161,7 @@ public class Level3 implements Background {
                 pause.play();
             }
             
-            if (!boss.getexist() && !isVictory) {
+            if (!boss.getBossExists() && !isVictory) {
                 showVictory();
             }
 
@@ -171,17 +171,17 @@ public class Level3 implements Background {
                 box.update();
                 box2.update();
                 boss.update(count[0]);
-                if(boss.getisattacking()){
-                    if(boss.gethealth()<=0){
-                        pane.getChildren().remove(bossbloodpane);
+                if(boss.getIsAttacking()){
+                    if(boss.getHealth()<=0){
+                        rootPane.getChildren().remove(bossbloodpane);
                     }
-                    blood.setFitWidth(boss.getblong());
-                    boss.setisattacking(false);
+                    blood.setFitWidth(boss.getBloodLength());
+                    boss.setisAttacking(false);
                 }
 
                 if(character.getIsAttacked()){
                     if(character.getHealth()<=0){
-                        pane.getChildren().remove(bloodpane);
+                        rootPane.getChildren().remove(bloodpane);
                     }
                     newblood.setFitWidth(character.getHealthBarLength());
                     character.setIsAttacked(false);
@@ -192,14 +192,14 @@ public class Level3 implements Background {
                     count[1]*=-1;
                     if(count[1]==1){
                         for(int i=0;i<10;i++){
-                            boss_left.get(i).setused(false);
-                            boss_right.get(i).setused(true);
+                            boss_left.get(i).setUsed(false);
+                            boss_right.get(i).setUsed(true);
                         }
                     }
                     else{
                         for(int i=0;i<10;i++){
-                            boss_left.get(i).setused(true);
-                            boss_right.get(i).setused(false);
+                            boss_left.get(i).setUsed(true);
+                            boss_right.get(i).setUsed(false);
                         }
                     }
                 }
@@ -208,22 +208,22 @@ public class Level3 implements Background {
                     count[2]*=-1;
                     if(count[2]==1){
                         for(int i=0;i<5;i++){
-                            stair1.get(i).setused(true);
-                            stair2.get(i).setused(false);
+                            stair1.get(i).setUsed(true);
+                            stair2.get(i).setUsed(false);
                         }
                     }
                     else{
                         for(int i=0;i<5;i++){
-                            stair1.get(i).setused(false);
-                            stair2.get(i).setused(true);
+                            stair1.get(i).setUsed(false);
+                            stair2.get(i).setUsed(true);
                         }
                     }
                 }
     
                 if(count[0]%180==120){
                     for(int i=0;i<5;i++){
-                        stair1.get(i).setused(false);
-                        stair2.get(i).setused(false);
+                        stair1.get(i).setUsed(false);
+                        stair2.get(i).setUsed(false);
                     }
                 }
     
@@ -236,12 +236,12 @@ public class Level3 implements Background {
                     }
                 }
     
-                if(character.attackstate()){
-                    character.attackstateupdate();
+                if(character.attackState()){
+                    character.attackStateUpdate();
                 }
     
-                double newCameraX = character.getcharacterBoundingBox().getCenterX() - (scene.getWidth()/2*scope);
-                double newCameraY = character.getcharacterBoundingBox().getCenterY() - (scene.getHeight()/2*scope);
+                double newCameraX = character.getCharacterBoundingBox().getCenterX() - (scene.getWidth()/2*scope);
+                double newCameraY = character.getCharacterBoundingBox().getCenterY() - (scene.getHeight()/2*scope);
 
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
@@ -257,16 +257,16 @@ public class Level3 implements Background {
                 bloodpane.setTranslateY(newCameraY);
             }
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        timeLine.setCycleCount(Timeline.INDEFINITE);
+        timeLine.play();
 
 		character.requestFocus();
         character.setFocusTraversable(true);
         return scene;
     }
 
-    public void gamestop(){
-        timeline.stop();
+    public void gameStop(){
+        timeLine.stop();
     }
 
     public void setScope() {
@@ -279,25 +279,25 @@ public class Level3 implements Background {
         diedImage.setLayoutX(200);
         diedImage.setLayoutY(60);
         Rectangle diedScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(225);
         homeButton.setLayoutY(160);
         homeButton.setScaleX(0.7);
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             Main.backToMenu();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(330);
         restartButton.setLayoutY(160);
         restartButton.setScaleX(0.7);
         restartButton.setScaleY(0.7);
 
         restartButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             VolumeController.stopSound("die");
             Main.setLevel(3);
@@ -325,12 +325,12 @@ public class Level3 implements Background {
         pauseMenuImage.setLayoutX(220);
         pauseMenuImage.setLayoutY(20);
         Rectangle pauseScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
-        Button musicButton = createSoundsButton(0, VolumeController.musicMute);
+        Button musicButton = createSoundsButton(0, VolumeController.getMusicMute());
         musicButton.setLayoutX(345);
         musicButton.setLayoutY(105);
         musicButton.setScaleX(0.7);
         musicButton.setScaleY(0.7);
-        Button soundButton = createSoundsButton(1, VolumeController.soundMute);
+        Button soundButton = createSoundsButton(1, VolumeController.getSoundMute());
         soundButton.setLayoutX(345);
         soundButton.setLayoutY(140);
         soundButton.setScaleX(0.7);
@@ -344,18 +344,18 @@ public class Level3 implements Background {
         Button volumeButton = createVolumeButton();
         volumeButton.setScaleX(0.7);
         volumeButton.setScaleY(0.7);
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(232);
         homeButton.setLayoutY(253);
         homeButton.setScaleX(0.7);
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             Main.backToMenu();
         });
 
-        Button playButton = createUrmButton(0);
+        Button playButton = createTypeButton(0);
         playButton.setLayoutX(286);
         playButton.setLayoutY(253);
         playButton.setScaleX(0.7);
@@ -366,14 +366,14 @@ public class Level3 implements Background {
             togglePause();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(340);
         restartButton.setLayoutY(253);
         restartButton.setScaleX(0.7);
         restartButton.setScaleY(0.7);
 
         restartButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             Main.setLevel(3);
         });
@@ -440,7 +440,7 @@ public class Level3 implements Background {
 
         imageView.setViewport(new Rectangle2D(0, 0, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
-        button.setLayoutX(VolumeController.totalVolume * (endX - startX) + startX);
+        button.setLayoutX(VolumeController.getTotalVolume()* (endX - startX) + startX);
         button.setLayoutY(216);
 
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
@@ -469,12 +469,12 @@ public class Level3 implements Background {
         return button;
     }
 
-    private Button createUrmButton(int type) {
-        Image urmButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
+    private Button createTypeButton(int type) {
+        Image typeButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
         Button button = new Button();
-        double buttonWidth = urmButtonsImage.getWidth() / 3;
-        double buttonHeight = urmButtonsImage.getHeight() / 3;
-        ImageView imageView = new ImageView(urmButtonsImage);
+        double buttonWidth = typeButtonsImage.getWidth() / 3;
+        double buttonHeight = typeButtonsImage.getHeight() / 3;
+        ImageView imageView = new ImageView(typeButtonsImage);
         imageView.setViewport(new Rectangle2D(0, type * buttonHeight, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
 
@@ -497,26 +497,26 @@ public class Level3 implements Background {
         victoryImage.setLayoutX(200);
         victoryImage.setLayoutY(40);
         Rectangle victoryScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(240);
         homeButton.setLayoutY(180);
         homeButton.setScaleX(1);
         homeButton.setScaleY(1);
         homeButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             Main.initializeLevel();
             Main.backToMenu();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(347);
         restartButton.setLayoutY(180);
         restartButton.setScaleX(1);
         restartButton.setScaleY(1);
 
         restartButton.setOnAction(e -> {
-            timeline.stop();
+            timeLine.stop();
             VolumeController.stopMusic("level3");
             Main.setLevel(3);
         });
@@ -535,7 +535,7 @@ public class Level3 implements Background {
         }
         isVictory = true;
         victoryPane.setVisible(true);
-        timeline.stop();
+        timeLine.stop();
         VolumeController.playMusic("victory");
     }
 }

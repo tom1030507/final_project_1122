@@ -93,11 +93,11 @@ public class Menu implements Background {
         optionsPane.setVisible(false);
         optionsPane.getChildren().addAll(homeButton);
 
-        Button musicSoundsButton = createSoundsButton(0, VolumeController.musicMute);
+        Button musicSoundsButton = createSoundsButton(0, VolumeController.getMusicMute());
         musicSoundsButton.setLayoutX(680);
         musicSoundsButton.setLayoutY(243);
 
-        Button soundEffectsButton = createSoundsButton(1, VolumeController.soundMute);
+        Button soundEffectsButton = createSoundsButton(1, VolumeController.getSoundMute());
         soundEffectsButton.setLayoutX(680);
         soundEffectsButton.setLayoutY(293);
 
@@ -207,7 +207,7 @@ public class Menu implements Background {
 
         imageView.setViewport(new Rectangle2D(0, 0, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
-        button.setLayoutX(VolumeController.totalVolume * (endX - startX) + startX);
+        button.setLayoutX(VolumeController.getTotalVolume() * (endX - startX) + startX);
         button.setLayoutY(416);
 
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");

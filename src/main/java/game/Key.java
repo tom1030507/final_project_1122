@@ -8,25 +8,25 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Key extends Pane{
-    private Image img_key = new Image(getClass().getResourceAsStream("key.png"));
-    private ImageView imageview = new ImageView(img_key);
+    private Image keyImage = new Image(getClass().getResourceAsStream("key.png"));
+    private ImageView imageView = new ImageView(keyImage);
     private Character targetPlayer;
-    private boolean used=true;
+    private boolean used = true;
     private SpriteAnimation idleAnimation;
     private BoundingBox boundingBox;
 
-    public void stopanimation(){
+    public void stopAnimation(){
         if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             idleAnimation.stop();
         }
     }
 
     public Key(double x,double y){
-        imageview.setTranslateX(x);
-        imageview.setTranslateY(y);
-        getChildren().add(imageview);
+        imageView.setTranslateX(x);
+        imageView.setTranslateY(y);
+        getChildren().add(imageView);
 
-        idleAnimation = new SpriteAnimation(imageview,Duration.millis(1000),8,8,0,0,24,24);
+        idleAnimation = new SpriteAnimation(imageView,Duration.millis(1000),8,8,0,0,24,24);
         idleAnimation.setCycleCount(Animation.INDEFINITE);
         idleAnimation.play();
 
@@ -39,7 +39,7 @@ public class Key extends Pane{
 
     public void update(){
         if(used){
-            if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
+            if(targetPlayer.getCharacterBoundingBox().intersects(boundingBox)){
                 targetPlayer.setKeyExists(true);
                 used=false;
                 getChildren().clear();

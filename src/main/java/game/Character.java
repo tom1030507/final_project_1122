@@ -214,12 +214,12 @@ public class Character extends Pane {
         VolumeController.playSound("lightning");
     }
     
-    public void attackstateupdate(){
+    public void attackStateUpdate(){
         isAttcking=false;
         isUsingLight=false;
     }
 
-    public boolean attackstate(){
+    public boolean attackState(){
         return isAttcking;
     }
 
@@ -305,10 +305,6 @@ public class Character extends Pane {
             attackBoundingBox = new BoundingBox(characterImageView.getTranslateX(), characterImageView.getTranslateY() , 78, 58);
         }
     }
-    
-    public BoundingBox getCharacterBoundingBox() {
-        return characterBoundingBox;
-    }
 
     public double getHealth() {
         return health;
@@ -366,15 +362,15 @@ public class Character extends Pane {
         return isUsingLight;
     }
 
-    public BoundingBox getcharacterBoundingBox(){
+    public BoundingBox getCharacterBoundingBox(){
         return characterBoundingBox;
     } 
 
-    public BoundingBox getlightBoundingBox(){
+    public BoundingBox getLightBoundingBox(){
         return lightBoundingBox;
     } 
 
-    public BoundingBox getattackBoundingBox(){
+    public BoundingBox getAttackBoundingBox(){
         return attackBoundingBox;
     } 
 }

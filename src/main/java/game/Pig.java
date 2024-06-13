@@ -10,39 +10,39 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class Pig extends Pane {
-    private Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
-    private Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
-    private Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
-    private Image img_dead = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
-    private ImageView imageview = new ImageView(img_run);
-    private double x,y,endx,endy;
+    private Image runImage = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
+    private Image attackImage = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
+    private Image hitImage = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
+    private Image deadImage = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
+    private ImageView imageView = new ImageView(runImage);
+    private double x, y, endX, endY;
     private SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
-    private int sta=0;
-    private double full=3,health=3,power=1;
-    private boolean isattcking=false;
-    private double speed=2;
+    private int status = 0;
+    private double fullHealth = 3, health = 3, power = 1;
+    private boolean iSattacking = false;
+    private double speed = 2;
     private Character targetPlayer;
     private double attackRange = 150;
     private Line blood;
-    private double blong=20;
-    private BoundingBox boundingBox,attackBox;
+    private double bloodLength = 20;
+    private BoundingBox boundingBox, attackBox;
     private boolean lastMoveLeft = true;
     private boolean lastMoveRight = false;
-    private boolean exist=true;
+    private boolean isExists = true;
 
     public Pig(double x, double y, double endx, double endy) {
         this.x=x;
         this.y=y;
-        this.endx=endx;
-        this.endy=endy;
-        imageview.setTranslateX(x);
-        imageview.setTranslateY(y);
-        getChildren().add(imageview);
+        this.endX=endx;
+        this.endY=endy;
+        imageView.setTranslateX(x);
+        imageView.setTranslateY(y);
+        getChildren().add(imageView);
 
-        walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),6,6,0,0,34,28);
+        walkAnimation = new SpriteAnimation(imageView,Duration.millis(500),6,6,0,0,34,28);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
-        blood=new Line(x+9,y+7,x+9+blong,y+7);
+        blood=new Line(x+9,y+7,x+9+bloodLength,y+7);
         blood.setStrokeWidth(3);
         blood.setStroke(Color.RED);
 
@@ -52,51 +52,51 @@ public class Pig extends Pane {
         getChildren().add(blood);
     }
     
-    public void move_right() {
-        imageview.setScaleX(-1);
+    public void moveRight() {
+        imageView.setScaleX(-1);
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() + speed);
+        imageView.setTranslateX(imageView.getTranslateX() + speed);
 
         lastMoveRight = true;
         if (lastMoveLeft) { 
-            imageview.setTranslateX(imageview.getTranslateX());
+            imageView.setTranslateX(imageView.getTranslateX());
             lastMoveLeft = false;
         }
 
-        boundingBox = new BoundingBox(imageview.getTranslateX() + 5, imageview.getTranslateY() + 10, 20, 17);
-        attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
+        boundingBox = new BoundingBox(imageView.getTranslateX() + 5, imageView.getTranslateY() + 10, 20, 17);
+        attackBox = new BoundingBox(imageView.getTranslateX(), imageView.getTranslateY(), 34, 28);
         
-        blood.setStartX(imageview.getTranslateX() + 5);
-        blood.setStartY(imageview.getTranslateY() + 7);
-        blood.setEndX(imageview.getTranslateX() + 5 + blong);
-        blood.setEndY(imageview.getTranslateY() + 7);
+        blood.setStartX(imageView.getTranslateX() + 5);
+        blood.setStartY(imageView.getTranslateY() + 7);
+        blood.setEndX(imageView.getTranslateX() + 5 + bloodLength);
+        blood.setEndY(imageView.getTranslateY() + 7);
     }
 
-    public void move_left() {
-        imageview.setScaleX(1);
+    public void moveLeft() {
+        imageView.setScaleX(1);
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.play();
         }
-        imageview.setTranslateX(imageview.getTranslateX() - speed);
+        imageView.setTranslateX(imageView.getTranslateX() - speed);
 
         lastMoveLeft = true;
         if (lastMoveRight) {
-            imageview.setTranslateX(imageview.getTranslateX());
+            imageView.setTranslateX(imageView.getTranslateX());
             lastMoveRight = false;
         }
 
-        boundingBox = new BoundingBox(imageview.getTranslateX() + 9, imageview.getTranslateY() + 10, 20, 17);
-        attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY(), 34, 28);
+        boundingBox = new BoundingBox(imageView.getTranslateX() + 9, imageView.getTranslateY() + 10, 20, 17);
+        attackBox = new BoundingBox(imageView.getTranslateX(), imageView.getTranslateY(), 34, 28);
         
-        blood.setStartX(imageview.getTranslateX() + 9);
-        blood.setStartY(imageview.getTranslateY() + 7);
-        blood.setEndX(imageview.getTranslateX() + 9 + blong);
-        blood.setEndY(imageview.getTranslateY() + 7);
+        blood.setStartX(imageView.getTranslateX() + 9);
+        blood.setStartY(imageView.getTranslateY() + 7);
+        blood.setEndX(imageView.getTranslateX() + 9 + bloodLength);
+        blood.setEndY(imageView.getTranslateY() + 7);
     }
 
-    public void move_stop() {
+    public void moveStop() {
         if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             walkAnimation.stop();
         }
@@ -108,27 +108,27 @@ public class Pig extends Pane {
 
     public void takeDamage(Double damage) {
         health -= damage;
-        blong = (health/full)*20.0;
+        bloodLength = (health/fullHealth)*20.0;
         if(lastMoveLeft){
-            blood.setStartX(imageview.getTranslateX() + 9);
-            blood.setStartY(imageview.getTranslateY() + 7);
-            blood.setEndX(imageview.getTranslateX() + 9 + blong);
-            blood.setEndY(imageview.getTranslateY() + 7);
+            blood.setStartX(imageView.getTranslateX() + 9);
+            blood.setStartY(imageView.getTranslateY() + 7);
+            blood.setEndX(imageView.getTranslateX() + 9 + bloodLength);
+            blood.setEndY(imageView.getTranslateY() + 7);
         }
         else{
-            blood.setStartX(imageview.getTranslateX() + 5);
-            blood.setStartY(imageview.getTranslateY() + 7);
-            blood.setEndX(imageview.getTranslateX() + 5 + blong);
-            blood.setEndY(imageview.getTranslateY() + 7);
+            blood.setStartX(imageView.getTranslateX() + 5);
+            blood.setStartY(imageView.getTranslateY() + 7);
+            blood.setEndX(imageView.getTranslateX() + 5 + bloodLength);
+            blood.setEndY(imageView.getTranslateY() + 7);
         }
         if (hitAnimation == null) { 
-            hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 34, 28);
+            hitAnimation = new SpriteAnimation(imageView, Duration.millis(500), 2, 2, 0, 0, 34, 28);
             hitAnimation.setCycleCount(1);
             hitAnimation.setOnFinished(e -> { 
-                imageview.setImage(img_run);
+                imageView.setImage(runImage);
             });
         }
-        imageview.setImage(img_hit); 
+        imageView.setImage(hitImage); 
         hitAnimation.play();
         if (health <= 0) {
             blood.setOpacity(0);
@@ -137,115 +137,115 @@ public class Pig extends Pane {
     }
 
     public void defeat(){
-        deadAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,34,28);
+        deadAnimation = new SpriteAnimation(imageView,Duration.millis(500),4,4,0,0,34,28);
         deadAnimation.setCycleCount(1);
         deadAnimation.setOnFinished(e -> {
             getChildren().clear();
         });
-        imageview.setImage(img_dead);
+        imageView.setImage(deadImage);
         deadAnimation.play();
-        exist=false;
+        isExists=false;
     }
 
     public void update() {
-        if (!exist){
+        if (!isExists){
             return;
         }
-        if(targetPlayer.attackstate()){
-            if(targetPlayer.getlightBoundingBox().intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+        if(targetPlayer.attackState()){
+            if(targetPlayer.getLightBoundingBox().intersects(boundingBox) && targetPlayer.getIsUsingLight()){
                 takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.getattackBoundingBox().intersects(boundingBox)){
+            else if(targetPlayer.getAttackBoundingBox().intersects(boundingBox)){
                 takeDamage(targetPlayer.getPower());
             }
             
         }
         
-        if(sta==0){
-            move_right();
+        if(status==0){
+            moveRight();
         }
-        else if(sta==1){
-            move_left();
+        else if(status==1){
+            moveLeft();
         }
-        else if(sta==2){
-            move_stop();
+        else if(status==2){
+            moveStop();
         }
-        double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
-        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.getHealth()>0) {
-            if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
-                if(targetPlayer.getX() - imageview.getTranslateX()>=0){
-                    sta=0;
+        double distance =Math.abs(targetPlayer.getX() - imageView.getTranslateX());
+        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageView.getTranslateY())<=50 && targetPlayer.getHealth()>0) {
+            if(imageView.getTranslateX()<=x && imageView.getTranslateY()==y){
+                if(targetPlayer.getX() - imageView.getTranslateX()>=0){
+                    status=0;
                 }
                 else{
-                    sta=2;
+                    status=2;
                 }
             }
-            else if(imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy){
-                if(targetPlayer.getX() - imageview.getTranslateX()>=-5){
-                    sta=2;
+            else if(imageView.getTranslateX()>=endX && imageView.getTranslateY()==endY){
+                if(targetPlayer.getX() - imageView.getTranslateX()>=-5){
+                    status=2;
                 }
                 else{
-                    sta=1;
+                    status=1;
                 }
             }
-            else if(targetPlayer.getX() - imageview.getTranslateX()>=0){
-                sta=0;
+            else if(targetPlayer.getX() - imageView.getTranslateX()>=0){
+                status=0;
             }
-            else if(targetPlayer.getX() - imageview.getTranslateX()<0){
-                sta=1;
+            else if(targetPlayer.getX() - imageView.getTranslateX()<0){
+                status=1;
             }
             else{
-                sta=2;
+                status=2;
             }
-            if(!isattcking){
-                isattcking=true;
+            if(!iSattacking){
+                iSattacking=true;
                 attack();
             }
         }
         else{
-            if (imageview.getTranslateX()<=x && imageview.getTranslateY()==y) {
-                sta=0;
+            if (imageView.getTranslateX()<=x && imageView.getTranslateY()==y) {
+                status=0;
             }
-            if (imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy) {
-                sta=1;
+            if (imageView.getTranslateX()>=endX && imageView.getTranslateY()==endY) {
+                status=1;
             }
         }
     }
 
     public void walk(){
         blood.setOpacity(0);
-        if(sta==0){
-            move_right();
+        if(status==0){
+            moveRight();
         }
-        else if(sta==1){
-            move_left();
+        else if(status==1){
+            moveLeft();
         }
-        else if(sta==2){
-            move_stop();
+        else if(status==2){
+            moveStop();
         }
-        if (imageview.getTranslateX()<=x && imageview.getTranslateY()==y) {
-            sta=0;
+        if (imageView.getTranslateX()<=x && imageView.getTranslateY()==y) {
+            status=0;
         }
-        if (imageview.getTranslateX()>=endx && imageview.getTranslateY()==endy) {
-            sta=1;
+        if (imageView.getTranslateX()>=endX && imageView.getTranslateY()==endY) {
+            status=1;
         }
     }
 
     public void attack() {
         if (attackAnimation == null) {
-            attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 5, 5, 0, 0, 34, 28);
+            attackAnimation = new SpriteAnimation(imageView, Duration.millis(500), 5, 5, 0, 0, 34, 28);
             attackAnimation.setCycleCount(1); 
             attackAnimation.setOnFinished(e -> {
-                imageview.setImage(img_run);
-                isattcking=false;
+                imageView.setImage(runImage);
+                iSattacking=false;
             });
         }
         if(targetPlayer.getHealth()<=0){
             return;
         }
-        imageview.setImage(img_attack);
+        imageView.setImage(attackImage);
         attackAnimation.play();
-        if(targetPlayer.getcharacterBoundingBox().intersects(attackBox)){
+        if(targetPlayer.getCharacterBoundingBox().intersects(attackBox)){
             targetPlayer.takeDamage(power);
         }
     }

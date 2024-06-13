@@ -7,23 +7,23 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Door extends Pane{
-    private Image img_idle = new Image(getClass().getResourceAsStream("11-Door/Idle.png"));
-    private Image img_open = new Image(getClass().getResourceAsStream("11-Door/Opening (46x56).png"));
-    private Image img_close = new Image(getClass().getResourceAsStream("11-Door/Closiong (46x56).png"));
-    private ImageView imageview = new ImageView(img_idle);
+    private Image idleImage = new Image(getClass().getResourceAsStream("11-Door/Idle.png"));
+    private Image openedImage = new Image(getClass().getResourceAsStream("11-Door/Opening (46x56).png"));
+    private Image closedImage = new Image(getClass().getResourceAsStream("11-Door/Closiong (46x56).png"));
+    private ImageView imageView = new ImageView(idleImage);
     private SpriteAnimation openAnimation,closeAnimation;
     private Character targetPlayer;
-    private boolean used=true, nextlevel = false;
+    private boolean used = true, nextlevel = false;
     private BoundingBox boundingBox;
 
     public Door(double x,double y){
-        imageview.setTranslateX(x);
-        imageview.setTranslateY(y);
-        getChildren().add(imageview);
+        imageView.setTranslateX(x);
+        imageView.setTranslateY(y);
+        getChildren().add(imageView);
 
-        openAnimation = new SpriteAnimation(imageview,Duration.millis(500),5,5,0,0,46,56);
+        openAnimation = new SpriteAnimation(imageView,Duration.millis(500),5,5,0,0,46,56);
         openAnimation.setCycleCount(1);
-        closeAnimation = new SpriteAnimation(imageview,Duration.millis(500),3,3,0,0,46,56);
+        closeAnimation = new SpriteAnimation(imageView,Duration.millis(500),3,3,0,0,46,56);
         closeAnimation.setCycleCount(1);
 
         boundingBox = new BoundingBox(x, y, 46, 56);
@@ -37,10 +37,10 @@ public class Door extends Pane{
         used=false;
         targetPlayer.setIsAttached(false);
         VolumeController.playSound("open_door");
-        imageview.setImage(img_open);
+        imageView.setImage(openedImage);
         openAnimation.play();
         openAnimation.setOnFinished(e -> { 
-            imageview.setImage(img_close);
+            imageView.setImage(closedImage);
             closeAnimation.play();
             closeAnimation.setOnFinished(e2 -> {
                 nextlevel = true;
@@ -50,7 +50,7 @@ public class Door extends Pane{
 
     public void update(){
         if(used && targetPlayer.getKeyExists()){
-            if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
+            if(targetPlayer.getCharacterBoundingBox().intersects(boundingBox)){
                 targetPlayer.setIsAttached(true);
                 if(targetPlayer.getIsPressed()){
                     action();
@@ -62,11 +62,11 @@ public class Door extends Pane{
         }
     }
 
-    public void setused(boolean used){
+    public void setUsed(boolean used){
         this.used=used;
     }
 
-    public boolean getnextlevel(){
+    public boolean getNextLevel(){
         return nextlevel;
     }
 }

@@ -67,7 +67,7 @@ public class Level1 implements Background {
 
         Door door=new Door(100,584);
         door.setTargetPlayer(character);
-        door.setused(false);
+        door.setUsed(false);
 
         Door door2=new Door(1140,139);
         door2.setTargetPlayer(character);
@@ -147,20 +147,20 @@ public class Level1 implements Background {
                     character.setIsAttacked(false);
                 }
     
-                if (door2.getnextlevel()) {
-                    nextlevel();
+                if (door2.getNextLevel()) {
+                    nextLevel();
                 }
     
                 if (controller.isStopped) {
-                    gamestop();
+                    gameStop();
                 }
     
-                if (character.attackstate()){
-                    character.attackstateupdate();
+                if (character.attackState()){
+                    character.attackStateUpdate();
                 }
     
-                double newCameraX = character.getcharacterBoundingBox().getCenterX() - (scene.getWidth()/2*scope);
-                double newCameraY = character.getcharacterBoundingBox().getCenterY() - (scene.getHeight()/2*scope);
+                double newCameraX = character.getCharacterBoundingBox().getCenterX() - (scene.getWidth()/2*scope);
+                double newCameraY = character.getCharacterBoundingBox().getCenterY() - (scene.getHeight()/2*scope);
                 
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
@@ -185,11 +185,11 @@ public class Level1 implements Background {
         return scene;
     }
 
-    public void gamestop(){
+    public void gameStop(){
         timeline.stop();
     }
 
-    public void nextlevel() {
+    public void nextLevel() {
         timeline.stop();
         VolumeController.stopMusic("level1");
         Platform.runLater(() -> Main.setLevel(2));
@@ -201,7 +201,7 @@ public class Level1 implements Background {
         diedImage.setLayoutX(200);
         diedImage.setLayoutY(60);
         Rectangle diedScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(225);
         homeButton.setLayoutY(160);
         homeButton.setScaleX(0.7);
@@ -212,7 +212,7 @@ public class Level1 implements Background {
             Main.setLevel(0); 
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(330);
         restartButton.setLayoutY(160);
         restartButton.setScaleX(0.7);
@@ -247,12 +247,12 @@ public class Level1 implements Background {
         pauseMenuImage.setLayoutX(220);
         pauseMenuImage.setLayoutY(20);
         Rectangle pauseScreen = new Rectangle(scene.getWidth(), scene.getHeight(), Color.rgb(0, 0, 0, 0.7));
-        Button musicButton = createSoundsButton(0, VolumeController.musicMute);
+        Button musicButton = createSoundsButton(0, VolumeController.getMusicMute());
         musicButton.setLayoutX(345);
         musicButton.setLayoutY(105);
         musicButton.setScaleX(0.7);
         musicButton.setScaleY(0.7);
-        Button soundButton = createSoundsButton(1, VolumeController.soundMute);
+        Button soundButton = createSoundsButton(1, VolumeController.getSoundMute());
         soundButton.setLayoutX(345);
         soundButton.setLayoutY(140);
         soundButton.setScaleX(0.7);
@@ -266,7 +266,7 @@ public class Level1 implements Background {
         Button volumeButton = createVolumeButton();
         volumeButton.setScaleX(0.7);
         volumeButton.setScaleY(0.7);
-        Button homeButton = createUrmButton(2);
+        Button homeButton = createTypeButton(2);
         homeButton.setLayoutX(232);
         homeButton.setLayoutY(253);
         homeButton.setScaleX(0.7);
@@ -277,7 +277,7 @@ public class Level1 implements Background {
             Main.backToMenu();
         });
 
-        Button playButton = createUrmButton(0);
+        Button playButton = createTypeButton(0);
         playButton.setLayoutX(286);
         playButton.setLayoutY(253);
         playButton.setScaleX(0.7);
@@ -288,7 +288,7 @@ public class Level1 implements Background {
             togglePause();
         });
 
-        Button restartButton = createUrmButton(1);
+        Button restartButton = createTypeButton(1);
         restartButton.setLayoutX(340);
         restartButton.setLayoutY(253);
         restartButton.setScaleX(0.7);
@@ -362,7 +362,7 @@ public class Level1 implements Background {
 
         imageView.setViewport(new Rectangle2D(0, 0, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
-        button.setLayoutX(VolumeController.totalVolume * (endX - startX) + startX);
+        button.setLayoutX(VolumeController.getTotalVolume() * (endX - startX) + startX);
         button.setLayoutY(216);
 
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
@@ -391,12 +391,12 @@ public class Level1 implements Background {
         return button;
     }
 
-    private Button createUrmButton(int type) {
-        Image urmButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
+    private Button createTypeButton(int type) {
+        Image typeButtonsImage = new Image(getClass().getResourceAsStream("urm_buttons.png"));
         Button button = new Button();
-        double buttonWidth = urmButtonsImage.getWidth() / 3;
-        double buttonHeight = urmButtonsImage.getHeight() / 3;
-        ImageView imageView = new ImageView(urmButtonsImage);
+        double buttonWidth = typeButtonsImage.getWidth() / 3;
+        double buttonHeight = typeButtonsImage.getHeight() / 3;
+        ImageView imageView = new ImageView(typeButtonsImage);
         imageView.setViewport(new Rectangle2D(0, type * buttonHeight, buttonWidth, buttonHeight));
         button.setGraphic(imageView);
 

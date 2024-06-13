@@ -10,24 +10,23 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Fire extends Pane{
-    private Image img_fire = new Image(getClass().getResourceAsStream("fire.png"));
-    private Image img_run = new Image(getClass().getResourceAsStream("fire_run.png"));
-    private ImageView imageview = new ImageView(img_fire);
+    private Image fireImage = new Image(getClass().getResourceAsStream("fire.png"));
+    private Image runImage = new Image(getClass().getResourceAsStream("fire_run.png"));
+    private ImageView imageView = new ImageView(fireImage);
     private SpriteAnimation fireAnimation;
     private Character targetPlayer;
-    private double power=1;
-    private boolean used=true;
+    private double power = 1;
+    private boolean used = true;
     private BoundingBox boundingBox;
 
     public Fire(double x,double y){
-        imageview.setTranslateX(x);
-        imageview.setTranslateY(y);
-        getChildren().add(imageview);
+        imageView.setTranslateX(x);
+        imageView.setTranslateY(y);
+        getChildren().add(imageView);
 
-
-        fireAnimation = new SpriteAnimation(imageview,Duration.millis(1000),8,8,0,0,33,69);
+        fireAnimation = new SpriteAnimation(imageView,Duration.millis(1000),8,8,0,0,33,69);
         fireAnimation.setCycleCount(Animation.INDEFINITE);
-        imageview.setImage(img_run);
+        imageView.setImage(runImage);
         fireAnimation.play();
 
         boundingBox = new BoundingBox(x, y+10, 33, 69);
@@ -39,9 +38,9 @@ public class Fire extends Pane{
 
     public void update(){
         if(used){
-            imageview.setOpacity(1);
+            imageView.setOpacity(1);
             if(targetPlayer.getFireTime()){
-                if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
+                if(targetPlayer.getCharacterBoundingBox().intersects(boundingBox)){
                     targetPlayer.setFireTime(false);
                     targetPlayer.takeDamage(power);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -53,12 +52,12 @@ public class Fire extends Pane{
             }
         }
         else{
-            imageview.setOpacity(0);
+            imageView.setOpacity(0);
         }
         
     }
 
-    public void setused(boolean used){
+    public void setUsed(boolean used){
         this.used=used;
     }
 }
