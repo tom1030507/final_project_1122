@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static int level = 2;
+    private static int level = 1;
     private static String[] title = {"Menu", "Level 1", "Level 2", "Level 3"};
     private static Stage primaryStage;
     private static Background background;

@@ -74,7 +74,7 @@ public class Level2 implements Background {
 
         Door door=new Door(2435,1291);
         door.setTargetPlayer(character);
-        door.used=false;
+        door.setused(false);
 
         Door door2=new Door(100,186);
         door2.setTargetPlayer(character);
@@ -157,7 +157,7 @@ public class Level2 implements Background {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             togglePause();
-            if (character.health <= 0 && !isPaused) {
+            if (character.getHealth() <= 0 && !isPaused) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
                     showDiedLayout();
@@ -166,7 +166,7 @@ public class Level2 implements Background {
                 isPaused = true;
                 pause.play();
             }
-            if (!controller.stop || character.health <= 0) {
+            if (!controller.isStopped || character.getHealth() <= 0) {
                 character.applyGravity();
                 pig1.update();
                 pig2.update();
@@ -187,26 +187,26 @@ public class Level2 implements Background {
                 fire4.update();
                 fire5.update();
                 fire6.update();
-                if(character.isattacked){
-                    if(character.health<=0){
+                if(character.getIsAttacked()){
+                    if(character.getHealth()<=0){
                         pane.getChildren().remove(bloodpane);
                     }
-                    newblood.setFitWidth(character.blong);
-                    character.isattacked=false;
+                    newblood.setFitWidth(character.getHealthBarLength());
+                    character.setIsAttacked(false);
                 }
     
-                if (door2.nextlevel) {
+                if (door2.getnextlevel()) {
                     nextlevel();
                 }
                 if(character.attackstate()){
                     character.attackstateupdate();
                 }
-                if (controller.stop) {
+                if (controller.isStopped) {
                     gamestop();
                 }
     
-                double newCameraX = (character.boundingBox.getCenterX() * scale - (scene.getWidth()/2*scope));
-                double newCameraY = (character.boundingBox.getCenterY() * scale - (scene.getHeight()/2*scope));
+                double newCameraX = (character.getcharacterBoundingBox().getCenterX() * scale - (scene.getWidth()/2*scope));
+                double newCameraY = (character.getcharacterBoundingBox().getCenterY() * scale - (scene.getHeight()/2*scope));
             
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, (backgroundWidth * scale - scene.getWidth() * scope));
@@ -338,7 +338,7 @@ public class Level2 implements Background {
         playButton.setScaleY(0.7);
 
         playButton.setOnAction(e -> {
-            controller.stop = false;
+            controller.isStopped = false;
             togglePause();
         });
 
@@ -366,17 +366,17 @@ public class Level2 implements Background {
     }
 
     public void togglePause() {
-        if (controller.stop) {
+        if (controller.isStopped) {
             blackScreen.setVisible(true);
         } else {
             blackScreen.setVisible(false);
         }
-        pauseMenu.setVisible(controller.stop); 
+        pauseMenu.setVisible(controller.isStopped); 
         updatePauseOverlayPosition();
     }
 
     private void updatePauseOverlayPosition() {
-        if (scene != null && controller.stop) {
+        if (scene != null && controller.isStopped) {
             PerspectiveCamera camera = (PerspectiveCamera) scene.getCamera();
             double cameraX = camera.getTranslateX();
             double cameraY = camera.getTranslateY();

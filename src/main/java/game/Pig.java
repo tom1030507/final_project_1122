@@ -10,23 +10,25 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class Pig extends Pane {
-    Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
-    Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
-    Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
-    Image img_dead = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
-    ImageView imageview = new ImageView(img_run);
-    double x,y,endx,endy;
-    SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
-    int sta=0;
-    double full=3,health=3,power=1;
-    boolean isattcking=false;
-    double speed=2;
-    Character targetPlayer;
-    double attackRange = 150;
-    Line blood;
-    double blong=20;
-
-    BoundingBox boundingBox,attackBox;
+    private Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
+    private Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
+    private Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
+    private Image img_dead = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
+    private ImageView imageview = new ImageView(img_run);
+    private double x,y,endx,endy;
+    private SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
+    private int sta=0;
+    private double full=3,health=3,power=1;
+    private boolean isattcking=false;
+    private double speed=2;
+    private Character targetPlayer;
+    private double attackRange = 150;
+    private Line blood;
+    private double blong=20;
+    private BoundingBox boundingBox,attackBox;
+    private boolean lastMoveLeft = true;
+    private boolean lastMoveRight = false;
+    private boolean exist=true;
 
     public Pig(double x, double y, double endx, double endy) {
         this.x=x;
@@ -49,10 +51,7 @@ public class Pig extends Pane {
 
         getChildren().add(blood);
     }
-
-    boolean lastMoveLeft = true;
-    boolean lastMoveRight = false;
-
+    
     public void move_right() {
         imageview.setScaleX(-1);
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
@@ -148,18 +147,16 @@ public class Pig extends Pane {
         exist=false;
     }
 
-    boolean exist=true;
-
     public void update() {
         if (!exist){
             return;
         }
         if(targetPlayer.attackstate()){
-            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
-                takeDamage(targetPlayer.power*3);
+            if(targetPlayer.getlightBoundingBox().intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+                takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.attackBox.intersects(boundingBox)){
-                takeDamage(targetPlayer.power);
+            else if(targetPlayer.getattackBoundingBox().intersects(boundingBox)){
+                takeDamage(targetPlayer.getPower());
             }
             
         }
@@ -174,7 +171,7 @@ public class Pig extends Pane {
             move_stop();
         }
         double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
-        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.health>0) {
+        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.getHealth()>0) {
             if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
                 if(targetPlayer.getX() - imageview.getTranslateX()>=0){
                     sta=0;
@@ -243,12 +240,12 @@ public class Pig extends Pane {
                 isattcking=false;
             });
         }
-        if(targetPlayer.health<=0){
+        if(targetPlayer.getHealth()<=0){
             return;
         }
         imageview.setImage(img_attack);
         attackAnimation.play();
-        if(targetPlayer.boundingBox.intersects(attackBox)){
+        if(targetPlayer.getcharacterBoundingBox().intersects(attackBox)){
             targetPlayer.takeDamage(power);
         }
     }

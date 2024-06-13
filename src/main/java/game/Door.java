@@ -7,15 +7,14 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Door extends Pane{
-    Image img_idle = new Image(getClass().getResourceAsStream("11-Door/Idle.png"));
-    Image img_open = new Image(getClass().getResourceAsStream("11-Door/Opening (46x56).png"));
-    Image img_close = new Image(getClass().getResourceAsStream("11-Door/Closiong (46x56).png"));
-    ImageView imageview = new ImageView(img_idle);
-    SpriteAnimation openAnimation,closeAnimation;
-    Character targetPlayer;
-    boolean used=true, nextlevel = false;
-
-    BoundingBox boundingBox;
+    private Image img_idle = new Image(getClass().getResourceAsStream("11-Door/Idle.png"));
+    private Image img_open = new Image(getClass().getResourceAsStream("11-Door/Opening (46x56).png"));
+    private Image img_close = new Image(getClass().getResourceAsStream("11-Door/Closiong (46x56).png"));
+    private ImageView imageview = new ImageView(img_idle);
+    private SpriteAnimation openAnimation,closeAnimation;
+    private Character targetPlayer;
+    private boolean used=true, nextlevel = false;
+    private BoundingBox boundingBox;
 
     public Door(double x,double y){
         imageview.setTranslateX(x);
@@ -36,7 +35,8 @@ public class Door extends Pane{
 
     public void action(){
         used=false;
-        targetPlayer.attach=false;
+        targetPlayer.setIsAttached(false);
+        VolumeController.playSound("open_door");
         imageview.setImage(img_open);
         openAnimation.play();
         openAnimation.setOnFinished(e -> { 
@@ -49,16 +49,24 @@ public class Door extends Pane{
     }
 
     public void update(){
-        if(used && targetPlayer.keyexist){
-            if(targetPlayer.boundingBox.intersects(boundingBox)){
-                targetPlayer.attach=true;
-                if(targetPlayer.press){
+        if(used && targetPlayer.getKeyExists()){
+            if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
+                targetPlayer.setIsAttached(true);
+                if(targetPlayer.getIsPressed()){
                     action();
                 }
             }
             else{
-                targetPlayer.attach=false;
+                targetPlayer.setIsAttached(false);
             }
         }
+    }
+
+    public void setused(boolean used){
+        this.used=used;
+    }
+
+    public boolean getnextlevel(){
+        return nextlevel;
     }
 }

@@ -25,7 +25,7 @@ public class Menu implements Background {
     private Image volumeBarImage = new Image(getClass().getResourceAsStream("volume_bar.png"));
     private Image volumeButtonImage = new Image(getClass().getResourceAsStream("volume_buttons.png"));
     private ImageView imageView;
-    Timeline timeline;
+    private Timeline timeline;
 
     public Scene createScene(Stage primaryStage) {
         VolumeController.playMusic("menu");

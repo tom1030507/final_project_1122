@@ -10,20 +10,19 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Box extends Pane{
-    Image img_idle = new Image(getClass().getResourceAsStream("08-Box/Idle.png"));
-    Image img_hit = new Image(getClass().getResourceAsStream("08-Box/Hit.png"));
-    Image img_dia = new Image(getClass().getResourceAsStream("Diamond.png"));
-    Image img_diaef = new Image(getClass().getResourceAsStream("Diamond effect.png"));
-    Image img_on = new Image(getClass().getResourceAsStream("09-Bomb/Bomb On (52x56).png"));
-    Image img_boom = new Image(getClass().getResourceAsStream("09-Bomb/Boooooom (52x56).png"));
-    ImageView imageview = new ImageView(img_idle);
-    double x,y;
-    SpriteAnimation diaAnimation,boomAnimation,onAnimation,booomAnimation;
-    Character targetPlayer;
-    Boolean exist=true;
-    int type=0;
-
-    BoundingBox boundingBox;
+    private Image img_idle = new Image(getClass().getResourceAsStream("08-Box/Idle.png"));
+    private Image img_hit = new Image(getClass().getResourceAsStream("08-Box/Hit.png"));
+    private Image img_dia = new Image(getClass().getResourceAsStream("Diamond.png"));
+    private Image img_diaef = new Image(getClass().getResourceAsStream("Diamond effect.png"));
+    private Image img_on = new Image(getClass().getResourceAsStream("09-Bomb/Bomb On (52x56).png"));
+    private Image img_boom = new Image(getClass().getResourceAsStream("09-Bomb/Boooooom (52x56).png"));
+    private ImageView imageview = new ImageView(img_idle);
+    private double x,y;
+    private SpriteAnimation diaAnimation,boomAnimation,onAnimation,booomAnimation;
+    private Character targetPlayer;
+    private Boolean exist=true;
+    private int type=0;
+    private BoundingBox boundingBox;
 
     public Box(double x, double y, int t) {
         this.x=x;
@@ -77,17 +76,17 @@ public class Box extends Pane{
         if(type==0) return;
         else{
             if(targetPlayer.attackstate() && exist){
-                if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
-                    takeDamage(targetPlayer.power*3);
+                if(targetPlayer.getlightBoundingBox().intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+                    takeDamage(targetPlayer.getPower()*3);
                 }
-                else if(targetPlayer.attackBox.intersects(boundingBox)){
-                    takeDamage(targetPlayer.power);
+                else if(targetPlayer.getattackBoundingBox().intersects(boundingBox)){
+                    takeDamage(targetPlayer.getPower());
                 }
             }
             if(!exist && type==1){
-                if(targetPlayer.boundingBox.intersects(boundingBox)){
+                if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
                     VolumeController.playSound("get_box");
-                    targetPlayer.utl=true;
+                    targetPlayer.setUseLight(true);
                     imageview.setImage(img_diaef);
                     boomAnimation.setOnFinished(e ->{
                         getChildren().clear();
@@ -100,8 +99,9 @@ public class Box extends Pane{
                 onAnimation.play();
                 type=0;
                 onAnimation.setOnFinished(e ->{
+                    VolumeController.playSound("bomb");
                     imageview.setImage(img_boom);
-                    if(targetPlayer.boundingBox.intersects(boundingBox)){
+                    if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
                         targetPlayer.takeDamage(1.0);;
                         
                     }
