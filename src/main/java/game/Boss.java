@@ -74,7 +74,7 @@ public class Boss extends Pane{
                     note.setTranslateX(x+modx);
                     note.setTranslateY(y+site+100);
                     BoundingBox note_box = new BoundingBox(x+modx, y + site + 100, 30, 37);
-                    
+
                     getChildren().addAll(note);
                     bullet.add(note);
                     bullet_Box.add(note_box);

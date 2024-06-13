@@ -98,8 +98,8 @@ public class Box extends Pane{
             else if(!exist && type==2){
                 onAnimation.play();
                 type=0;
-                VolumeController.playSound("bomb");
                 onAnimation.setOnFinished(e ->{
+                    VolumeController.playSound("bomb");
                     imageview.setImage(img_boom);
                     if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
                         targetPlayer.takeDamage(1.0);;

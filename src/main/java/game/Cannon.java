@@ -97,6 +97,7 @@ public class Cannon extends Pane{
             bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*dirction);
             bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + modx2-modx3 - speed*dirction, bullet.get(i).getTranslateY()+ 7 , 13, 13));
             if(targetPlayer.getcharacterBoundingBox().intersects(bullet_Box.get(i)) && exist){
+                VolumeController.playSound("bomb");
                 targetPlayer.takeDamage(power);
                 boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
                 bullet.get(i).setImage(img_boom);
