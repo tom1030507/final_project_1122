@@ -155,11 +155,11 @@ public class Pig extends Pane {
             return;
         }
         if(targetPlayer.attackstate()){
-            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
-                takeDamage(targetPlayer.power*3);
+            if(targetPlayer.lightBoundingBox.intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+                takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.attackBox.intersects(boundingBox)){
-                takeDamage(targetPlayer.power);
+            else if(targetPlayer.attackBoundingBox.intersects(boundingBox)){
+                takeDamage(targetPlayer.getPower());
             }
             
         }
@@ -174,7 +174,7 @@ public class Pig extends Pane {
             move_stop();
         }
         double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
-        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.health>0) {
+        if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.getHealth()>0) {
             if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
                 if(targetPlayer.getX() - imageview.getTranslateX()>=0){
                     sta=0;
@@ -243,12 +243,12 @@ public class Pig extends Pane {
                 isattcking=false;
             });
         }
-        if(targetPlayer.health<=0){
+        if(targetPlayer.getHealth()<=0){
             return;
         }
         imageview.setImage(img_attack);
         attackAnimation.play();
-        if(targetPlayer.boundingBox.intersects(attackBox)){
+        if(targetPlayer.characterBoundingBox.intersects(attackBox)){
             targetPlayer.takeDamage(power);
         }
     }

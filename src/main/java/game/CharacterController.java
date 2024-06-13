@@ -6,10 +6,13 @@ public class CharacterController {
 
     private Character character;
     private Boundary boundary;
-    private boolean moveRight = false;
-    private boolean moveLeft = false;
-    private boolean attacking = false;
-    boolean stop=false;
+    private boolean isMovingRight = false;
+    private boolean isMovingLeft = false;
+    private boolean isAttacking = false;
+    public boolean isStopped = false;
+
+    private boolean lastDirectionWasRight = true;
+    private boolean lastDirectionWasLeft = false;
 
     public CharacterController(Character character, int level) {
         this.character = character;
@@ -17,60 +20,77 @@ public class CharacterController {
     }
 
     public void handleKeyPressed(KeyCode code) {
-        if (character.health<=0) return;
-        if (code == KeyCode.ESCAPE){
-            stop = !stop;
-        } else if (code == KeyCode.RIGHT) {
-            moveRight = true;
-        } else if (code == KeyCode.LEFT) {
-            moveLeft = true;
-        } else if (code == KeyCode.SPACE) {
-            character.move_jump();
-        } else if (code == KeyCode.Z){
-            if(!attacking){
-                character.attack();
-            }
-            attacking=true;
-        } else if (code == KeyCode.F){
-            character.press=true;
-            character.action();
+        if (character.getHealth() <= 0) return;
+        switch (code) {
+            case ESCAPE:
+                isStopped = !isStopped;
+                break;
+            case RIGHT:
+                isMovingRight = true;
+                break;
+            case LEFT:
+                isMovingLeft = true;
+                break;
+            case SPACE:
+                character.jump();
+                break;
+            case Z:
+                if (!isAttacking) {
+                    character.attack();
+                }
+                isAttacking = true;
+                break;
+            case F:
+                character.setIsPressed(true);
+                character.action();
+                break;
+            default:
+                break;
         }
     }
 
     public void handleKeyReleased(KeyCode code) {
-        if(character.health<=0) return;
-        if (code == KeyCode.RIGHT) {
-            moveRight = false;
-            character.stop();
-        } else if (code == KeyCode.LEFT) {
-            moveLeft = false;
-            character.stop();
-        } else if (code == KeyCode.Z) {
-            attacking = false;
-        }  else if (code == KeyCode.F){
-            character.press=false;
+        if(character.getHealth() <= 0) return;
+        switch (code) {
+            case RIGHT:
+                isMovingRight = false;
+                character.stop();
+                break;
+            case LEFT:
+                isMovingLeft = false;
+                character.stop();
+                break;
+            case Z:
+                isAttacking = false;
+                break;
+            case F:
+                character.setIsPressed(false);
+                break;
+            default:
+                break;
         }
     }
 
-    private boolean lastMoveRight = true;
-    private boolean lastMoveLeft = false;
-
     public void update() {
-        if (stop) {
+        if (isStopped) {
             return;
         }
-        if (moveRight && (!boundary.isWithinBounds(character.getBoundingBox()) || lastMoveLeft)) {
-            lastMoveRight = true;
-            lastMoveLeft = false;
-            character.move_right();
-        } else if (moveLeft && (!boundary.isWithinBounds(character.getBoundingBox()) || lastMoveRight)) {
-            lastMoveRight = false;
-            lastMoveLeft = true;
-            character.move_left();
+        if (isMovingRight && (!boundary.isWithinBounds(character.getCharacterBoundingBox()) || lastDirectionWasLeft)) {
+            lastDirectionWasRight = true;
+            lastDirectionWasLeft = false;
+            character.moveRight();
+        } else if (isMovingLeft && (!boundary.isWithinBounds(character.getCharacterBoundingBox()) || lastDirectionWasRight)) {
+            lastDirectionWasRight = false;
+            lastDirectionWasLeft = true;
+            character.moveLeft();
         }
     }
 
     public void setStopStatus(boolean status){
-        stop = status;
+        isStopped = status;
+    }
+
+    public boolean getStopStatus(){
+        return isStopped;
     }
 }

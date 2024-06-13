@@ -142,7 +142,7 @@ public class Boss extends Pane{
                 bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                 bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                 bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 37));
-                if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                     targetPlayer.takeDamage(power);
                     boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                     bullet.get(i).setImage(img_boom);
@@ -186,7 +186,7 @@ public class Boss extends Pane{
                 if(bullet_type.get(i)==21){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -212,7 +212,7 @@ public class Boss extends Pane{
                 else if(bullet_type.get(i)==22){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -238,7 +238,7 @@ public class Boss extends Pane{
                 else if(bullet_type.get(i)==23){
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() , 30, 48));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -291,7 +291,7 @@ public class Boss extends Pane{
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -320,7 +320,7 @@ public class Boss extends Pane{
                     speed=5;
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 30, 39));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -357,7 +357,7 @@ public class Boss extends Pane{
                     bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i));
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() - speed*bullet_dir.get(i), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -386,7 +386,7 @@ public class Boss extends Pane{
                     speed=5;
                     bullet.get(i).setTranslateY(bullet.get(i).getTranslateY() + speed*bullet_ver.get(i));
                     bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX(), bullet.get(i).getTranslateY() + speed*bullet_ver.get(i) , 33, 33));
-                    if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+                    if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                         targetPlayer.takeDamage(power);
                         boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),9,9,0,0,40,40);
                         bullet.get(i).setImage(img_boom);
@@ -479,15 +479,15 @@ public class Boss extends Pane{
         }
         move();
         if(targetPlayer.attackstate()){
-            if(targetPlayer.llbox.intersects(mainBoundingBox) && targetPlayer.isutl){
-                takeDamage(targetPlayer.power*3);
+            if(targetPlayer.lightBoundingBox.intersects(mainBoundingBox) && targetPlayer.getIsUsingLight()){
+                takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.attackBox.intersects(mainBoundingBox)){
-                takeDamage(targetPlayer.power);
+            else if(targetPlayer.attackBoundingBox.intersects(mainBoundingBox)){
+                takeDamage(targetPlayer.getPower());
             }
         }
         currentTime = System.currentTimeMillis();
-        if (targetPlayer.getBoundingBox().intersects(mainBoundingBox)) {
+        if (targetPlayer.getCharacterBoundingBox().intersects(mainBoundingBox)) {
             if (currentTime - lastDamageTime > 1000) {
                 lastDamageTime = currentTime;
                 targetPlayer.takeDamage(power);

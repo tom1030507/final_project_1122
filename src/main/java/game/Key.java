@@ -40,8 +40,8 @@ public class Key extends Pane{
 
     public void update(){
         if(used){
-            if(targetPlayer.boundingBox.intersects(boundingBox)){
-                targetPlayer.keyexist=true;
+            if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
+                targetPlayer.setKeyExists(true);
                 used=false;
                 getChildren().clear();
                 VolumeController.playSound("get_box");

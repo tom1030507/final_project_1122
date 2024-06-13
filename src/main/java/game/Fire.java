@@ -41,12 +41,12 @@ public class Fire extends Pane{
     public void update(){
         if(used){
             imageview.setOpacity(1);
-            if(targetPlayer.firetime){
-                if(targetPlayer.boundingBox.intersects(boundingBox)){
-                    targetPlayer.firetime=false;
+            if(targetPlayer.getFireTime()){
+                if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
+                    targetPlayer.setFireTime(false);
                     targetPlayer.takeDamage(power);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                        targetPlayer.firetime=true;
+                        targetPlayer.setFireTime(true);
                     }));
                     timeline.setCycleCount(1);
                     timeline.play();

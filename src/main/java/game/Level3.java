@@ -151,7 +151,7 @@ public class Level3 implements Background {
             character.applyGravity();
             controller.update();
             togglePause();
-            if (character.health <= 0 && !isPaused) {
+            if (character.getHealth() <= 0 && !isPaused) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
                     showDiedLayout();
@@ -165,7 +165,7 @@ public class Level3 implements Background {
                 showVictory();
             }
 
-            if (!controller.stop || character.health <= 0) {
+            if (!controller.isStopped || character.getHealth() <= 0) {
                 count[0]++;
                 door.update();
                 box.update();
@@ -179,12 +179,12 @@ public class Level3 implements Background {
                     boss.isattcking=false;
                 }
 
-                if(character.isattacked){
-                    if(character.health<=0){
+                if(character.getIsAttacked()){
+                    if(character.getHealth()<=0){
                         pane.getChildren().remove(bloodpane);
                     }
-                    newblood.setFitWidth(character.blong);
-                    character.isattacked=false;
+                    newblood.setFitWidth(character.getHealthBarLength());
+                    character.setIsAttacked(false);
                 }
     
                 if(count[0]==1800){
@@ -240,8 +240,8 @@ public class Level3 implements Background {
                     character.attackstateupdate();
                 }
     
-                double newCameraX = character.boundingBox.getCenterX() - (scene.getWidth()/2*scope);
-                double newCameraY = character.boundingBox.getCenterY() - (scene.getHeight()/2*scope);
+                double newCameraX = character.characterBoundingBox.getCenterX() - (scene.getWidth()/2*scope);
+                double newCameraY = character.characterBoundingBox.getCenterY() - (scene.getHeight()/2*scope);
 
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
@@ -362,7 +362,7 @@ public class Level3 implements Background {
         playButton.setScaleY(0.7);
 
         playButton.setOnAction(e -> {
-            controller.stop = false;
+            controller.isStopped = false;
             togglePause();
         });
 
@@ -383,12 +383,12 @@ public class Level3 implements Background {
     }
 
     public void togglePause() {
-        pauseMenu.setVisible(controller.stop); 
+        pauseMenu.setVisible(controller.isStopped); 
         updatePauseOverlayPosition();
     }
 
     private void updatePauseOverlayPosition() {
-        if (scene != null && controller.stop) {
+        if (scene != null && controller.isStopped) {
             PerspectiveCamera camera = (PerspectiveCamera) scene.getCamera();
             double cameraX = camera.getTranslateX();
             double cameraY = camera.getTranslateY();

@@ -36,7 +36,8 @@ public class Door extends Pane{
 
     public void action(){
         used=false;
-        targetPlayer.attach=false;
+        targetPlayer.setIsAttached(false);
+        VolumeController.playSound("open_door");
         imageview.setImage(img_open);
         openAnimation.play();
         openAnimation.setOnFinished(e -> { 
@@ -49,15 +50,15 @@ public class Door extends Pane{
     }
 
     public void update(){
-        if(used && targetPlayer.keyexist){
-            if(targetPlayer.boundingBox.intersects(boundingBox)){
-                targetPlayer.attach=true;
-                if(targetPlayer.press){
+        if(used && targetPlayer.getKeyExists()){
+            if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
+                targetPlayer.setIsAttached(true);
+                if(targetPlayer.getIsPressed()){
                     action();
                 }
             }
             else{
-                targetPlayer.attach=false;
+                targetPlayer.setIsAttached(false);
             }
         }
     }

@@ -29,6 +29,9 @@ public class VolumeController {
             put("die", new MediaPlayer(new Media(getClass().getResource("die.mp3").toString())));
             put("mouse_click", new MediaPlayer(new Media(getClass().getResource("mouse_click.mp3").toString())));
             put("get_box", new MediaPlayer(new Media(getClass().getResource("getbox_music.mp3").toString())));
+            put("get_hurt", new MediaPlayer(new Media(getClass().getResource("get_hurt.mp3").toString())));
+            put("open_door", new MediaPlayer(new Media(getClass().getResource("open_door.mp3").toString())));
+            put("bomb", new MediaPlayer(new Media(getClass().getResource("bomb_music.mp3").toString())));
         }
     };
 

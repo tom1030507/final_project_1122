@@ -96,7 +96,7 @@ public class Cannon extends Pane{
             if(bullet_avail.get(i)==0) continue;
             bullet.get(i).setTranslateX(bullet.get(i).getTranslateX() - speed*dirction);
             bullet_Box.set(i,new BoundingBox(bullet.get(i).getTranslateX() + modx2-modx3 - speed*dirction, bullet.get(i).getTranslateY()+ 7 , 13, 13));
-            if(targetPlayer.boundingBox.intersects(bullet_Box.get(i)) && exist){
+            if(targetPlayer.characterBoundingBox.intersects(bullet_Box.get(i)) && exist){
                 targetPlayer.takeDamage(power);
                 boomAnimation = new SpriteAnimation(bullet.get(i),Duration.millis(500),6,6,0,0,52,56);
                 bullet.get(i).setImage(img_boom);
@@ -169,11 +169,11 @@ public class Cannon extends Pane{
         }
         move();
         if(targetPlayer.attackstate()){
-            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
-                takeDamage(targetPlayer.power*3);
+            if(targetPlayer.lightBoundingBox.intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+                takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.attackBox.intersects(boundingBox)){
-                takeDamage(targetPlayer.power);
+            else if(targetPlayer.attackBoundingBox.intersects(boundingBox)){
+                takeDamage(targetPlayer.getPower());
             }
         }
     }

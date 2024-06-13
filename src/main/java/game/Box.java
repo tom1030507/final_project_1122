@@ -77,17 +77,17 @@ public class Box extends Pane{
         if(type==0) return;
         else{
             if(targetPlayer.attackstate() && exist){
-                if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
-                    takeDamage(targetPlayer.power*3);
+                if(targetPlayer.lightBoundingBox.intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+                    takeDamage(targetPlayer.getPower()*3);
                 }
-                else if(targetPlayer.attackBox.intersects(boundingBox)){
-                    takeDamage(targetPlayer.power);
+                else if(targetPlayer.attackBoundingBox.intersects(boundingBox)){
+                    takeDamage(targetPlayer.getPower());
                 }
             }
             if(!exist && type==1){
-                if(targetPlayer.boundingBox.intersects(boundingBox)){
+                if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
                     VolumeController.playSound("get_box");
-                    targetPlayer.utl=true;
+                    targetPlayer.setUseLight(true);
                     imageview.setImage(img_diaef);
                     boomAnimation.setOnFinished(e ->{
                         getChildren().clear();
@@ -99,9 +99,10 @@ public class Box extends Pane{
             else if(!exist && type==2){
                 onAnimation.play();
                 type=0;
+                VolumeController.playSound("bomb");
                 onAnimation.setOnFinished(e ->{
                     imageview.setImage(img_boom);
-                    if(targetPlayer.boundingBox.intersects(boundingBox)){
+                    if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
                         targetPlayer.takeDamage(1.0);;
                         
                     }
