@@ -19,12 +19,13 @@ import javafx.stage.Stage;
 
 public class Level3 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
-    private double scope = 0.5; // 摄像机缩放比例
+    private double scope = 1; // 摄像机缩放比例
     private ImageView background;
     private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
     private Scene scene;
     Timeline timeline;
     CharacterController controller;
+    private boolean isPaused = false;
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level3/level3_background.jpg")));
@@ -106,6 +107,8 @@ public class Level3 implements Background {
             controller.handleKeyReleased(e.getCode());
         });
 
+        VolumeController.playMusic("level3");
+
         woodPlatform shortPlatform1 = new woodPlatform(1, 75, 450);
         woodPlatform shortPlatform2 = new woodPlatform(1, 132, 350);
         woodPlatform shortPlatform3 = new woodPlatform(1, 1187, 450);
@@ -134,12 +137,13 @@ public class Level3 implements Background {
             character.applyGravity();
             controller.update();
             togglePause();
-            if (character.health <= 0) {
+            if (character.health <= 0 && !isPaused) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
                     showDiedLayout();
                     diedPane.setVisible(true);
                 });
+                isPaused = true;
                 pause.play();
             }
             
@@ -260,7 +264,7 @@ public class Level3 implements Background {
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
             timeline.stop();
-            VolumeController.stopMusic("level1");
+            VolumeController.stopMusic("level3");
             Main.backToMenu();
         });
 
@@ -272,7 +276,8 @@ public class Level3 implements Background {
 
         restartButton.setOnAction(e -> {
             timeline.stop();
-            VolumeController.stopMusic("level1");
+            VolumeController.stopMusic("level3");
+            VolumeController.stopSound("die");
             Main.setLevel(3);
         });
         diedPane.getChildren().addAll(diedScreen, diedImage, homeButton, restartButton);
@@ -324,7 +329,7 @@ public class Level3 implements Background {
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
             timeline.stop();
-            // VolumeController.stopMusic("level3");
+            VolumeController.stopMusic("level3");
             Main.backToMenu();
         });
 
@@ -347,7 +352,7 @@ public class Level3 implements Background {
 
         restartButton.setOnAction(e -> {
             timeline.stop();
-            VolumeController.stopMusic("level1");
+            VolumeController.stopMusic("level3");
             Main.setLevel(3);
         });
 

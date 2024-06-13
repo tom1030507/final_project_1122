@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Boss extends Pane{
     Image img_idle = new Image(getClass().getResourceAsStream("level3/boss1.png"));
@@ -39,7 +41,7 @@ public class Boss extends Pane{
     double lastDamageTime = 0, currentTime = 0;
     Timeline timeline, timeline1, timeline2;
 
-    BoundingBox boundingBox;
+    BoundingBox mainBoundingBox;
 
     public Boss(double x, double y, Character targetPlayer) {
         this.x=x;
@@ -55,12 +57,12 @@ public class Boss extends Pane{
         imageview.setImage(img_attack);
         bossAnimation.play();
 
-        boundingBox = new BoundingBox(x, y, 247, 250);
+        mainBoundingBox = new BoundingBox(x + 20, y, 207, 250);
 
-        fire1=new Fire(467, 243);
+        fire1=new Fire(487, 243);
         fire1.setTargetPlayer(targetPlayer);
         fire1.used=false;
-        fire2=new Fire(750, 243);
+        fire2=new Fire(730, 243);
         fire2.setTargetPlayer(targetPlayer);
         fire2.used=false;
 
@@ -478,15 +480,15 @@ public class Boss extends Pane{
         }
         move();
         if(targetPlayer.attackstate()){
-            if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
+            if(targetPlayer.llbox.intersects(mainBoundingBox) && targetPlayer.isutl){
                 takeDamage(targetPlayer.power*3);
             }
-            else if(targetPlayer.attackBox.intersects(boundingBox)){
+            else if(targetPlayer.attackBox.intersects(mainBoundingBox)){
                 takeDamage(targetPlayer.power);
             }
         }
         currentTime = System.currentTimeMillis();
-        if (targetPlayer.getBoundingBox().intersects(boundingBox)) {
+        if (targetPlayer.getBoundingBox().intersects(mainBoundingBox)) {
             if (currentTime - lastDamageTime > 1000) {
                 lastDamageTime = currentTime;
                 targetPlayer.takeDamage(power);

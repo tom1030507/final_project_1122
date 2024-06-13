@@ -103,6 +103,7 @@ public class Character extends Pane {
     boolean lastMoveRight = true;
 
     public void move_right() {
+        if (health <= 0) return;
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(1);
             ll.setScaleX(1);
@@ -130,6 +131,7 @@ public class Character extends Pane {
     }
 
     public void move_left() {
+        if (health <= 0) return;
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             imageview.setScaleX(-1);
             ll.setScaleX(-1);
@@ -169,6 +171,7 @@ public class Character extends Pane {
     public void move_jump() {
         Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 27);
         if (!isJumping && boundary.isWithinBounds(bounds)) {
+            VolumeController.playSound("jump");
             velocityY = -jumpStrength;
             isJumping = true;
         }
@@ -222,7 +225,7 @@ public class Character extends Pane {
         isutl=true;
         utl=false;
         lightAnimation.play();
-        VolumeController.playSound("attack");
+        VolumeController.playSound("lightning");
     }
     
     public void attackstateupdate(){
@@ -279,6 +282,7 @@ public class Character extends Pane {
         //         imageview.setImage(img_idle);
         //     }
         // });
+        VolumeController.playSound("die");
         stopAnimation();
         imageview.setImage(img_dead);
         deadAnimation.play();

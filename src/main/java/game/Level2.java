@@ -28,7 +28,7 @@ public class Level2 implements Background {
     private CharacterController controller;
     private Timeline timeline;
     private Rectangle blackScreen;
-
+    private boolean isPaused = false;
     
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level2_background.png")));
@@ -134,12 +134,13 @@ public class Level2 implements Background {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             togglePause();
-            if (character.health <= 0) {
+            if (character.health <= 0 && !isPaused) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
                     showDiedLayout();
                     diedPane.setVisible(true);
                 });
+                isPaused = true;
                 pause.play();
             }
             if (!controller.stop || character.health <= 0) {
@@ -231,7 +232,7 @@ public class Level2 implements Background {
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
             timeline.stop();
-            VolumeController.stopMusic("level1");
+            VolumeController.stopMusic("level2");
             Main.backToMenu();
         });
 
@@ -244,6 +245,7 @@ public class Level2 implements Background {
         restartButton.setOnAction(e -> {
             timeline.stop();
             VolumeController.stopMusic("level2");
+            VolumeController.stopSound("die");
             Main.setLevel(2);
         });
         diedPane.getChildren().addAll(diedScreen, diedImage, homeButton, restartButton);
@@ -295,7 +297,7 @@ public class Level2 implements Background {
         homeButton.setScaleY(0.7);
         homeButton.setOnAction(e -> {
             timeline.stop();
-            VolumeController.stopMusic("level1");
+            VolumeController.stopMusic("level2");
             Main.backToMenu();
         });
 

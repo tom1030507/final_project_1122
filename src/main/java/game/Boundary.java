@@ -15,7 +15,7 @@ public class Boundary {
         double[][] lineData = lbd.getLineData(level);
         for (double[] data : lineData) {
             Line line = new Line(data[0], data[1], data[2], data[3]);
-            line.setStrokeWidth(2);
+            line.setStrokeWidth(3);
             line.setStroke(Color.TRANSPARENT);
             boundaryGroup.getChildren().add(line);
         } 

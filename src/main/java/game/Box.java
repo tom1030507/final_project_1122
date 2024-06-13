@@ -30,7 +30,6 @@ public class Box extends Pane{
         imageview.setTranslateY(y);
         getChildren().add(imageview);
 
-        // 初始化动画
         diaAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,24,24);
         diaAnimation.setCycleCount(Animation.INDEFINITE);
 
@@ -67,6 +66,7 @@ public class Box extends Pane{
             }
         }
         if(!exist){
+            VolumeController.playSound("get_box");
             if(targetPlayer.boundingBox.intersects(boundingBox)){
                 targetPlayer.utl=true;
                 imageview.setImage(img_diaef);

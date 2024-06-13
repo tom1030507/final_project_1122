@@ -44,6 +44,7 @@ public class Key extends Pane{
                 targetPlayer.keyexist=true;
                 used=false;
                 getChildren().clear();
+                VolumeController.playSound("get_box");
             }
         }
     }

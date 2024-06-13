@@ -25,6 +25,7 @@ public class Level1 implements Background {
     private Scene scene;
     private Timeline timeline;
     private CharacterController controller;
+    private boolean isPaused = false;
 
     public Scene createScene(Stage primaryStage) {
         background = new ImageView(new Image(getClass().getResourceAsStream("level1_background.png")));
@@ -98,12 +99,13 @@ public class Level1 implements Background {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             controller.update();
             togglePause();
-            if (character.health <= 0) {
+            if (character.health <= 0 && !isPaused) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
                     showDiedLayout();
                     diedPane.setVisible(true);
                 });
+                isPaused = true;
                 pause.play();
             }
             if (!controller.stop || character.health <= 0) {
@@ -131,11 +133,10 @@ public class Level1 implements Background {
     
                 double newCameraX = character.boundingBox.getCenterX() - (scene.getWidth()/2*scope);
                 double newCameraY = character.boundingBox.getCenterY() - (scene.getHeight()/2*scope);
-                // 限制摄像机X轴范围
+                
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
     
-                // 限制摄像机Y轴范围
                 newCameraY = Math.max(newCameraY, 0);
                 newCameraY = Math.min(newCameraY, backgroundHeight-scene.getHeight()*scope);
     
@@ -190,6 +191,7 @@ public class Level1 implements Background {
         restartButton.setOnAction(e -> {
             timeline.stop();
             VolumeController.stopMusic("level1");
+            VolumeController.stopSound("die");
             Main.setLevel(1);
         });
         diedPane.getChildren().addAll(diedScreen, diedImage, homeButton, restartButton);

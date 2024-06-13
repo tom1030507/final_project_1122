@@ -28,7 +28,7 @@ public class Menu implements Background {
     Timeline timeline;
 
     public Scene createScene(Stage primaryStage) {
-        VolumeController.playMusic("level1");
+        VolumeController.playMusic("menu");
         imageView = new ImageView(backgroundImage);
         imageView.setFitWidth(backgroundWidth);
         imageView.setFitHeight(backgroundHeight);
@@ -54,6 +54,7 @@ public class Menu implements Background {
 
         startButton.setOnAction(e -> {
             timeline.stop();
+            VolumeController.stopMusic("menu");
             Main.continueLevel();
         });
 
@@ -125,8 +126,9 @@ public class Menu implements Background {
         button.setScaleX(1.5);
         button.setScaleY(1.5);
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
-
+        
         button.setOnMousePressed(e -> {
+            VolumeController.playSound("mouse_click");
             imageView.setViewport(new Rectangle2D(2 * buttonWidth, index * buttonHeight, buttonWidth, buttonHeight));
             button.setGraphic(imageView);
         });
@@ -151,6 +153,7 @@ public class Menu implements Background {
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
 
         button.setOnMousePressed(e -> {
+            VolumeController.playSound("mouse_click");
             imageView.setViewport(new Rectangle2D(2 * buttonWidth, 2 * buttonHeight, buttonWidth, buttonHeight));
             button.setGraphic(imageView);
         });
@@ -175,6 +178,7 @@ public class Menu implements Background {
         button.setStyle("-fx-border-width: 0; -fx-background-radius: 0; -fx-background-color: transparent;");
 
         button.setOnMousePressed(e -> {
+            VolumeController.playSound("mouse_click");
             imageView.setViewport(new Rectangle2D(2 * buttonWidth, (isMuteType[0] ? 1 : 0) * buttonHeight, buttonWidth, buttonHeight));
             button.setGraphic(imageView);
         });

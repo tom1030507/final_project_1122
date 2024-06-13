@@ -17,7 +17,6 @@ public class CharacterController {
     }
 
     public void handleKeyPressed(KeyCode code) {
-        System.out.println(code);
         if (character.health<=0) return;
         if (code == KeyCode.ESCAPE){
             stop = !stop;
