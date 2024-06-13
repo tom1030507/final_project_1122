@@ -65,7 +65,6 @@ public class Character extends Pane {
         getChildren().add(imageview);
         boundary = new Boundary(level);
 
-        // 初始化动画
         idleAnimation = new SpriteAnimation(imageview,Duration.millis(500),11,11,0,0,78,58);
         idleAnimation.setCycleCount(Animation.INDEFINITE);
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),8,8,0,0,78,58);
@@ -170,10 +169,10 @@ public class Character extends Pane {
             light();
             return;
         }
-        if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
+        if (attackAnimation == null) {
             attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 3, 3, 0, 0, 78, 58);
-            attackAnimation.setCycleCount(1); // 攻击动画只播放一次
-            attackAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            attackAnimation.setCycleCount(1);
+            attackAnimation.setOnFinished(e -> { 
                 coldtime=false;
                 if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
                     imageview.setImage(img_run);
@@ -185,17 +184,17 @@ public class Character extends Pane {
         }
         isattcking=true;
         coldtime=true;
-        imageview.setImage(img_attack); // 设置攻击动画的第一帧
+        imageview.setImage(img_attack);
         attackAnimation.play();
         VolumeController.playSound("attack");
     }
 
     public void light(){
-        if (lightAnimation == null) { // 如果攻击动画对象为空，则初始化它
+        if (lightAnimation == null) { 
             ll.setOpacity(1);
             lightAnimation = new SpriteAnimation(ll, Duration.millis(500), 6, 6, 0, 0, 300, 100);
-            lightAnimation.setCycleCount(1); // 攻击动画只播放一次
-            lightAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            lightAnimation.setCycleCount(1); 
+            lightAnimation.setOnFinished(e -> { 
                 coldtime=false;
                 if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
                     imageview.setImage(img_run);
@@ -227,10 +226,10 @@ public class Character extends Pane {
         isattacked=true;
         health -= damage;
         blong = (health/full)*142.0;
-        if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
+        if (hitAnimation == null) { 
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 78, 58);
-            hitAnimation.setCycleCount(1); // 攻击动画只播放一次
-            hitAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            hitAnimation.setCycleCount(1); 
+            hitAnimation.setOnFinished(e -> { 
                 if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
                     walkAnimation.stop();
                 }
@@ -245,11 +244,10 @@ public class Character extends Pane {
         }
         
         if (health <= 0) {
-            // 敌人被击败，执行相应操作
             defeat();
         }
         else{
-            imageview.setImage(img_hit); // 设置攻击动画的第一帧
+            imageview.setImage(img_hit); 
             hitAnimation.play();
         }
     }
@@ -257,16 +255,6 @@ public class Character extends Pane {
     public void defeat(){
         deadAnimation = new SpriteAnimation(imageview,Duration.millis(1000),4,4,0,0,78,58);
         deadAnimation.setCycleCount(1);
-        // deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
-        //     getChildren().clear();
-        //     System.out.println("gg");
-        //     if (walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-        //         imageview.setImage(img_run);
-        //     }
-        //     if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
-        //         imageview.setImage(img_idle);
-        //     }
-        // });
         VolumeController.playSound("die");
         stopAnimation();
         imageview.setImage(img_dead);
@@ -292,7 +280,6 @@ public class Character extends Pane {
         velocityY += gravity;
         double newY = imageview.getTranslateY() + velocityY;
         Bounds bounds = new BoundingBox(boundingBox.getMinX() + 4, boundingBox.getMinY() + velocityY + 1, 20, 25);
-        //isJumping = false;
         if (!boundary.isWithinBounds(bounds)) {
             imageview.setTranslateY(newY);
         } else {

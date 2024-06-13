@@ -110,7 +110,6 @@ public class Box extends Pane{
                     
                     });
                     booomAnimation.play();
-                    //VolumeController.playSound("get_box");
                 });
             }
         }

@@ -252,9 +252,9 @@ public class Level3 implements Background {
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
                 bossbloodpane.setTranslateX(newCameraX+213);
-                bossbloodpane.setTranslateY(newCameraY);
+                bossbloodpane.setTranslateY(newCameraY+310);
                 bloodpane.setTranslateX(newCameraX);
-                bloodpane.setTranslateY(newCameraY+324);
+                bloodpane.setTranslateY(newCameraY);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -378,7 +378,7 @@ public class Level3 implements Background {
             Main.setLevel(3);
         });
 
-        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton); // 添加到根面板
+        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton); 
         pauseMenu.setVisible(false);  
     }
 

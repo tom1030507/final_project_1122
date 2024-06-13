@@ -419,7 +419,6 @@ public class Boss extends Pane{
         health -= damage;
         blong = (health/full)*206.0;
         if (health <= 0) {
-            // 敌人被击败，执行相应操作
             defeat();
         }
         else{

@@ -25,14 +25,11 @@ public class Boundary {
         return this.boundaryGroup;
     }
 
-    public boolean isWithinBounds(Bounds otherBounds) { // 判斷是否在邊界內
+    public boolean isWithinBounds(Bounds otherBounds) {
         for (Node node : boundaryGroup.getChildren()) {
             Line line = (Line) node;
             BoundingBox newBounds = new BoundingBox(otherBounds.getMinX() - 4, otherBounds.getMinY(), otherBounds.getWidth() + 8, otherBounds.getHeight());
-            if (line.getBoundsInParent().intersects(newBounds)) { // 如果有交集
-                // System.out.println(line.getBoundsInParent());
-                // System.out.println(newBounds);
-                // System.out.println("collision");
+            if (line.getBoundsInParent().intersects(newBounds)) { 
                 return true;
             }
         }

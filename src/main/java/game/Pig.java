@@ -22,7 +22,7 @@ public class Pig extends Pane {
     boolean isattcking=false;
     double speed=2;
     Character targetPlayer;
-    double attackRange = 150; // 攻击范围
+    double attackRange = 150;
     Line blood;
     double blong=20;
 
@@ -37,7 +37,6 @@ public class Pig extends Pane {
         imageview.setTranslateY(y);
         getChildren().add(imageview);
 
-        // 初始化动画
         walkAnimation = new SpriteAnimation(imageview,Duration.millis(500),6,6,0,0,34,28);
         walkAnimation.setCycleCount(Animation.INDEFINITE);
 
@@ -123,17 +122,16 @@ public class Pig extends Pane {
             blood.setEndX(imageview.getTranslateX() + 5 + blong);
             blood.setEndY(imageview.getTranslateY() + 7);
         }
-        if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
+        if (hitAnimation == null) { 
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 34, 28);
-            hitAnimation.setCycleCount(1); // 攻击动画只播放一次
-            hitAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            hitAnimation.setCycleCount(1);
+            hitAnimation.setOnFinished(e -> { 
                 imageview.setImage(img_run);
             });
         }
-        imageview.setImage(img_hit); // 设置攻击动画的第一帧
+        imageview.setImage(img_hit); 
         hitAnimation.play();
         if (health <= 0) {
-            // 敌人被击败，执行相应操作
             blood.setOpacity(0);
             defeat();
         }
@@ -142,7 +140,7 @@ public class Pig extends Pane {
     public void defeat(){
         deadAnimation = new SpriteAnimation(imageview,Duration.millis(500),4,4,0,0,34,28);
         deadAnimation.setCycleCount(1);
-        deadAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+        deadAnimation.setOnFinished(e -> {
             getChildren().clear();
         });
         imageview.setImage(img_dead);
@@ -157,7 +155,6 @@ public class Pig extends Pane {
             return;
         }
         if(targetPlayer.attackstate()){
-            // targetPlayer.isattcking=false;
             if(targetPlayer.llbox.intersects(boundingBox) && targetPlayer.isutl){
                 takeDamage(targetPlayer.power*3);
             }
@@ -176,7 +173,6 @@ public class Pig extends Pane {
         else if(sta==2){
             move_stop();
         }
-        //double distance = Math.sqrt(Math.pow(targetPlayer.getX() - imageview.getTranslateX(), 2) + Math.pow(targetPlayer.getY() - imageview.getTranslateY(), 2));
         double distance =Math.abs(targetPlayer.getX() - imageview.getTranslateX());
         if (distance <= attackRange && Math.abs(targetPlayer.getY() - imageview.getTranslateY())<=50 && targetPlayer.health>0) {
             if(imageview.getTranslateX()<=x && imageview.getTranslateY()==y){
@@ -239,10 +235,10 @@ public class Pig extends Pane {
     }
 
     public void attack() {
-        if (attackAnimation == null) { // 如果攻击动画对象为空，则初始化它
+        if (attackAnimation == null) {
             attackAnimation = new SpriteAnimation(imageview, Duration.millis(500), 5, 5, 0, 0, 34, 28);
-            attackAnimation.setCycleCount(1); // 攻击动画只播放一次
-            attackAnimation.setOnFinished(e -> { // 当攻击动画播放完毕时，切换回跑步动画
+            attackAnimation.setCycleCount(1); 
+            attackAnimation.setOnFinished(e -> {
                 imageview.setImage(img_run);
                 isattcking=false;
             });
@@ -250,7 +246,7 @@ public class Pig extends Pane {
         if(targetPlayer.health<=0){
             return;
         }
-        imageview.setImage(img_attack); // 设置攻击动画的第一帧
+        imageview.setImage(img_attack);
         attackAnimation.play();
         if(targetPlayer.boundingBox.intersects(attackBox)){
             targetPlayer.takeDamage(power);

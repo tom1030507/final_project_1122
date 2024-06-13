@@ -19,7 +19,7 @@ import javafx.geometry.Rectangle2D;
 
 public class Level1 implements Background {
     private int backgroundWidth = 1300, backgroundHeight = 700;
-    private double scope = 0.5; // 摄像机缩放比例
+    private double scope = 0.5;
     private ImageView background;
     private Pane rootPane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
     private Scene scene;
@@ -171,7 +171,7 @@ public class Level1 implements Background {
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
                 bloodpane.setTranslateX(newCameraX);
-                bloodpane.setTranslateY(newCameraY+324);
+                bloodpane.setTranslateY(newCameraY);
             } else {
                 togglePause();
             }
@@ -300,7 +300,7 @@ public class Level1 implements Background {
             Main.setLevel(1);
         });
 
-        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton); // 添加到根面板
+        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton); 
         pauseMenu.setVisible(false);  
     }
 

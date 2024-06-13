@@ -49,7 +49,7 @@ public class Menu implements Background {
         menuPane.getChildren().add(imageView);
 
         Button startButton = createMenuButton(0);
-        startButton.setLayoutX(565); // Set button position
+        startButton.setLayoutX(565);
         startButton.setLayoutY(255);
 
         startButton.setOnAction(e -> {

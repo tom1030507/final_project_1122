@@ -148,7 +148,6 @@ public class Cannon extends Pane{
         blong = (health/full)*24.0;
         blood.setEndX(x+modx+blong);
         if (health <= 0) {
-            // 敌人被击败，执行相应操作
             blood.setOpacity(0);
             defeat();
         }

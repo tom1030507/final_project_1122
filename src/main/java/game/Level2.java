@@ -20,8 +20,8 @@ import javafx.stage.Stage;
 
 public class Level2 implements Background {
     private int backgroundWidth = 2600, backgroundHeight = 1400;
-    private double scope = 0.25; // 摄像机缩放比例
-    private double scale = 0.5; // 畫面缩放比例
+    private double scope = 0.25; 
+    private double scale = 0.5;
     private ImageView background;
     private Scene scene;
     private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane();
@@ -207,17 +207,16 @@ public class Level2 implements Background {
     
                 double newCameraX = (character.boundingBox.getCenterX() * scale - (scene.getWidth()/2*scope));
                 double newCameraY = (character.boundingBox.getCenterY() * scale - (scene.getHeight()/2*scope));
-                // 限制摄像机X轴范围
+            
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, (backgroundWidth * scale - scene.getWidth() * scope));
     
-                // 限制摄像机Y轴范围
                 newCameraY = Math.max(newCameraY, 0);
                 newCameraY = Math.min(newCameraY, (backgroundHeight * scale - scene.getHeight() * scope));
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
-                bloodpane.setTranslateX(newCameraX);
-                bloodpane.setTranslateY(newCameraY+324);
+                bloodpane.setTranslateX(newCameraX * 2);
+                bloodpane.setTranslateY(newCameraY * 2);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -230,15 +229,12 @@ public class Level2 implements Background {
     }
 
     private void scalePane(Pane pane, double scale, double width, double height) {
-        // 计算缩放后的偏移量，以确保Scene的左上角是原点
         double offsetX = width * (1 - scale) / 4;
         double offsetY = height * (1 - scale) / 4;
 
-        // 设置Pane的缩放比例
         pane.setScaleX(scale);
         pane.setScaleY(scale);
-    
-        // 设置Pane的偏移量，以确保缩放后Scene的左上角是原点
+
         pane.setLayoutX(-offsetX);
         pane.setLayoutY(-offsetY);
     }
@@ -365,7 +361,7 @@ public class Level2 implements Background {
         invisibleButton.setScaleY(0.7);
         invisibleButton.setVisible(false);
 
-        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton, invisibleButton); // 添加到根面板
+        pauseMenu.getChildren().addAll(pauseScreen, pauseMenuImage, musicButton, soundButton, volumeBar, volumeButton, playButton, homeButton, restartButton, invisibleButton); 
         pauseMenu.setVisible(false);  
     }
 
@@ -384,7 +380,6 @@ public class Level2 implements Background {
             PerspectiveCamera camera = (PerspectiveCamera) scene.getCamera();
             double cameraX = camera.getTranslateX();
             double cameraY = camera.getTranslateY();
-            // System.out.println(cameraX + (scene.getWidth() * scale - pauseMenu.getWidth()) / 2);
             pauseMenu.setLayoutX((cameraX + (scene.getWidth() * scale - pauseMenu.getWidth()) / 2) * 2);
             pauseMenu.setLayoutY((cameraY + (scene.getHeight() * scale - pauseMenu.getHeight()) / 2) * 2);
         }

@@ -22,7 +22,6 @@ public class Door extends Pane{
         imageview.setTranslateY(y);
         getChildren().add(imageview);
 
-        // 初始化动画
         openAnimation = new SpriteAnimation(imageview,Duration.millis(500),5,5,0,0,46,56);
         openAnimation.setCycleCount(1);
         closeAnimation = new SpriteAnimation(imageview,Duration.millis(500),3,3,0,0,46,56);
