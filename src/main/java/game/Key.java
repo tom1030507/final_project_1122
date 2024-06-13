@@ -8,13 +8,12 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Key extends Pane{
-    Image img_key = new Image(getClass().getResourceAsStream("key.png"));
-    ImageView imageview = new ImageView(img_key);
-    Character targetPlayer;
-    boolean used=true;
-    SpriteAnimation idleAnimation;
-
-    BoundingBox boundingBox;
+    private Image img_key = new Image(getClass().getResourceAsStream("key.png"));
+    private ImageView imageview = new ImageView(img_key);
+    private Character targetPlayer;
+    private boolean used=true;
+    private SpriteAnimation idleAnimation;
+    private BoundingBox boundingBox;
 
     public void stopanimation(){
         if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
@@ -40,7 +39,7 @@ public class Key extends Pane{
 
     public void update(){
         if(used){
-            if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
+            if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
                 targetPlayer.setKeyExists(true);
                 used=false;
                 getChildren().clear();

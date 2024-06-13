@@ -11,13 +11,13 @@ import javafx.util.Duration;
  * Created by KirinTor on 13.05.2016.
  */
 public class SpriteAnimation  extends Transition{
-    ImageView imageView;
-    int count;
-    int columns;
-    int offsetX;
-    int offsetY;
-    int width;
-    int height;
+    private ImageView imageView;
+    private int count;
+    private int columns;
+    private int offsetX;
+    private int offsetY;
+    private int width;
+    private int height;
 
     public SpriteAnimation(
             ImageView imageView,

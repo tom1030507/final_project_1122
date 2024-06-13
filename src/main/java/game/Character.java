@@ -34,9 +34,10 @@ public class Character extends Pane {
     private boolean isAttached = false;
     private boolean useLight = false;
     private boolean isUsingLight = false;
-
-    Boundary boundary;
-    BoundingBox characterBoundingBox, attackBoundingBox, lightBoundingBox;
+    private boolean lastMoveLeft = false;
+    private boolean lastMoveRight = true;
+    private Boundary boundary;
+    private BoundingBox characterBoundingBox, attackBoundingBox, lightBoundingBox;
 
     public void stopAnimation(){
         if (idleAnimation.getStatus().equals(Animation.Status.RUNNING)) {
@@ -55,7 +56,6 @@ public class Character extends Pane {
         if (attackAnimation.getStatus().equals(Animation.Status.RUNNING)) {
             attackAnimation.stop();
         }
-
     }
 
     public Character(double x, double y, int level) {
@@ -95,8 +95,7 @@ public class Character extends Pane {
         return characterImageView.getTranslateY();
     }
 
-    boolean lastMoveLeft = false;
-    boolean lastMoveRight = true;
+    
 
     public void moveRight() {
         if (health <= 0) return;
@@ -366,5 +365,17 @@ public class Character extends Pane {
     public boolean getIsUsingLight() {
         return isUsingLight;
     }
+
+    public BoundingBox getcharacterBoundingBox(){
+        return characterBoundingBox;
+    } 
+
+    public BoundingBox getlightBoundingBox(){
+        return lightBoundingBox;
+    } 
+
+    public BoundingBox getattackBoundingBox(){
+        return attackBoundingBox;
+    } 
 }
 

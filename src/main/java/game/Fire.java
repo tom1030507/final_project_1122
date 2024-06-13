@@ -10,15 +10,14 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Fire extends Pane{
-    Image img_fire = new Image(getClass().getResourceAsStream("fire.png"));
-    Image img_run = new Image(getClass().getResourceAsStream("fire_run.png"));
-    ImageView imageview = new ImageView(img_fire);
-    SpriteAnimation fireAnimation;
-    Character targetPlayer;
-    double power=1;
-    boolean used=true;
-
-    BoundingBox boundingBox;
+    private Image img_fire = new Image(getClass().getResourceAsStream("fire.png"));
+    private Image img_run = new Image(getClass().getResourceAsStream("fire_run.png"));
+    private ImageView imageview = new ImageView(img_fire);
+    private SpriteAnimation fireAnimation;
+    private Character targetPlayer;
+    private double power=1;
+    private boolean used=true;
+    private BoundingBox boundingBox;
 
     public Fire(double x,double y){
         imageview.setTranslateX(x);
@@ -42,7 +41,7 @@ public class Fire extends Pane{
         if(used){
             imageview.setOpacity(1);
             if(targetPlayer.getFireTime()){
-                if(targetPlayer.characterBoundingBox.intersects(boundingBox)){
+                if(targetPlayer.getcharacterBoundingBox().intersects(boundingBox)){
                     targetPlayer.setFireTime(false);
                     targetPlayer.takeDamage(power);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -57,5 +56,9 @@ public class Fire extends Pane{
             imageview.setOpacity(0);
         }
         
+    }
+
+    public void setused(boolean used){
+        this.used=used;
     }
 }

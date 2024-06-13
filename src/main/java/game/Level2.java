@@ -74,7 +74,7 @@ public class Level2 implements Background {
 
         Door door=new Door(2435,1291);
         door.setTargetPlayer(character);
-        door.used=false;
+        door.setused(false);
 
         Door door2=new Door(100,186);
         door2.setTargetPlayer(character);
@@ -195,7 +195,7 @@ public class Level2 implements Background {
                     character.setIsAttacked(false);
                 }
     
-                if (door2.nextlevel) {
+                if (door2.getnextlevel()) {
                     nextlevel();
                 }
                 if(character.attackstate()){
@@ -205,8 +205,8 @@ public class Level2 implements Background {
                     gamestop();
                 }
     
-                double newCameraX = (character.characterBoundingBox.getCenterX() * scale - (scene.getWidth()/2*scope));
-                double newCameraY = (character.characterBoundingBox.getCenterY() * scale - (scene.getHeight()/2*scope));
+                double newCameraX = (character.getcharacterBoundingBox().getCenterX() * scale - (scene.getWidth()/2*scope));
+                double newCameraY = (character.getcharacterBoundingBox().getCenterY() * scale - (scene.getHeight()/2*scope));
             
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, (backgroundWidth * scale - scene.getWidth() * scope));

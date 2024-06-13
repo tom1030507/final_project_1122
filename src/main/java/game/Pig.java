@@ -10,23 +10,25 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class Pig extends Pane {
-    Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
-    Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
-    Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
-    Image img_dead = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
-    ImageView imageview = new ImageView(img_run);
-    double x,y,endx,endy;
-    SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
-    int sta=0;
-    double full=3,health=3,power=1;
-    boolean isattcking=false;
-    double speed=2;
-    Character targetPlayer;
-    double attackRange = 150;
-    Line blood;
-    double blong=20;
-
-    BoundingBox boundingBox,attackBox;
+    private Image img_run = new Image(getClass().getResourceAsStream("03-Pig/Run (34x28).png"));
+    private Image img_attack = new Image(getClass().getResourceAsStream("03-Pig/Attack (34x28).png"));
+    private Image img_hit = new Image(getClass().getResourceAsStream("03-Pig/Hit (34x28).png"));
+    private Image img_dead = new Image(getClass().getResourceAsStream("03-Pig/Dead (34x28).png"));
+    private ImageView imageview = new ImageView(img_run);
+    private double x,y,endx,endy;
+    private SpriteAnimation walkAnimation,attackAnimation,hitAnimation,deadAnimation;
+    private int sta=0;
+    private double full=3,health=3,power=1;
+    private boolean isattcking=false;
+    private double speed=2;
+    private Character targetPlayer;
+    private double attackRange = 150;
+    private Line blood;
+    private double blong=20;
+    private BoundingBox boundingBox,attackBox;
+    private boolean lastMoveLeft = true;
+    private boolean lastMoveRight = false;
+    private boolean exist=true;
 
     public Pig(double x, double y, double endx, double endy) {
         this.x=x;
@@ -49,10 +51,7 @@ public class Pig extends Pane {
 
         getChildren().add(blood);
     }
-
-    boolean lastMoveLeft = true;
-    boolean lastMoveRight = false;
-
+    
     public void move_right() {
         imageview.setScaleX(-1);
         if (!walkAnimation.getStatus().equals(Animation.Status.RUNNING)) {
@@ -148,17 +147,15 @@ public class Pig extends Pane {
         exist=false;
     }
 
-    boolean exist=true;
-
     public void update() {
         if (!exist){
             return;
         }
         if(targetPlayer.attackstate()){
-            if(targetPlayer.lightBoundingBox.intersects(boundingBox) && targetPlayer.getIsUsingLight()){
+            if(targetPlayer.getlightBoundingBox().intersects(boundingBox) && targetPlayer.getIsUsingLight()){
                 takeDamage(targetPlayer.getPower()*3);
             }
-            else if(targetPlayer.attackBoundingBox.intersects(boundingBox)){
+            else if(targetPlayer.getattackBoundingBox().intersects(boundingBox)){
                 takeDamage(targetPlayer.getPower());
             }
             
@@ -248,7 +245,7 @@ public class Pig extends Pane {
         }
         imageview.setImage(img_attack);
         attackAnimation.play();
-        if(targetPlayer.characterBoundingBox.intersects(attackBox)){
+        if(targetPlayer.getcharacterBoundingBox().intersects(attackBox)){
             targetPlayer.takeDamage(power);
         }
     }

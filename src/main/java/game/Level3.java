@@ -23,8 +23,8 @@ public class Level3 implements Background {
     private ImageView background;
     private Pane pane = new Pane(), pauseMenu = new Pane(), diedPane = new Pane(), victoryPane = new Pane();
     private Scene scene;
-    Timeline timeline;
-    CharacterController controller;
+    private Timeline timeline;
+    private CharacterController controller;
     private boolean isPaused = false, isVictory = false;
 
     public Scene createScene(Stage primaryStage) {
@@ -71,7 +71,7 @@ public class Level3 implements Background {
         
         Door door=new Door(604,591);
         door.setTargetPlayer(character);
-        door.used=false;
+        door.setused(false);
 
         Box box=new Box(73,627,2);
         box.setTargetPlayer(character);
@@ -88,11 +88,11 @@ public class Level3 implements Background {
         for(int i=0;i<10;i++){
             Fire fire1=new Fire(170+33*i, 243);
             fire1.setTargetPlayer(character);
-            fire1.used=false;
+            fire1.setused(false);
             boss_left.add(fire1);
             Fire fire2=new Fire(750+33*i, 243);
             fire2.setTargetPlayer(character);
-            fire2.used=true;
+            fire2.setused(true);
             boss_right.add(fire2);
             fire.getChildren().addAll(fire1,fire2);
         }
@@ -108,7 +108,7 @@ public class Level3 implements Background {
             stair1.add(fire1);
             Fire fire2=new Fire(x2[i], y[i]);
             fire2.setTargetPlayer(character);
-            fire2.used=false;
+            fire2.setused(false);
             stair2.add(fire2);
             fire.getChildren().addAll(fire1,fire2);
         }
@@ -161,7 +161,7 @@ public class Level3 implements Background {
                 pause.play();
             }
             
-            if (!boss.exist && !isVictory) {
+            if (!boss.getexist() && !isVictory) {
                 showVictory();
             }
 
@@ -171,12 +171,12 @@ public class Level3 implements Background {
                 box.update();
                 box2.update();
                 boss.update(count[0]);
-                if(boss.isattcking){
-                    if(boss.health<=0){
+                if(boss.getisattacking()){
+                    if(boss.gethealth()<=0){
                         pane.getChildren().remove(bossbloodpane);
                     }
-                    blood.setFitWidth(boss.blong);
-                    boss.isattcking=false;
+                    blood.setFitWidth(boss.getblong());
+                    boss.setisattacking(false);
                 }
 
                 if(character.getIsAttacked()){
@@ -192,14 +192,14 @@ public class Level3 implements Background {
                     count[1]*=-1;
                     if(count[1]==1){
                         for(int i=0;i<10;i++){
-                            boss_left.get(i).used=false;
-                            boss_right.get(i).used=true;
+                            boss_left.get(i).setused(false);
+                            boss_right.get(i).setused(true);
                         }
                     }
                     else{
                         for(int i=0;i<10;i++){
-                            boss_left.get(i).used=true;
-                            boss_right.get(i).used=false;
+                            boss_left.get(i).setused(true);
+                            boss_right.get(i).setused(false);
                         }
                     }
                 }
@@ -208,22 +208,22 @@ public class Level3 implements Background {
                     count[2]*=-1;
                     if(count[2]==1){
                         for(int i=0;i<5;i++){
-                            stair1.get(i).used=true;
-                            stair2.get(i).used=false;
+                            stair1.get(i).setused(true);
+                            stair2.get(i).setused(false);
                         }
                     }
                     else{
                         for(int i=0;i<5;i++){
-                            stair1.get(i).used=false;
-                            stair2.get(i).used=true;
+                            stair1.get(i).setused(false);
+                            stair2.get(i).setused(true);
                         }
                     }
                 }
     
                 if(count[0]%180==120){
                     for(int i=0;i<5;i++){
-                        stair1.get(i).used=false;
-                        stair2.get(i).used=false;
+                        stair1.get(i).setused(false);
+                        stair2.get(i).setused(false);
                     }
                 }
     
@@ -240,8 +240,8 @@ public class Level3 implements Background {
                     character.attackstateupdate();
                 }
     
-                double newCameraX = character.characterBoundingBox.getCenterX() - (scene.getWidth()/2*scope);
-                double newCameraY = character.characterBoundingBox.getCenterY() - (scene.getHeight()/2*scope);
+                double newCameraX = character.getcharacterBoundingBox().getCenterX() - (scene.getWidth()/2*scope);
+                double newCameraY = character.getcharacterBoundingBox().getCenterY() - (scene.getHeight()/2*scope);
 
                 newCameraX = Math.max(newCameraX, 0);
                 newCameraX = Math.min(newCameraX, backgroundWidth-scene.getWidth()*scope);
