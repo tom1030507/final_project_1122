@@ -6,8 +6,6 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.util.Duration;
 public class Character extends Pane {
     Image img_idle = new Image(getClass().getResourceAsStream("01-King Human/Idle (78x58).png"));
@@ -22,13 +20,13 @@ public class Character extends Pane {
     double velocityY = 0;
     double gravity = 0.2;
     double jumpStrength = 7;
-    double full = 5,health = 5,power = 10;
+    double full = 5,health = 5,power = 1;
     boolean isJumping = false;
     boolean isattcking = false;
+    boolean isattacked= false;
     SpriteAnimation idleAnimation,walkAnimation, attackAnimation, lightAnimation, hitAnimation, deadAnimation,doorinAnimation;
     double speed = 3;
-    Line blood;
-    double blong = 30;
+    double blong = 142;
     int level;
     boolean coldtime=false;
     boolean firetime=true;
@@ -74,10 +72,6 @@ public class Character extends Pane {
         walkAnimation.setCycleCount(Animation.INDEFINITE);
         idleAnimation.play();
 
-        blood=new Line(x+10,y+15,x+10+blong,y+15);
-        blood.setStrokeWidth(3);
-        blood.setStroke(Color.RED);
-
         boundingBox = new BoundingBox(x + 10, y + 18, 40, 25);
         attackBox = new BoundingBox(x, y , 78, 58);
 
@@ -87,7 +81,7 @@ public class Character extends Pane {
 
         llbox = new BoundingBox(x+50, y+5 , 260, 55);
 
-        getChildren().addAll(blood,ll);
+        getChildren().addAll(ll);
 
     }
 
@@ -123,11 +117,6 @@ public class Character extends Pane {
         llbox = new BoundingBox(imageview.getTranslateX() + 50, imageview.getTranslateY() + 5, 260, 55);
         boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
-
-        blood.setStartX(imageview.getTranslateX() + 10);
-        blood.setStartY(imageview.getTranslateY() + 13);
-        blood.setEndX(imageview.getTranslateX() + 10 + blong);
-        blood.setEndY(imageview.getTranslateY() + 13);
     }
 
     public void move_left() {
@@ -152,10 +141,6 @@ public class Character extends Pane {
         boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
         attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
 
-        blood.setStartX(imageview.getTranslateX() + 30);
-        blood.setStartY(imageview.getTranslateY() + 13);
-        blood.setEndX(imageview.getTranslateX() + 30 + blong);
-        blood.setEndY(imageview.getTranslateY() + 13);
     }
 
     public void stop() {
@@ -239,8 +224,9 @@ public class Character extends Pane {
 
     public void takeDamage(Double damage) {
         if(health <= 0) return;
+        isattacked=true;
         health -= damage;
-        blong = (health/full)*30.0;
+        blong = (health/full)*142.0;
         if (hitAnimation == null) { // 如果攻击动画对象为空，则初始化它
             hitAnimation = new SpriteAnimation(imageview, Duration.millis(500), 2, 2, 0, 0, 78, 58);
             hitAnimation.setCycleCount(1); // 攻击动画只播放一次
@@ -260,7 +246,6 @@ public class Character extends Pane {
         
         if (health <= 0) {
             // 敌人被击败，执行相应操作
-            blood.setOpacity(0);
             defeat();
         }
         else{
@@ -322,20 +307,12 @@ public class Character extends Pane {
             llbox = new BoundingBox(imageview.getTranslateX() + 50, imageview.getTranslateY() + 5, 260, 55);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 10, imageview.getTranslateY() + 18, 30, 25);
             attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
-            blood.setStartX(imageview.getTranslateX() + 10);
-            blood.setStartY(imageview.getTranslateY() + 13);
-            blood.setEndX(imageview.getTranslateX() + 10 + blong);
-            blood.setEndY(imageview.getTranslateY() + 13);
         } else {
             ll.setTranslateX(imageview.getTranslateX()-250);
             ll.setTranslateY(imageview.getTranslateY()-10);
             llbox = new BoundingBox(imageview.getTranslateX() - 240, imageview.getTranslateY() + 5, 260, 55);
             boundingBox = new BoundingBox(imageview.getTranslateX() + 30, imageview.getTranslateY() + 18, 30, 25);
             attackBox = new BoundingBox(imageview.getTranslateX(), imageview.getTranslateY() , 78, 58);
-            blood.setStartX(imageview.getTranslateX() + 30);
-            blood.setStartY(imageview.getTranslateY() + 13);
-            blood.setEndX(imageview.getTranslateX() + 30 + blong);
-            blood.setEndY(imageview.getTranslateY() + 13);
         }
     }
     

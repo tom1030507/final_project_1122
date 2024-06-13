@@ -32,7 +32,7 @@ public class Level3 implements Background {
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
-        Pane bloodpane = new Pane();
+        Pane bossbloodpane = new Pane();
         ImageView blood2= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/2.png")));
         ImageView blood4= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/4.png")));
         ImageView blood= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/blood.png")));
@@ -44,9 +44,25 @@ public class Level3 implements Background {
         for(int i=1;i<6;i++){
             ImageView blood3= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/3.png")));
             blood3.setTranslateX(32*i);
+            bossbloodpane.getChildren().add(blood3);
+        }
+        bossbloodpane.getChildren().addAll(blood2,blood4,blood);
+
+        Pane bloodpane = new Pane();
+        ImageView blood1= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/1.png")));
+        ImageView newblood4= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/4.png")));
+        ImageView newblood= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/blood.png")));
+        newblood4.setTranslateX(32*4);
+        newblood.setTranslateX(16);
+        newblood.setTranslateY(13);
+        newblood.setFitWidth(32*5-18);
+        newblood.setFitHeight(4);
+        for(int i=1;i<4;i++){
+            ImageView blood3= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/3.png")));
+            blood3.setTranslateX(32*i);
             bloodpane.getChildren().add(blood3);
         }
-        bloodpane.getChildren().addAll(blood2,blood4,blood);
+        bloodpane.getChildren().addAll(blood1,newblood4,newblood);
 
 		Character character = new Character(600, 590, 3);
         controller = new CharacterController(character, 3);
@@ -57,8 +73,11 @@ public class Level3 implements Background {
         door.setTargetPlayer(character);
         door.used=false;
 
-        Box box=new Box(73,627,1);
+        Box box=new Box(73,627,2);
         box.setTargetPlayer(character);
+
+        Box box2=new Box(1197,627,1);
+        box2.setTargetPlayer(character);
 
         Boss boss=new Boss(501, 60, character);
 
@@ -114,7 +133,7 @@ public class Level3 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, longPlatform1, longPlatform2);
 
-        pane.getChildren().addAll(background, door, fire, box, boss, character, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane, victoryPane);
+        pane.getChildren().addAll(background, door, fire, box, box2, boss, character, platform, boundary.getBoundary(), bossbloodpane, bloodpane, pauseMenu, diedPane, victoryPane);
 
         scene = new Scene(pane, backgroundWidth, backgroundHeight);
 
@@ -128,7 +147,6 @@ public class Level3 implements Background {
         initVictoryLayout();
 
         int[] count={0,1,1};
-        //boolean exist=true;
         timeline = new Timeline(new KeyFrame(Duration.seconds(1.0/60), e -> {
             character.applyGravity();
             controller.update();
@@ -151,13 +169,22 @@ public class Level3 implements Background {
                 count[0]++;
                 door.update();
                 box.update();
+                box2.update();
                 boss.update(count[0]);
                 if(boss.isattcking){
                     if(boss.health<=0){
-                        pane.getChildren().remove(bloodpane);
+                        pane.getChildren().remove(bossbloodpane);
                     }
                     blood.setFitWidth(boss.blong);
                     boss.isattcking=false;
+                }
+
+                if(character.isattacked){
+                    if(character.health<=0){
+                        pane.getChildren().remove(bloodpane);
+                    }
+                    newblood.setFitWidth(character.blong);
+                    character.isattacked=false;
                 }
     
                 if(count[0]==1800){
@@ -224,8 +251,10 @@ public class Level3 implements Background {
     
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
-                bloodpane.setTranslateX(newCameraX+213);
-                bloodpane.setTranslateY(newCameraY);
+                bossbloodpane.setTranslateX(newCameraX+213);
+                bossbloodpane.setTranslateY(newCameraY);
+                bloodpane.setTranslateX(newCameraX);
+                bloodpane.setTranslateY(newCameraY+324);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);

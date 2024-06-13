@@ -10,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Cannon extends Pane{
@@ -80,12 +79,9 @@ public class Cannon extends Pane{
                 ball.setTranslateX(x+modx3);
                 ball.setTranslateY(y-5);
                 ball.setScaleX(dirction);
-                Rectangle ball_rec = new Rectangle(x + modx2, y + 7, 13, 13);
-                ball_rec.setStroke(Color.BLUE); // 邊界線顏色
-                ball_rec.setFill(Color.TRANSPARENT); // 內部填充顏色
                 BoundingBox ball_box = new BoundingBox(x + modx2, y + 7, 13, 13);
                 
-                getChildren().addAll(ball,ball_rec);
+                getChildren().addAll(ball);
                 bullet.add(ball);
                 bullet_Box.add(ball_box);
                 bullet_avail.add(1);

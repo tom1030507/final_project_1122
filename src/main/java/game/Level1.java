@@ -32,6 +32,22 @@ public class Level1 implements Background {
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
+        Pane bloodpane = new Pane();
+        ImageView blood1= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/1.png")));
+        ImageView newblood4= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/4.png")));
+        ImageView newblood= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/blood.png")));
+        newblood4.setTranslateX(32*4);
+        newblood.setTranslateX(16);
+        newblood.setTranslateY(13);
+        newblood.setFitWidth(32*5-18);
+        newblood.setFitHeight(4);
+        for(int i=1;i<4;i++){
+            ImageView blood3= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/3.png")));
+            blood3.setTranslateX(32*i);
+            bloodpane.getChildren().add(blood3);
+        }
+        bloodpane.getChildren().addAll(blood1,newblood4,newblood);
+
 		Character character = new Character(95, 590, 1);
         controller = new CharacterController(character, 1);
 
@@ -61,6 +77,9 @@ public class Level1 implements Background {
 
         Box box=new Box(1185,435,1);
         box.setTargetPlayer(character);
+        
+        Box box2=new Box(70,620,2);
+        box2.setTargetPlayer(character);
 
         character.setOnKeyPressed(e -> {
             controller.handleKeyPressed(e.getCode());
@@ -82,7 +101,7 @@ public class Level1 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        rootPane.getChildren().addAll(background, door, door2, key, box, character, pig, cannon, platform, boundary.getBoundary(), pauseMenu, diedPane);
+        rootPane.getChildren().addAll(background, door, door2, key, box, box2, character, pig, cannon, platform, boundary.getBoundary(), bloodpane, pauseMenu, diedPane);
 
         scene = new Scene(rootPane, backgroundWidth, backgroundHeight);
 
@@ -118,6 +137,15 @@ public class Level1 implements Background {
                 door2.update();
                 key.update();
                 box.update();
+                box2.update();
+
+                if(character.isattacked){
+                    if(character.health<=0){
+                        rootPane.getChildren().remove(bloodpane);
+                    }
+                    newblood.setFitWidth(character.blong);
+                    character.isattacked=false;
+                }
     
                 if (door2.nextlevel) {
                     nextlevel();
@@ -142,6 +170,8 @@ public class Level1 implements Background {
     
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
+                bloodpane.setTranslateX(newCameraX);
+                bloodpane.setTranslateY(newCameraY+324);
             } else {
                 togglePause();
             }

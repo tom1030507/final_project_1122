@@ -35,6 +35,22 @@ public class Level2 implements Background {
         background.setFitWidth(backgroundWidth);
         background.setFitHeight(backgroundHeight);
 
+        Pane bloodpane = new Pane();
+        ImageView blood1= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/1.png")));
+        ImageView newblood4= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/4.png")));
+        ImageView newblood= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/blood.png")));
+        newblood4.setTranslateX(32*4);
+        newblood.setTranslateX(16);
+        newblood.setTranslateY(13);
+        newblood.setFitWidth(32*5-18);
+        newblood.setFitHeight(4);
+        for(int i=1;i<4;i++){
+            ImageView blood3= new ImageView(new Image(getClass().getResourceAsStream("Big Bars/3.png")));
+            blood3.setTranslateX(32*i);
+            bloodpane.getChildren().add(blood3);
+        }
+        bloodpane.getChildren().addAll(blood1,newblood4,newblood);
+
 		Character character = new Character(2435, 1300, 2);
         controller = new CharacterController(character, 2);
 
@@ -68,8 +84,15 @@ public class Level2 implements Background {
 
         Box box=new Box(75,722,1);
         box.setTargetPlayer(character);
+
         Box box2=new Box(75,1130,1);
         box2.setTargetPlayer(character);
+
+        Box box3=new Box(75,1227,2);
+        box3.setTargetPlayer(character);
+
+        Box box4=new Box(2500,360,2);
+        box4.setTargetPlayer(character);
 
         Fire fire1=new Fire(2083, 410);
         Fire fire2=new Fire(2116, 410);
@@ -115,7 +138,7 @@ public class Level2 implements Background {
         Pane platform = new Pane();
         platform.getChildren().addAll(shortPlatform1, shortPlatform2, shortPlatform3, shortPlatform4, shortPlatform5, shortPlatform6, shortPlatform7, shortPlatform8, shortPlatform9, longPlatform1, longPlatform2, longPlatform3, longPlatform4, longPlatform5, longPlatform6);
 
-        pane.getChildren().addAll(background, door, door2, key, fire, box, box2, character, pig, cannon, platform, boundary.getBoundary(), blackScreen, pauseMenu, diedPane);
+        pane.getChildren().addAll(background, door, door2, key, fire, box, box2, box3, box4, character, pig, cannon, platform, boundary.getBoundary(), bloodpane, blackScreen, pauseMenu, diedPane);
 
         scalePane(pane, scale, backgroundWidth, backgroundHeight);
 
@@ -156,12 +179,21 @@ public class Level2 implements Background {
                 key.update();
                 box.update();
                 box2.update();
+                box3.update();
+                box4.update();
                 fire1.update();
                 fire2.update();
                 fire3.update();
                 fire4.update();
                 fire5.update();
                 fire6.update();
+                if(character.isattacked){
+                    if(character.health<=0){
+                        pane.getChildren().remove(bloodpane);
+                    }
+                    newblood.setFitWidth(character.blong);
+                    character.isattacked=false;
+                }
     
                 if (door2.nextlevel) {
                     nextlevel();
@@ -184,6 +216,8 @@ public class Level2 implements Background {
                 newCameraY = Math.min(newCameraY, (backgroundHeight * scale - scene.getHeight() * scope));
                 camera.setTranslateX(newCameraX);
                 camera.setTranslateY(newCameraY);
+                bloodpane.setTranslateX(newCameraX);
+                bloodpane.setTranslateY(newCameraY+324);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
