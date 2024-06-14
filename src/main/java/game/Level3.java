@@ -315,7 +315,7 @@ public class Level3 implements Background {
             diedPane.setLayoutY(cameraY + (scene.getHeight() - diedPane.getHeight()) / 2);
         }
         diedPane.setVisible(true);
-        VolumeController.stopMusic("level1");
+        VolumeController.stopMusic("level3");
     }
 
     private void initPauseOverlay() {
@@ -536,6 +536,7 @@ public class Level3 implements Background {
         isVictory = true;
         victoryPane.setVisible(true);
         timeLine.stop();
+        VolumeController.stopMusic("level3");
         VolumeController.playMusic("victory");
     }
 }
