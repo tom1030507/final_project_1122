@@ -86,11 +86,11 @@ public class Boss extends Pane{
                     ImageView note = new ImageView(note2Image);
                     note.setTranslateX(x + modX);
                     note.setTranslateY(y + site+100);
-                    BoundingBox note_box = new BoundingBox(x + modX, y + site + 100, 30, 48);
+                    BoundingBox noteBox = new BoundingBox(x + modX, y + site + 100, 30, 48);
                     
                     getChildren().addAll(note);
                     bullet.add(note);
-                    bulletBox.add(note_box);
+                    bulletBox.add(noteBox);
                     bulletType.add(21);
                     bulletVersion.add(1);
                     bulletDirection.add(direction);
